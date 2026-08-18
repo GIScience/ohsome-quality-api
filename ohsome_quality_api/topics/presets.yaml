@@ -9,24 +9,18 @@ custom-topic:
   name: Custom Topic
   description: >-
      A custom topic for user defined filters.
-  endpoint: elements
   aggregation_type: count
   filter: building=* and building!=no and geometry:polygon
   indicators:
-    - minimal
     - mapping-saturation
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 building-count:
   name: Buildings (count)
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
-  endpoint: elements
   aggregation_type: count
   filter: building=* and building!=no and geometry:polygon
   indicators:
@@ -34,15 +28,11 @@ building-count:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 building-area:
   name: Buildings (area)
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
-  endpoint: elements
   aggregation_type: area
   filter: building=* and building!=no and geometry:polygon
   indicators:
@@ -51,9 +41,6 @@ building-area:
     - building-comparison
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 roads-all-highways:
   name: Roads (all highways)
@@ -61,7 +48,6 @@ roads-all-highways:
     All linear OSM features holding the prinicipal tag `highway=*`. The
     road network defined by all objects which hold the principal tags
     for the road network and their link roads as defined in the <a href="https://wiki.openstreetmap.org/wiki/Key:highway">OSM Wiki</a>
-  endpoint: elements
   aggregation_type: length
   filter: >-
     highway=* and geometry:line
@@ -74,9 +60,6 @@ roads-all-highways:
     - attribute-completeness
     - currentness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 roads:
   name: Roads (cars)
@@ -85,7 +68,6 @@ roads:
     (i.e. cars). The road network defined by all objects which hold
     the principal tags for the road network and their link roads as
     defined in the <a href="https://wiki.openstreetmap.org/wiki/Highways#Roads_and_tracks">OSM Wiki</a>
-  endpoint: elements
   aggregation_type: length
   filter: >-
     highway in (motorway, trunk, primary, secondary, tertiary, residential, service, living_street, trunk_link, motorway_link, primary_link, secondary_link, tertiary_link, unclassified) and geometry:line
@@ -96,15 +78,11 @@ roads:
     - currentness
     - user-activity
     - roads-thematic-accuracy
-  projects:
-    - core
-    - bkg
 
 railway-length:
   name: Railways
   description: >-
     Railway networks.
-  endpoint: elements
   aggregation_type: length
   filter: >-
     railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and type:way
@@ -113,15 +91,11 @@ railway-length:
     - currentness # currentness always requests /contributions/latest/count [count!]
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 bridges_cars:
   name: Bridges (cars)
   description: >-
     All linear OSM features referring to a bridge usable by vehicles.
-  endpoint: elements
   aggregation_type: length
   filter: >-
     highway in (motorway, trunk, primary, secondary, tertiary, residential, service, living_street, trunk_link, motorway_link, primary_link, secondary_link, tertiary_link, unclassified) and bridge=* and geometry:line
@@ -130,15 +104,11 @@ bridges_cars:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 bridges_all_ways:
   name: Bridges (all ways)
   description: >-
     All linear OSM features referring to a bridge including footpaths only.
-  endpoint: elements
   aggregation_type: length
   filter: >-
     bridge=* and geometry:line
@@ -147,15 +117,11 @@ bridges_all_ways:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 bridges_count:
   name: Bridges (count)
   description: >-
     Count of all polygons labelled as bridge.
-  endpoint: elements
   aggregation_type: count
   filter: >-
     man_made=bridge and geometry:polygon
@@ -164,15 +130,11 @@ bridges_count:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 cycleway:
   name: Cycleway
   description: >-
       All linear OSM features referring to a cycleway. Includes exclusive cycleways and cycleways on the side of streets.
-  endpoint: elements
   aggregation_type: length
   filter: >-
     ((cycleway=* and cycleway!=no) 
@@ -194,15 +156,11 @@ cycleway:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 power_lines:
   name: Power Lines
   description: >-
       All linear OSM features referring to power lines.
-  endpoint: elements
   aggregation_type: length
   filter: >-
     ((power=line) 
@@ -214,15 +172,11 @@ power_lines:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - ohmygrid
-    - core
 
 power_substations:
   name: Power Substation
   description: >-
       A facility which controls the flow of electricity in a power network with transformers, switchgear or compensators.
-  endpoint: elements
   aggregation_type: count
   filter: >-
     power=substation and (type:way or type:node)
@@ -232,16 +186,12 @@ power_substations:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - ohmygrid
-    - core
 
 footpath:
   name: Footpath
   description: >-
     All linear OSM features commonly used for walking, including dedicated pedestrian paths,
     shared-use paths, and roads where foot traffic is allowed or sidewalks exist.
-  endpoint: elements
   aggregation_type: length
   filter: >-
     (
@@ -260,17 +210,12 @@ footpath:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - silverways
-    - core
-    - bkg
 
 footway:
   name: Footway
   description: >-
     All linear OSM features commonly used for walking, including dedicated pedestrian paths,
     shared-use paths, and roads where foot traffic is allowed or sidewalks exist.
-  endpoint: elements
   aggregation_type: length
   filter: >-
     (
@@ -290,14 +235,11 @@ footway:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
 
 poi:
   name: POI
   description: >-
     Points of interest.
-  endpoint: elements
   aggregation_type: count
   source: https://github.com/GIScience/openpoiservice/blob/master/openpoiservice/server/categories/categories.yml
   filter: >-
@@ -354,14 +296,10 @@ poi:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 schools:
   name: Schools
   description: Count of schools.
-  endpoint: elements
   aggregation_type: count
   filter: amenity=school and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dschool
@@ -370,15 +308,10 @@ schools:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
-    - unicef
 
 kindergarten:
   name: Kindergartens
   description: Count of kindergartens.
-  endpoint: elements
   aggregation_type: count
   filter: amenity=kindergarten and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dkindergarten
@@ -387,14 +320,10 @@ kindergarten:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 clinics:
   name: Clinics
   description: Count of clinics.
-  endpoint: elements
   aggregation_type: count
   filter: (amenity=clinic or healthcare=clinic) and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
@@ -403,14 +332,10 @@ clinics:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 doctors:
   name: Doctors
   description: Count of doctors.
-  endpoint: elements
   aggregation_type: count
   filter: (amenity=doctors or healthcare=doctor) and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
@@ -419,14 +344,10 @@ doctors:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 bus-stops:
   name: Bus Stops
   description: Count of bus stops.
-  endpoint: elements
   aggregation_type: count
   filter: highway=bus_stop and type:node
   source: https://wiki.openstreetmap.org/wiki/Tag:highway%3Dbus_stop
@@ -435,14 +356,10 @@ bus-stops:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 tram-stops:
   name: Tram Stops
   description: Count of tram stops.
-  endpoint: elements
   aggregation_type: count
   filter: railway=tram_stop and type:node
   source: https://wiki.openstreetmap.org/wiki/Tag:railway%3Dtram_stop
@@ -451,14 +368,10 @@ tram-stops:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 public-transport-stops:
   name: Public Transport Stops
   description: Count of public transport stops.
-  endpoint: elements
   aggregation_type: count
   filter: public_transport=platform and (type:way or type:node)
   indicators:
@@ -466,14 +379,10 @@ public-transport-stops:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 subway-stations:
   name: Subway Stations
   description: Count of subway stops.
-  endpoint: elements
   aggregation_type: count
   filter: station=subway and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:station%3Dsubway
@@ -482,14 +391,10 @@ subway-stations:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 supermarkets:
   name: Supermarkets
   description: Count of supermarkets.
-  endpoint: elements
   aggregation_type: count
   filter: (shop=supermarket or shop=convenience) and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:shop%3Dsupermarket
@@ -498,14 +403,10 @@ supermarkets:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 marketplaces:
   name: Marketplaces
   description: Count of marketplaces.
-  endpoint: elements
   aggregation_type: count
   filter: amenity=marketplace and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dmarketplace
@@ -514,14 +415,10 @@ marketplaces:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 parks:
   name: Parks
   description: Count of parks.
-  endpoint: elements
   aggregation_type: count
   filter: leisure=park and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpark
@@ -530,14 +427,10 @@ parks:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 sports-pitch:
   name: Sports Pitches
   description: Count of sports pitches (an area designed for practising a particular sport).
-  endpoint: elements
   aggregation_type: count
   filter: leisure=pitch and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpitch
@@ -546,15 +439,11 @@ sports-pitch:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 forests:
   name: Forests
-  description: Count of forests.
-  endpoint: elements
-  aggregation_type: count
+  description: Area of forests.
+  aggregation_type: area
   filter: landuse=forest and geometry:polygon
   source: https://wiki.openstreetmap.org/wiki/Forest
   indicators:
@@ -562,14 +451,10 @@ forests:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 industrial-landuse-count:
   name: Industrial Landuse (count)
   description: Industrial landsites.
-  endpoint: elements
   aggregation_type: count
   filter: landuse=industrial and type:way
   source: https://wiki.openstreetmap.org/wiki/Tag:landuse%3Dindustrial
@@ -578,13 +463,10 @@ industrial-landuse-count:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - experimental
 
 industrial-landuse-area:
   name: Industrial Landuse (area)
   description: Industrial areas.
-  endpoint: elements
   aggregation_type: area
   filter: landuse=industrial and type:way
   source: https://wiki.openstreetmap.org/wiki/Tag:landuse%3Dindustrial
@@ -593,13 +475,10 @@ industrial-landuse-area:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - experimental
 
 fitness-centres:
   name: Fitness Centres
   description: Count of fitness centres.
-  endpoint: elements
   aggregation_type: count
   filter: leisure in (fitness_centre, sports_centre) and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Gym_/_Fitness_centre
@@ -608,14 +487,10 @@ fitness-centres:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
 
 fire-stations:
   name: Fire Stations
   description: Count of firestations.
-  endpoint: elements
   aggregation_type: count
   filter: amenity=fire_station and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dfire_station
@@ -624,14 +499,10 @@ fire-stations:
     - currentness
     - user-activity
     - attribute-completeness
-  projects:
-    - core
-    - bkg
 
 hospitals:
   name: Hospitals
   description: Count of hospitals.
-  endpoint: elements
   aggregation_type: count
   filter: (amenity=hospital or healthcare=hospital) and (type:way or type:node)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
@@ -640,16 +511,11 @@ hospitals:
     - currentness
     - attribute-completeness
     - user-activity
-  projects:
-    - core
-    - bkg
-    - unicef
 
 land-cover:
   name: Land Use and Land Cover
   description: >-
     Features related to land use and land cover.
-  endpoint: elements
   aggregation_type: area
   filter: >-
     (landuse=* and landuse!=no) or natural in (wood, 
@@ -666,6 +532,3 @@ land-cover:
     - land-cover-thematic-accuracy
     - land-cover-completeness
     - user-activity
-  projects:
-    - core
-    - bkg

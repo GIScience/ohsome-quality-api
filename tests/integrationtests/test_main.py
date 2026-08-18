@@ -1,17 +1,13 @@
 import asyncio
-from unittest import mock
 
 import asyncpg_recorder
 import pytest
 
 from ohsome_quality_api import main
-from ohsome_quality_api.topics.models import TopicData
 from tests.integrationtests.utils import oqapi_vcr
 
 # TODO: add user-activity and land-cover-... indicators (ohsomedb)
 PARAMETERS = [
-    ("minimal", "topic_minimal", {}),
-    ("minimal", "topic_custom", {}),
     ("mapping-saturation", "topic_building_count", {}),
     ("mapping-saturation", "topic_custom", {}),
     ("currentness", "topic_building_count", {}),
@@ -74,14 +70,14 @@ async def test_create_indicator_public_feature_collection_single(
 @oqapi_vcr.use_cassette
 def test_create_indicator_public_feature_collection_multi(
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
-    topic_minimal,
+    topic_building_count,
 ):
     """Test create indicators for a feature collection with multiple features."""
     indicators = asyncio.run(
         main.create_indicator(
-            "minimal",
+            "mapping-saturation",
             feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
-            topic_minimal,
+            topic_building_count,
         )
     )
     assert len(indicators) == 3
@@ -113,49 +109,14 @@ async def test_create_indicator_private_feature(
 
 
 @oqapi_vcr.use_cassette
-def test_create_indicator_private_include_figure(bpolys, topic_minimal):
+def test_create_indicator_private_include_figure(bpolys, topic_building_count):
+    feature = bpolys["features"][0]
     indicator = asyncio.run(
         main._create_indicator(
-            "minimal",
-            bpolys,
-            topic_minimal,
+            "mapping-saturation",
+            feature,
+            topic_building_count,
             include_figure=False,
         )
     )
     assert indicator.result.figure is None
-
-
-@mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)
-@oqapi_vcr.use_cassette
-def test_create_indicator_size_limit_bpolys(bpolys, topic_minimal):
-    with pytest.raises(ValueError):
-        asyncio.run(main.create_indicator("minimal", bpolys, topic_minimal))
-
-
-@mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)
-@oqapi_vcr.use_cassette
-def test_create_indicator_size_limit_bpolys_ms(bpolys, topic_building_count):
-    # Size limit is disabled for the Mapping Saturation indicator.
-    asyncio.run(
-        main.create_indicator("mapping-saturation", bpolys, topic_building_count)
-    )
-
-
-@mock.patch.dict("os.environ", {"OQAPI_GEOM_SIZE_LIMIT": "1"}, clear=True)
-@oqapi_vcr.use_cassette
-def test_create_indicator_size_limit_bpolys_data(bpolys):
-    # Size limit is disabled for request with custom data.
-    topic = TopicData(
-        key="key",
-        name="name",
-        description="description",
-        data={
-            "result": [
-                {
-                    "value": 1.0,
-                    "timestamp": "2020-03-20T01:30:08.180856",
-                }
-            ]
-        },
-    )
-    asyncio.run(main.create_indicator("mapping-saturation", bpolys, topic))

@@ -2,6 +2,14 @@
 
 ## Current Main
 
+### Breaking Changes
+
+* remove endpoint and project parameters from topic and indicator definitions ([#1028])
+* remove metadata endpoints for projects ([#1028])
+
+### Other Changes
+
+* topics: remove topics, that were not in the core project ([#1028])
 * feat: get OSM data for User Activity indicator from ohsome-api v2 (69841b3e)
 * feat: include authorization header in requests to ohsome-api (2b2ebeea)
 * fix(attributes): add missing `ref=*` tag to the road name attribute (99fbaa50)
@@ -28,6 +36,7 @@
 [#1017]: https://github.com/GIScience/ohsome-quality-api/pull/1017
 [#1018]: https://github.com/GIScience/ohsome-quality-api/pull/1018
 [#1029]: https://github.com/GIScience/ohsome-quality-api/pull/1029
+[#1028]: https://github.com/GIScience/ohsome-quality-api/pull/1028
 
 ## Release 1.17.1
 

@@ -40,7 +40,6 @@ def metadata_topic_building_count():
         "building-count": {
             "name": "Buildings (count)",
             "description": "All buildings as defined by all objects tagged with 'building=*'.",  # noqa
-            "endpoint": "elements",
             "aggregationType": "count",
             "filter": "building=* and building!=no and geometry:polygon",
             "indicators": [
@@ -49,7 +48,6 @@ def metadata_topic_building_count():
                 "attribute-completeness",
                 "user-activity",
             ],
-            "projects": ["core", "bkg"],
             "source": None,
         },
     }
@@ -64,17 +62,6 @@ def metadata_indicator_mapping_saturation():
                 "Calculate if mapping has saturated. High saturation has been reached "
                 + "if the growth of the fitted curve is minimal."
             ),
-            "projects": [
-                "core",
-                "corine-land-cover",
-                "expanse",
-                "experimental",
-                "idealvgi",
-                "mapaction",
-                "sketchmap",
-                "bkg",
-                "unicef",
-            ],
             "qualityDimension": "completeness",
         }
     }
@@ -83,63 +70,25 @@ def metadata_indicator_mapping_saturation():
 @pytest.fixture
 def metadata_quality_dimension():
     return {
-        "minimal": {
-            "name": "minimal",
-            "description": "A minimal quality dimension"
-            " definition for testing purposes.",
-            "source": None,
+        "completeness": {
+            "name": "completeness",
+            "description": "The degree to which subject data associated "
+            "with an entity has values for all expected "
+            "attributes and related entity instances in "
+            "a specific context of use.",
+            "source": "https://www.iso.org/standard/78900.html",
         }
     }
 
 
 @pytest.fixture
-def metadata_project_core():
+def metadata_attribute_forests():
     return {
-        "core": {
-            "name": "TODO",
-            "description": "something that is still a TODO",
-        }
-    }
-
-
-@pytest.fixture
-def metadata_topic_minimal():
-    return {
-        "minimal": {
-            "key": "minimal",
-            "name": "Minimal",
-            "description": "A minimal topic definition for testing purposes",
-            "endpoint": "elements",
-            "aggregationType": "count",
-            "filter": "building=* and building!=no and geometry:polygon",
-            "indicators": ["minimal"],
-            "ratioFilter": None,  # TODO: Should not be in response if None
-            "projects": ["misc"],
-            "source": None,  # TODO: Should not be in response if None
-        }
-    }
-
-
-@pytest.fixture
-def metadata_indicator_minimal():
-    return {
-        "minimal": {
-            "name": "Minimal",
-            "description": "An minimal Indicator for testing purposes.",
-            "projects": ["misc"],
-            "qualityDimension": "minimal",
-        }
-    }
-
-
-@pytest.fixture
-def metadata_attribute_clc_leaf_type():
-    return {
-        "clc-leaf-type": {
+        "forests": {
             "leaf-type": {
-                "name": "Type of Leaves",
+                "filter": "leaf_type=*",
+                "name": "Leaf Type",
                 "description": "TODO",
-                "filter": "leaf_type in (broadleaved, needleleaved, mixed)",
             }
         }
     }

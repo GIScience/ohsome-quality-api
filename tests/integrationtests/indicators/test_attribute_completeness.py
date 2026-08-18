@@ -186,7 +186,7 @@ class TestCalculation:
             feature = geojson.load(f)
 
         indicator = AttributeCompleteness(
-            topic=get_topic_fixture("clc-leaf-type"),
+            topic=get_topic_fixture("forests"),
             feature=feature,
             attribute_keys=["leaf-type"],
         )
@@ -286,7 +286,7 @@ def test_create_description_attribute_filter(
     "result_value, absolute_value_1, absolute_value_2",
     [
         ("building-count", "height", "elements", 0.2, 10, 2),
-        ("clc-leaf-type", "leaf-type", "m²", 0.2, 10.012, 2.012),
+        ("forests", "leaf-type", "m²", 0.2, 10.012, 2.012),
         ("roads", "name", "m", 0.2, 10.012, 2.012),
     ],
 )

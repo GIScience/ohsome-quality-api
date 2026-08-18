@@ -1,15 +1,14 @@
 {
-  "key": "minimal",
-  "name": "Minimal",
-  "description": "Eine minimale Themen-Definition zu Testzwecken.",
-  "endpoint": "elements",
+  "key": "building-count",
+  "name": "Gebäude (Anzahl)",
+  "description": "Alle Gebäude, definiert durch alle Objekte mit dem Tag ‚building=*‘.",
   "aggregation_type": "count",
   "filter": "building=* and building!=no and geometry:polygon",
   "indicators": [
-    "minimal"
-  ],
-  "projects": [
-    "misc"
+    "mapping-saturation",
+    "currentness",
+    "attribute-completeness",
+    "user-activity"
   ],
   "source": null,
   "ratio_filter": null

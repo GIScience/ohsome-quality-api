@@ -1,5 +1,5 @@
 {
-  "name": "minimal",
-  "description": "Eine minimale Qualitätsdimension zum Testen.",
-  "source": null
+  "name": "Vollständigkeit",
+  "description": "Der Grad, in dem mit einer Entität verbundene Fachdaten Werte für alle erwarteten Attribute und zugehörige Entitätsinstanzen in einem bestimmten Verwendungskontext aufweisen.",
+  "source": "https://www.iso.org/standard/78900.html"
 }
