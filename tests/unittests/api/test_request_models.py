@@ -15,10 +15,10 @@ from ohsome_quality_api.api.request_models import (
 
 
 @pytest.fixture
-def mock_request_context_minimal(monkeypatch):
-    """Mock request context for /indicators/minimal."""
+def mock_request_context_mapping_saturation(monkeypatch):
+    """Mock request context for /indicators/mapping-saturation."""
     request_context: ContextVar[RequestContext] = ContextVar("request_context")
-    request_context.set(RequestContext(path_parameters={"key": "minimal"}))
+    request_context.set(RequestContext(path_parameters={"key": "mapping-saturation"}))
     monkeypatch.setattr(
         "ohsome_quality_api.api.request_models.request_context", request_context
     )
@@ -54,22 +54,24 @@ def test_bpolys_unsupported_geometry_type(feature_collection_unsupported_geometr
         BaseBpolys(bpolys=feature_collection_unsupported_geometry_type)
 
 
-@pytest.mark.usefixtures("mock_request_context_minimal")
-def test_indicator_request_minimal(bpolys, topic_key_minimal):
-    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal)
+@pytest.mark.usefixtures("mock_request_context_mapping_saturation")
+def test_indicator_request_mapping_saturation(bpolys, topic_key_building_count):
+    IndicatorRequest(bpolys=bpolys, topic=topic_key_building_count)
 
 
-@pytest.mark.usefixtures("mock_request_context_minimal")
+@pytest.mark.usefixtures("mock_request_context_mapping_saturation")
 def test_indicator_request_invalid_indicator_topic_combination(
     bpolys, topic_key_building_count
 ):
     with pytest.raises(ValidationError):
-        IndicatorRequest(bpolys=bpolys, topic=topic_key_building_count)
+        IndicatorRequest(bpolys=bpolys, topic="foo")
 
 
-@pytest.mark.usefixtures("mock_request_context_minimal")
-def test_indicator_request_include_figure(bpolys, topic_key_minimal):
-    IndicatorRequest(bpolys=bpolys, topic=topic_key_minimal, include_figure=False)
+@pytest.mark.usefixtures("mock_request_context_mapping_saturation")
+def test_indicator_request_include_figure(bpolys, topic_key_building_count):
+    IndicatorRequest(
+        bpolys=bpolys, topic=topic_key_building_count, include_figure=False
+    )
 
 
 def test_indicator_request_invalid_topic(bpolys):
@@ -93,13 +95,12 @@ def test_attribute_completeness_invalid_attribute(bpolys, topic_key_building_cou
 
 def test_attribute_completeness_indicator_request_invalid_indicator_topic_combination(
     bpolys,
-    topic_key_minimal,
     attribute_key_height,
 ):
     with pytest.raises(ValidationError):
         AttributeCompletenessKeyRequest(
             bpolys=bpolys,
-            topic=topic_key_minimal,
+            topic="foo",
             attributes=attribute_key_height,
         )
 

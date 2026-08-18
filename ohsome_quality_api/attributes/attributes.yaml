@@ -276,12 +276,6 @@ tram-stops:
     description: TODO
     filter: public_transport=platform
 
-clc-leaf-type:
-  leaf-type:
-    name: Type of Leaves
-    description: TODO
-    filter: leaf_type in (broadleaved, needleleaved, mixed)
-
 roads:
   name:
     name: Road Name

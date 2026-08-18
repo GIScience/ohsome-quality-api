@@ -7,7 +7,7 @@ import pytest
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.indicators.definitions import get_indicator_metadata
 from ohsome_quality_api.indicators.mapping_saturation import models
-from ohsome_quality_api.indicators.minimal.indicator import Minimal
+from ohsome_quality_api.indicators.mapping_saturation.indicator import MappingSaturation
 from ohsome_quality_api.utils.helper import (
     camel_to_hyphen,
     get_class_from_key,
@@ -26,7 +26,10 @@ from .mapping_saturation import fixtures
 
 
 def test_name_to_class():
-    assert get_class_from_key(class_type="indicator", key="minimal") == Minimal
+    assert (
+        get_class_from_key(class_type="indicator", key="mapping-saturation")
+        == MappingSaturation
+    )
 
     indicators = get_indicator_metadata()
     for indicator_name in indicators:

@@ -299,4 +299,152 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: '{"filter":"landuse=forest and geometry:polygon","aoi":{"type":"MultiPolygon","coordinates":[[[[7.818124,13.859122],[7.835312,13.859122],[7.835312,13.872538],[7.818124,13.872538],[7.818124,13.859122]]]]},"timeSeries":{"start":"2008-07-21","end":"2026-07-01"}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - foo
+      connection:
+      - keep-alive
+      content-length:
+      - '258'
+      content-type:
+      - application/json
+      host:
+      - ohsome-api.heigitk8s.de
+      user-agent:
+      - ohsome-quality-api
+    method: POST
+    uri: https://ohsome-api.heigitk8s.de/stats/features/count.json
+  response:
+    body:
+      string: "{\"apiVersion\":\"2.0.0a6\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+        OpenStreetMap contributors\"},\"result\":{\"timestamp\":[\"2008-07-21T00:00:00Z\",\"2026-07-01T00:00:00Z\"],\"value\":[0,0]}}"
+    headers:
+      content-length:
+      - '202'
+      content-type:
+      - application/json
+      date:
+      - Tue, 18 Aug 2026 10:46:16 GMT
+      server:
+      - uvicorn
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"filter":"(landuse=forest and geometry:polygon) and ((leaf_type=*))","aoi":{"type":"MultiPolygon","coordinates":[[[[7.818124,13.859122],[7.835312,13.859122],[7.835312,13.872538],[7.818124,13.872538],[7.818124,13.859122]]]]},"timeSeries":{"start":"2008-07-21","end":"2026-07-01"}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - foo
+      connection:
+      - keep-alive
+      content-length:
+      - '280'
+      content-type:
+      - application/json
+      host:
+      - ohsome-api.heigitk8s.de
+      user-agent:
+      - ohsome-quality-api
+    method: POST
+    uri: https://ohsome-api.heigitk8s.de/stats/features/count.json
+  response:
+    body:
+      string: "{\"apiVersion\":\"2.0.0a6\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+        OpenStreetMap contributors\"},\"result\":{\"timestamp\":[\"2008-07-21T00:00:00Z\",\"2026-07-01T00:00:00Z\"],\"value\":[0,0]}}"
+    headers:
+      content-length:
+      - '202'
+      content-type:
+      - application/json
+      date:
+      - Tue, 18 Aug 2026 10:46:17 GMT
+      server:
+      - uvicorn
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"filter":"landuse=forest and geometry:polygon","aoi":{"type":"MultiPolygon","coordinates":[[[[7.818124,13.859122],[7.835312,13.859122],[7.835312,13.872538],[7.818124,13.872538],[7.818124,13.859122]]]]},"timeSeries":{"start":"2008-07-21","end":"2026-07-01"}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - foo
+      connection:
+      - keep-alive
+      content-length:
+      - '258'
+      content-type:
+      - application/json
+      host:
+      - ohsome-api.heigitk8s.de
+      user-agent:
+      - ohsome-quality-api
+    method: POST
+    uri: https://ohsome-api.heigitk8s.de/stats/features/area.json
+  response:
+    body:
+      string: "{\"apiVersion\":\"2.0.0a6\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+        OpenStreetMap contributors\"},\"result\":{\"timestamp\":[\"2008-07-21T00:00:00Z\",\"2026-07-01T00:00:00Z\"],\"value\":[0,0]}}"
+    headers:
+      content-length:
+      - '202'
+      content-type:
+      - application/json
+      date:
+      - Tue, 18 Aug 2026 12:34:13 GMT
+      server:
+      - uvicorn
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"filter":"(landuse=forest and geometry:polygon) and ((leaf_type=*))","aoi":{"type":"MultiPolygon","coordinates":[[[[7.818124,13.859122],[7.835312,13.859122],[7.835312,13.872538],[7.818124,13.872538],[7.818124,13.859122]]]]},"timeSeries":{"start":"2008-07-21","end":"2026-07-01"}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - foo
+      connection:
+      - keep-alive
+      content-length:
+      - '280'
+      content-type:
+      - application/json
+      host:
+      - ohsome-api.heigitk8s.de
+      user-agent:
+      - ohsome-quality-api
+    method: POST
+    uri: https://ohsome-api.heigitk8s.de/stats/features/area.json
+  response:
+    body:
+      string: "{\"apiVersion\":\"2.0.0a6\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
+        OpenStreetMap contributors\"},\"result\":{\"timestamp\":[\"2008-07-21T00:00:00Z\",\"2026-07-01T00:00:00Z\"],\"value\":[0,0]}}"
+    headers:
+      content-length:
+      - '202'
+      content-type:
+      - application/json
+      date:
+      - Tue, 18 Aug 2026 12:34:15 GMT
+      server:
+      - uvicorn
+    status:
+      code: 200
+      message: OK
 version: 1

@@ -23,11 +23,9 @@ def test_base_topic_extra():
 def test_topic_filter_validation():
     with pytest.raises(ValidationError):
         Topic(
-            endpoint="elements",
             aggregation_type=["area", "count", "length", "perimeter", "area/density"],
             filter="filter",
             indicators=["indicators"],
-            projects=["projects"],
             source="source",
             ratio_filter="ratio_filter",
         )
@@ -36,11 +34,9 @@ def test_topic_filter_validation():
 def test_topic_filter_validation_geom_type():
     with pytest.raises(ValidationError):
         Topic(
-            endpoint="elements",
             aggregation_type=["area", "count", "length", "perimeter", "area/density"],
             filter="building=yes",
             indicators=["indicators"],
-            projects=["projects"],
             source="source",
             ratio_filter="ratio_filter",
         )
@@ -52,8 +48,6 @@ def test_topic_definition():
         name="name",
         description="description",
         indicators=["mapping-saturation"],
-        projects=["core"],
-        endpoint="elements",
         aggregation_type="count",
         filter="building=yes and geometry:polygon",
     )
@@ -62,8 +56,6 @@ def test_topic_definition():
         name="name",
         description="description",
         indicators=["mapping-saturation"],
-        projects=["core"],
-        endpoint="elements",
         aggregation_type="count",
         filter="building=yes and geometry:polygon",
         source="source",
@@ -72,9 +64,7 @@ def test_topic_definition():
         key="key",
         name="name",
         description="description",
-        indicators=["mapping-saturation", "minimal"],
-        projects=["core"],
-        endpoint="elements",
+        indicators=["mapping-saturation"],
         aggregation_type="count",
         filter="type:way and highway=residential",
         source="source",
@@ -83,9 +73,7 @@ def test_topic_definition():
         key="key",
         name="name",
         description="description",
-        indicators=["mapping-saturation", "minimal"],
-        projects=["core", "experimental"],
-        endpoint="elements",
+        indicators=["mapping-saturation"],
         aggregation_type="count",
         filter="geometry:polygon and building=*",
         source="source",
@@ -95,8 +83,6 @@ def test_topic_definition():
         name="name",
         description="description",
         indicators=[],
-        projects=["core"],
-        endpoint="elements",
         aggregation_type="count",
         filter="geometry:polygon and building=*",
         source="source",
@@ -106,8 +92,6 @@ def test_topic_definition():
         name="name",
         description="description",
         indicators=["mapping-saturation"],
-        projects=["core"],
-        endpoint="elements",
         aggregation_type="count",
         filter="type:way and highway=residential",
         source="source",
@@ -126,8 +110,6 @@ def test_topic_definition_extra():
             key="key",
             name="name",
             description="description",
-            projects=["core"],
-            endpoint="elements",
             filter="filter",
             foo="bar",
         )

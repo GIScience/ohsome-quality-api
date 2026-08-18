@@ -19,8 +19,6 @@ from ohsome_quality_api.indicators.definitions import (
     get_indicator_metadata,
 )
 from ohsome_quality_api.indicators.models import IndicatorMetadata
-from ohsome_quality_api.projects.definitions import get_project, load_projects
-from ohsome_quality_api.projects.models import Project
 from ohsome_quality_api.quality_dimensions.definitions import (
     get_quality_dimension,
     load_quality_dimensions,
@@ -79,11 +77,6 @@ def get_connection(monkeypatch):
 
 
 @pytest.fixture(scope="class")
-def topic_key_minimal() -> str:
-    return "minimal"
-
-
-@pytest.fixture(scope="class")
 def topic_key_building_count() -> str:
     return "building-count"
 
@@ -96,11 +89,6 @@ def topic_roads() -> Topic:
 @pytest.fixture(scope="class")
 def topic_roads_all_highways() -> Topic:
     return get_topic_preset("roads-all-highways")
-
-
-@pytest.fixture(scope="class")
-def topic_minimal(topic_key_minimal) -> Topic:
-    return get_topic_preset(topic_key_minimal)
 
 
 @pytest.fixture(scope="class")
@@ -167,26 +155,6 @@ def metadata_quality_dimension_completeness(
 @pytest.fixture()
 def quality_dimensions() -> dict[str, QualityDimension]:
     return load_quality_dimensions()
-
-
-@pytest.fixture(scope="class")
-def project_key_core() -> str:
-    return "core"
-
-
-@pytest.fixture(scope="class")
-def project_core(project_key_core) -> Project:
-    return get_project(project_key_core)
-
-
-@pytest.fixture(scope="class")
-def metadata_project_core(project_key_core, project_core) -> dict[str, Project]:
-    return {project_key_core: project_core}
-
-
-@pytest.fixture()
-def projects() -> dict[str, Project]:
-    return load_projects()
 
 
 @pytest.fixture(scope="class")
@@ -306,8 +274,8 @@ def feature_collection_unsupported_geometry_type(request) -> FeatureCollection:
 
 
 @pytest.fixture
-def metadata_indicator_minimal() -> dict[str, IndicatorMetadata]:
-    return {"minimal": get_indicator("minimal")}
+def metadata_indicator_mapping_saturation() -> dict[str, IndicatorMetadata]:
+    return {"mapping-saturation": get_indicator("mapping-saturation")}
 
 
 @pytest.fixture

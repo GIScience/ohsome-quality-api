@@ -1,7 +1,7 @@
 """Pydantic Models for Topics
 
 Note:
-    The topic key, name, description and the ohsome API endpoint and filter are defined
+    The topic key, name, description and filter are defined
     in the `presets.yaml` file in the `topic` module.
 """
 
@@ -11,7 +11,6 @@ from fastapi_i18n import _
 from ohsome_filter_to_sql.main import OhsomeFilter
 from pydantic import BaseModel, ConfigDict, field_validator
 
-from ohsome_quality_api.projects.definitions import ProjectEnum
 from ohsome_quality_api.utils.helper import snake_to_lower_camel
 
 
@@ -34,13 +33,11 @@ class BaseTopic(BaseModel):
 
 
 class Topic(BaseTopic, validate_assignment=True):
-    """Includes the ohsome API endpoint and parameters needed to retrieve the data."""
+    """Includes the parameters needed to retrieve the data."""
 
-    endpoint: Literal["elements"]
     aggregation_type: Literal["area", "count", "length", "perimeter", "area/density"]
     filter: OhsomeFilter
     indicators: list[str]
-    projects: list[ProjectEnum]
     source: str | None = None
     ratio_filter: str | None = None
 

@@ -58,7 +58,7 @@ def test_indicator_request_invalid_topic_key_with_filter(bpolys):
     with pytest.raises(ValidationError):
         IndicatorRequest(
             bpolys=bpolys,
-            topic="minimal",  # valid
+            topic="building-comparison",  # valid
             # not valid in combination w/ existing topic key
             topic_title="custom-topic",
             topic_filter="building=yes and geometry:point",
