@@ -85,7 +85,7 @@ railway-length:
     Railway networks.
   aggregation_type: length
   filter: >-
-    railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and type:way
+    railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and geometry:polygon
   indicators:
     - mapping-saturation
     - currentness # currentness always requests /contributions/latest/count [count!]
@@ -179,7 +179,7 @@ power_substations:
       A facility which controls the flow of electricity in a power network with transformers, switchgear or compensators.
   aggregation_type: count
   filter: >-
-    power=substation and (type:way or type:node)
+    power=substation and (geometry:polygon or geometry:point)
   indicators:
     - attribute-completeness
     - mapping-saturation
@@ -290,7 +290,7 @@ poi:
     or (tourism in (alpine_hut, apartment, aquarium, artwork, attraction, camp_site, caravan_site,
     chalet, gallery, museum, guest_house, hostel, hotel, motel, picnic_site, theme_park, viewpoint,
     wilderness_hut, zoo)))
-    and (type:way or type:node)
+    and (geometry:polygon or geometry:point)
   indicators:
     - mapping-saturation
     - currentness
@@ -301,7 +301,7 @@ schools:
   name: Schools
   description: Count of schools.
   aggregation_type: count
-  filter: amenity=school and (type:way or type:node)
+  filter: amenity=school and (geometry:polygon or geometry:point)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dschool
   indicators:
     - mapping-saturation
@@ -313,7 +313,7 @@ kindergarten:
   name: Kindergartens
   description: Count of kindergartens.
   aggregation_type: count
-  filter: amenity=kindergarten and (type:way or type:node)
+  filter: amenity=kindergarten and (geometry:polygon or geometry:point)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dkindergarten
   indicators:
     - mapping-saturation
@@ -325,7 +325,7 @@ clinics:
   name: Clinics
   description: Count of clinics.
   aggregation_type: count
-  filter: (amenity=clinic or healthcare=clinic) and (type:way or type:node)
+  filter: (amenity=clinic or healthcare=clinic) and (geometry:polygon or geometry:polygon)
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
   indicators:
     - mapping-saturation
@@ -337,7 +337,7 @@ doctors:
   name: Doctors
   description: Count of doctors.
   aggregation_type: count
-  filter: (amenity=doctors or healthcare=doctor) and (type:way or type:node)
+  filter: (amenity=doctors or healthcare=doctor) and (geometry:polygon or geometry:point)
   source: https://wiki.openstreetmap.org/wiki/Global_Healthsites_Mapping_Project
   indicators:
     - mapping-saturation
@@ -349,7 +349,7 @@ bus-stops:
   name: Bus Stops
   description: Count of bus stops.
   aggregation_type: count
-  filter: highway=bus_stop and type:node
+  filter: highway=bus_stop and geometry:point
   source: https://wiki.openstreetmap.org/wiki/Tag:highway%3Dbus_stop
   indicators:
     - mapping-saturation
@@ -361,7 +361,7 @@ tram-stops:
   name: Tram Stops
   description: Count of tram stops.
   aggregation_type: count
-  filter: railway=tram_stop and type:node
+  filter: railway=tram_stop and geometry:point
   source: https://wiki.openstreetmap.org/wiki/Tag:railway%3Dtram_stop
   indicators:
     - mapping-saturation
@@ -373,7 +373,7 @@ public-transport-stops:
   name: Public Transport Stops
   description: Count of public transport stops.
   aggregation_type: count
-  filter: public_transport=platform and (type:way or type:node)
+  filter: public_transport=platform and (geometry:polygon or geometry:point)
   indicators:
     - mapping-saturation
     - currentness
@@ -384,7 +384,7 @@ subway-stations:
   name: Subway Stations
   description: Count of subway stops.
   aggregation_type: count
-  filter: station=subway and (type:way or type:node)
+  filter: station=subway and (geometry:polygon or geometry:point)
   source: https://wiki.openstreetmap.org/wiki/Tag:station%3Dsubway
   indicators:
     - mapping-saturation
@@ -396,7 +396,7 @@ supermarkets:
   name: Supermarkets
   description: Count of supermarkets.
   aggregation_type: count
-  filter: (shop=supermarket or shop=convenience) and (type:way or type:node)
+  filter: (shop=supermarket or shop=convenience) and (geometry:polygon or geometry:point)
   source: https://wiki.openstreetmap.org/wiki/Tag:shop%3Dsupermarket
   indicators:
     - mapping-saturation
@@ -408,7 +408,7 @@ marketplaces:
   name: Marketplaces
   description: Count of marketplaces.
   aggregation_type: count
-  filter: amenity=marketplace and (type:way or type:node)
+  filter: amenity=marketplace and (geometry:polygon or geometry:point)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dmarketplace
   indicators:
     - mapping-saturation
@@ -420,7 +420,7 @@ parks:
   name: Parks
   description: Count of parks.
   aggregation_type: count
-  filter: leisure=park and (type:way or type:node)
+  filter: leisure=park and (geometry:polygon or geometry:polygon)
   source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpark
   indicators:
     - mapping-saturation
@@ -432,7 +432,7 @@ sports-pitch:
   name: Sports Pitches
   description: Count of sports pitches (an area designed for practising a particular sport).
   aggregation_type: count
-  filter: leisure=pitch and (type:way or type:node)
+  filter: leisure=pitch and (geometry:polygon or geometry:point)
   source: https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpitch
   indicators:
     - mapping-saturation
@@ -456,7 +456,7 @@ industrial-landuse-count:
   name: Industrial Landuse (count)
   description: Industrial landsites.
   aggregation_type: count
-  filter: landuse=industrial and type:way
+  filter: landuse=industrial and geometry:polygon
   source: https://wiki.openstreetmap.org/wiki/Tag:landuse%3Dindustrial
   indicators:
     - mapping-saturation
@@ -468,7 +468,7 @@ industrial-landuse-area:
   name: Industrial Landuse (area)
   description: Industrial areas.
   aggregation_type: area
-  filter: landuse=industrial and type:way
+  filter: landuse=industrial and geometry:polygon
   source: https://wiki.openstreetmap.org/wiki/Tag:landuse%3Dindustrial
   indicators:
     - mapping-saturation
@@ -480,7 +480,7 @@ fitness-centres:
   name: Fitness Centres
   description: Count of fitness centres.
   aggregation_type: count
-  filter: leisure in (fitness_centre, sports_centre) and (type:way or type:node)
+  filter: leisure in (fitness_centre, sports_centre) and (geometry:polygon or geometry:point)
   source: https://wiki.openstreetmap.org/wiki/Gym_/_Fitness_centre
   indicators:
     - mapping-saturation
@@ -492,7 +492,7 @@ fire-stations:
   name: Fire Stations
   description: Count of firestations.
   aggregation_type: count
-  filter: amenity=fire_station and (type:way or type:node)
+  filter: amenity=fire_station and (geometry:polygon or geometry:point)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dfire_station
   indicators:
     - mapping-saturation
@@ -504,7 +504,7 @@ hospitals:
   name: Hospitals
   description: Count of hospitals.
   aggregation_type: count
-  filter: (amenity=hospital or healthcare=hospital) and (type:way or type:node)
+  filter: (amenity=hospital or healthcare=hospital) and (geometry:polygon or geometry:point)
   source: https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital
   indicators:
     - mapping-saturation
