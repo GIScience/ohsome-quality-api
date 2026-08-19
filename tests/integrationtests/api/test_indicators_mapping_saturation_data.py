@@ -48,7 +48,7 @@ def test_mapping_saturation_data(client, bpolys):
         for x in range(DATA.size)
     ]
     timestamp_iso_string = [t.strftime("%Y-%m-%dT%H:%M:%S") for t in timestamp_objects]
-    # Data is ohsome API response result for the topic 'building-count' and the bpolys
+    # Data is ohsome API response result for the topic 'buildings' and the bpolys
     #   of for Heidelberg
     parameters = {
         "bpolys": bpolys,

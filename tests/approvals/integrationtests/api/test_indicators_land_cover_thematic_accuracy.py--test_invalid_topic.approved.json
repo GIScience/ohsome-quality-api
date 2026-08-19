@@ -7,7 +7,7 @@
    "loc": [
     "body"
    ],
-   "msg": "Value error, Invalid combination of indicator and topic: land-cover-thematic-accuracy and building-count",
+   "msg": "Value error, Invalid combination of indicator and topic: land-cover-thematic-accuracy and buildings",
    "input": {
     "bpolys": {
      "type": "FeatureCollection",
@@ -3925,7 +3925,7 @@
       }
      ]
     },
-    "topic": "building-count"
+    "topic": "buildings"
    },
    "ctx": {
     "error": {}

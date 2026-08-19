@@ -34,7 +34,7 @@ def test_topic_metadata():
 def test_topic_metadata_response():
     TopicMetadataResponse(
         result={
-            "building-count": TopicMetadata(
+            "buildings": TopicMetadata(
                 name="foo",
                 description="foo",
                 aggregation_type="area",
@@ -46,7 +46,7 @@ def test_topic_metadata_response():
     )
 
 
-def test_topic_metadata_response_fail(topic_building_count):
+def test_topic_metadata_response_fail(topic_buildings):
     with pytest.raises(ValidationError):
         TopicMetadataResponse(result="")
     with pytest.raises(ValidationError):
@@ -56,7 +56,7 @@ def test_topic_metadata_response_fail(topic_building_count):
     with pytest.raises(ValidationError):
         TopicMetadataResponse(result={"foo": "bar"})
     with pytest.raises(ValidationError):
-        TopicMetadataResponse(result={"foo": topic_building_count})
+        TopicMetadataResponse(result={"foo": topic_buildings})
 
 
 def test_metadata_quality_dimensions(metadata_quality_dimension_completeness):

@@ -29,7 +29,7 @@ def test_indicators_attribute_completeness_single_attribute(
 ):
     parameters = {
         "bpolys": bpolys,
-        "topic": "building-count",
+        "topic": "buildings",
         "attributes": attribute_key,
     }
     response = client.post(ENDPOINT, json=parameters, headers=headers)
@@ -46,7 +46,7 @@ def test_indicators_attribute_completeness_multiple_attributes(
 ):
     parameters = {
         "bpolys": bpolys,
-        "topic": "building-count",
+        "topic": "buildings",
         "attributes": attribute_key_multiple,
     }
     response = client.post(ENDPOINT, json=parameters, headers=headers)
@@ -61,7 +61,7 @@ def test_indicators_attribute_completeness_without_attribute(
 ):
     parameters = {
         "bpolys": bpolys,
-        "topic": "building-count",
+        "topic": "buildings",
     }
     response = client.post(ENDPOINT, json=parameters, headers=headers)
     assert response.status_code == 422
@@ -77,8 +77,8 @@ def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
 ):
     parameters = {
         "bpolys": bpolys,
-        "topic": "building-count",
-        # the following attribute is not valid for topic 'building-count'
+        "topic": "buildings",
+        # the following attribute is not valid for topic 'buildings'
         "attributes": ["maxspeed"],
     }
     response = client.post(ENDPOINT, json=parameters, headers=headers)
@@ -99,7 +99,7 @@ def test_indicators_attribute_completeness_filter(
 ):
     parameters = {
         "bpolys": bpolys,
-        "topic": "building-count",
+        "topic": "buildings",
         "attribute_filter": attribute_filter,
         "attribute_title": attribute_title,
     }
@@ -117,7 +117,7 @@ def test_indicators_attribute_completeness_filter_missing_names(
 ):
     parameters = {
         "bpolys": bpolys,
-        "topic": "building-count",
+        "topic": "buildings",
         "attribute_filter": attribute_filter,
     }
     response = client.post(ENDPOINT, json=parameters, headers=headers)
@@ -136,7 +136,7 @@ def test_indicators_attribute_completeness_filter_invalid(
 ):
     parameters = {
         "bpolys": bpolys,
-        "topic": "building-count",
+        "topic": "buildings",
         "attribute_filter": "foo",  # invalid
         "attribute_title": attribute_title,
     }

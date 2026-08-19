@@ -8,23 +8,23 @@ from tests.integrationtests.utils import oqapi_vcr
 
 # TODO: add user-activity and land-cover-... indicators (ohsomedb)
 PARAMETERS = [
-    ("mapping-saturation", "topic_building_count", {}),
+    ("mapping-saturation", "topic_buildings", {}),
     ("mapping-saturation", "topic_custom", {}),
-    ("currentness", "topic_building_count", {}),
+    ("currentness", "topic_buildings", {}),
     ("currentness", "topic_custom", {}),
     (
         "attribute-completeness",
-        "topic_building_count",
+        "topic_buildings",
         {"attribute_keys": ["height"]},
     ),
     (
         "attribute-completeness",
-        "topic_building_count",
+        "topic_buildings",
         {"attribute_keys": ["height", "house-number"]},
     ),
     (
         "attribute-completeness",
-        "topic_building_count",
+        "topic_buildings",
         {"attribute_filter": "height=*", "attribute_title": "Height"},
     ),
     (
@@ -70,14 +70,14 @@ async def test_create_indicator_public_feature_collection_single(
 @oqapi_vcr.use_cassette
 def test_create_indicator_public_feature_collection_multi(
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
-    topic_building_count,
+    topic_buildings,
 ):
     """Test create indicators for a feature collection with multiple features."""
     indicators = asyncio.run(
         main.create_indicator(
             "mapping-saturation",
             feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
-            topic_building_count,
+            topic_buildings,
         )
     )
     assert len(indicators) == 3
@@ -109,13 +109,13 @@ async def test_create_indicator_private_feature(
 
 
 @oqapi_vcr.use_cassette
-def test_create_indicator_private_include_figure(bpolys, topic_building_count):
+def test_create_indicator_private_include_figure(bpolys, topic_buildings):
     feature = bpolys["features"][0]
     indicator = asyncio.run(
         main._create_indicator(
             "mapping-saturation",
             feature,
-            topic_building_count,
+            topic_buildings,
             include_figure=False,
         )
     )

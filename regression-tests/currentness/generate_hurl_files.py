@@ -5,7 +5,7 @@ from string import Template
 dir_ = Path(__file__).parent
 with open(dir_ / "template.hurl", "r") as file:
     hurl_file_template = Template(file.read())
-for topic in ("building-count", "roads"):
+for topic in ("buildings", "roads"):
     for region in ("heidelberg", "frankfurt", "rhineland-palatinate"):
         for ohsomedb in ("true", "false"):
             with open(Path(dir_ / region).with_suffix(".geojson"), "r") as f:

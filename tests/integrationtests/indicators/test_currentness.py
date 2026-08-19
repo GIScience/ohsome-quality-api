@@ -24,9 +24,9 @@ from tests.integrationtests.utils import get_topic_fixture, oqapi_vcr
 
 
 class TestInit:
-    def test_thresholds_default(self, topic_building_count, feature_germany_heidelberg):
+    def test_thresholds_default(self, topic_buildings, feature_germany_heidelberg):
         """Test topic specific thresholds setting after init of indicator."""
-        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        indicator = Currentness(topic_buildings, feature_germany_heidelberg)
         assert indicator.up_to_date == 36
         assert indicator.out_of_date == 96
         assert indicator.th_source == ""
@@ -50,10 +50,10 @@ class TestPreprocess:
     @oqapi_vcr.use_cassette
     async def test_preprocess(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        indicator = Currentness(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         assert len(indicator.bin_total.contrib_abs) > 0
         assert indicator.contrib_sum > 0
@@ -63,7 +63,7 @@ class TestPreprocess:
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types: count, area and length
-        ["building-count", "building-area", "roads"],
+        ["buildings", "buildings", "roads"],
     )
     @oqapi_vcr.use_cassette
     async def test_preprocess_aggregation_types(
@@ -83,8 +83,8 @@ class TestPreprocess:
 @pytest.mark.asyncio
 class TestCalculation:
     @oqapi_vcr.use_cassette
-    async def test_calculate(self, topic_building_count, feature_germany_heidelberg):
-        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+    async def test_calculate(self, topic_buildings, feature_germany_heidelberg):
+        indicator = Currentness(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         assert indicator.result.value >= 0.0
@@ -93,24 +93,12 @@ class TestCalculation:
         assert verify(indicator.result.description)
 
     @oqapi_vcr.use_cassette
-    async def test_low_contributions(
-        self,
-        topic_building_count,
-        feature_germany_heidelberg,
-    ):
-        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
-        await indicator.preprocess()
-        indicator.contrib_sum = 20
-        indicator.calculate()
-        assert verify(indicator.result.description)
-
-    @oqapi_vcr.use_cassette
     async def test_months_without_edit(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        indicator = Currentness(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.contrib_sum = 30
         indicator.bin_total.contrib_abs = [
@@ -147,10 +135,10 @@ class TestCalculation:
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types: count, area and length
-        ["building-count", "building-area", "roads"],
+        ["clinics", "buildings", "roads"],
     )
     @oqapi_vcr.use_cassette
-    async def test_calculate_aggregation_types_no_data(
+    async def test_calculate_aggregation_types_low_contributions(
         self,
         topic_key,
         feature_germany_heidelberg,
@@ -158,7 +146,7 @@ class TestCalculation:
         topic = get_topic_preset(topic_key)
         indicator = Currentness(topic, feature_germany_heidelberg)
         await indicator.preprocess()
-        if topic_key == "building-count":
+        if topic_key == "clinics":
             indicator.contrib_sum = 1
         else:
             indicator.contrib_sum = 0.5
@@ -168,7 +156,7 @@ class TestCalculation:
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types: count, area and length
-        ["building-count", "building-area", "roads"],
+        ["clinics", "buildings", "roads"],
     )
     @oqapi_vcr.use_cassette
     async def test_calculate_aggregation_types(
@@ -188,10 +176,10 @@ class TestFigure:
     @oqapi_vcr.use_cassette
     async def test_create_figure(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        indicator = Currentness(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         indicator.create_figure()
@@ -201,11 +189,11 @@ class TestFigure:
     @oqapi_vcr.use_cassette
     async def test_outdated_features_plotting(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
         """Create a figure with features in the out-of-date category only"""
-        i = Currentness(topic_building_count, feature_germany_heidelberg)
+        i = Currentness(topic_buildings, feature_germany_heidelberg)
         await i.preprocess()
         len_contribs = len(i.bin_total.contrib_abs) - 84
         i.bin_total.contrib_abs[:len_contribs] = [0] * len_contribs
@@ -218,8 +206,8 @@ class TestFigure:
         assert verify(json.dumps(to_jsonable_python(i.result.figure)))
 
     @oqapi_vcr.use_cassette
-    async def test_get_source(self, topic_building_count, feature_germany_heidelberg):
-        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+    async def test_get_source(self, topic_buildings, feature_germany_heidelberg):
+        indicator = Currentness(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.th_source = ""
         assert indicator.get_source_text() == ""
@@ -231,10 +219,10 @@ class TestFigure:
     @oqapi_vcr.use_cassette
     async def test_get_threshold_text(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = Currentness(topic_building_count, feature_germany_heidelberg)
+        indicator = Currentness(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         assert indicator.get_threshold_text(Color.RED) == "older than 8 years"
         assert (

@@ -115,7 +115,7 @@ if __name__ == "__main__":
             values = pickle.load(f)
     else:
         features_ = asyncio.run(get_features())
-        topic_ = get_topics(("building-count", "roads"))
+        topic_ = get_topics(("buildings", "roads"))
         values = asyncio.run(query_ohsome_api(features_, topic_))
         with open(file_path, "wb") as f:
             pickle.dump(values, f)

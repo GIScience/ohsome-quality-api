@@ -19,10 +19,8 @@ def test_get_attributes():
             assert isinstance(v, Attribute)
 
 
-def test_get_attribute(attribute_key_string, topic_key_building_count):
-    attribute = definitions.get_attribute(
-        topic_key_building_count, attribute_key_string
-    )
+def test_get_attribute(attribute_key_string, topic_key_buildings):
+    attribute = definitions.get_attribute(topic_key_buildings, attribute_key_string)
     assert isinstance(attribute, Attribute)
 
 
@@ -31,19 +29,19 @@ def test_get_attribute_wrong_key():
         definitions.get_attribute("foo", "bar")
 
 
-def test_build_attribute_filter(attribute_key, topic_key_building_count):
+def test_build_attribute_filter(attribute_key, topic_key_buildings):
     filter_ = definitions.build_attribute_filter(
-        None, attribute_key, topic_key_building_count
+        None, attribute_key, topic_key_buildings
     )
     assert isinstance(filter_, str)
     assert filter_ == "(height=* or building:levels=*)"
 
 
 def test_build_attribute_filter_multiple_attributes(
-    attribute_key_multiple, topic_key_building_count
+    attribute_key_multiple, topic_key_buildings
 ):
     attribute = definitions.build_attribute_filter(
-        None, attribute_key_multiple, topic_key_building_count
+        None, attribute_key_multiple, topic_key_buildings
     )
     assert isinstance(attribute, str)
 
@@ -53,10 +51,6 @@ def test_build_attribute_filter_wrong_key():
         definitions.build_attribute_filter(None, ["foo"], "bar")
 
 
-def test_get_attribute_translated(
-    topic_key_building_count, attribute_key_string, locale_de
-):
-    attribute = definitions.get_attribute(
-        topic_key_building_count, attribute_key_string
-    )
+def test_get_attribute_translated(topic_key_buildings, attribute_key_string, locale_de):
+    attribute = definitions.get_attribute(topic_key_buildings, attribute_key_string)
     assert verify(attribute.model_dump_json(indent=2))

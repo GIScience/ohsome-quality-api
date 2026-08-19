@@ -11,7 +11,7 @@ def test_get_topic_keys():
 
 def test_get_valid_topics():
     topics = definitions.get_valid_topics("building-comparison")
-    assert topics == ("building-area",)
+    assert topics == ("buildings",)
 
 
 def test_load_topic_definition():
@@ -21,7 +21,7 @@ def test_load_topic_definition():
 
 
 def test_get_topic_definition():
-    topic = definitions.get_topic_preset("building-count")
+    topic = definitions.get_topic_preset("buildings")
     assert isinstance(topic, models.Topic)
 
 
@@ -40,5 +40,5 @@ def test_get_topic_definitions():
 
 
 def test_get_topic_preset_translated(locale_de):
-    topic = definitions.get_topic_preset("building-count")
+    topic = definitions.get_topic_preset("buildings")
     assert verify(topic.model_dump_json(indent=2))

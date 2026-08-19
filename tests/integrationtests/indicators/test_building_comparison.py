@@ -102,19 +102,19 @@ def mock_get_intersection_area_some(class_mocker):
 
 class TestInit:
     @oqapi_vcr.use_cassette
-    def test_init(self, topic_building_area, feature_germany_heidelberg):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+    def test_init(self, topic_buildings, feature_germany_heidelberg):
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         assert indicator.th_high == 0.85
         assert indicator.th_low == 0.5
         assert isinstance(indicator.data_ref, dict)
 
-    def test_get_sources(self, topic_building_area, feature_germany_heidelberg):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+    def test_get_sources(self, topic_buildings, feature_germany_heidelberg):
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         source = indicator.format_sources()
         assert "<a href='https://docs.eubucco.com/'>EUBUCCO</a>" in source
 
-    def test_attribution(self, topic_building_area, feature_germany_heidelberg):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+    def test_attribution(self, topic_buildings, feature_germany_heidelberg):
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         assert indicator.attribution is not None
         assert indicator.attribution != ""
 
@@ -127,8 +127,8 @@ class TestPreprocess:
         "mock_get_intersection_geom",
     )
     @oqapi_vcr.use_cassette
-    async def test_preprocess(self, topic_building_area, feature_germany_heidelberg):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+    async def test_preprocess(self, topic_buildings, feature_germany_heidelberg):
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         assert indicator.area_osm == {
             "EUBUCCO": 6.585325,
@@ -142,11 +142,11 @@ class TestPreprocess:
     async def test_preprocess_no_intersection(
         self,
         mock_get_building_area,
-        topic_building_area,
+        topic_buildings,
         feature_germany_heidelberg,
         mock_get_intersection_area_none,
     ):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
 
         for area in indicator.area_cov.values():
@@ -163,10 +163,10 @@ class TestPreprocess:
     @oqapi_vcr.use_cassette
     async def test_preprocess_some_intersection(
         self,
-        topic_building_area,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
 
         assert 1.0 in list(indicator.area_cov.values())
@@ -185,10 +185,10 @@ class TestCalculate:
     @oqapi_vcr.use_cassette
     async def test_calculate(
         self,
-        topic_building_area,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         assert indicator.ratio == {
@@ -208,10 +208,10 @@ class TestCalculate:
     @oqapi_vcr.use_cassette
     async def test_calculate_reference_area_0(
         self,
-        topic_building_area,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         assert indicator.result.value is None
@@ -225,10 +225,10 @@ class TestCalculate:
     @oqapi_vcr.use_cassette
     async def test_calculate_above_one_th(
         self,
-        topic_building_area,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         assert indicator.result.value is None
@@ -245,10 +245,10 @@ class TestCalculate:
     @oqapi_vcr.use_cassette
     async def test_calculate_no_intersection(
         self,
-        topic_building_area,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         assert indicator.result.value is None
@@ -265,10 +265,10 @@ class TestCalculate:
     @oqapi_vcr.use_cassette
     async def test_calculate_some_intersection(
         self,
-        topic_building_area,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         assert indicator.result.value in [None, 1.0104228420207384]
@@ -286,10 +286,10 @@ class TestCalculate:
     @oqapi_vcr.use_cassette
     async def test_calculate_above_one_th_and_expected(
         self,
-        topic_building_area,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         assert indicator.result.value is not None
@@ -308,8 +308,8 @@ class TestFigure:
         "mock_get_intersection_area",
     )
     @oqapi_vcr.use_cassette
-    async def test_create_figure(self, topic_building_area, feature_germany_heidelberg):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+    async def test_create_figure(self, topic_buildings, feature_germany_heidelberg):
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         indicator.create_figure()
@@ -325,10 +325,10 @@ class TestFigure:
     @oqapi_vcr.use_cassette
     async def test_create_figure_above_one_th(
         self,
-        topic_building_area,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         indicator.create_figure()
@@ -345,10 +345,10 @@ class TestFigure:
     @oqapi_vcr.use_cassette
     async def test_create_figure_building_area_zero(
         self,
-        topic_building_area,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = BuildingComparison(topic_building_area, feature_germany_heidelberg)
+        indicator = BuildingComparison(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         indicator.create_figure()

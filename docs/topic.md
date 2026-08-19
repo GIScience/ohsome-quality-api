@@ -5,7 +5,7 @@ A topic describes the request which should be made to the [ohsome API](https://a
 ## Example
 
 ```yaml
-building-count:
+buildings:
   name: Building Count
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.

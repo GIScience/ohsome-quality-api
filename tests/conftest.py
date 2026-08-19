@@ -77,8 +77,13 @@ def get_connection(monkeypatch):
 
 
 @pytest.fixture(scope="class")
-def topic_key_building_count() -> str:
-    return "building-count"
+def topic_key_buildings() -> str:
+    return "buildings"
+
+
+@pytest.fixture(scope="class")
+def topic_key_clinics() -> str:
+    return "clinics"
 
 
 @pytest.fixture(scope="class")
@@ -92,13 +97,13 @@ def topic_roads_all_highways() -> Topic:
 
 
 @pytest.fixture(scope="class")
-def topic_building_count(topic_key_building_count) -> Topic:
-    return get_topic_preset(topic_key_building_count)
+def topic_buildings() -> Topic:
+    return get_topic_preset("buildings")
 
 
 @pytest.fixture(scope="class")
-def topic_building_area() -> Topic:
-    return get_topic_preset("building-area")
+def topic_clinics() -> Topic:
+    return get_topic_preset("clinics")
 
 
 @pytest.fixture(scope="class")
@@ -120,11 +125,11 @@ def attribute_key_height() -> list[str]:
 
 
 @pytest.fixture(scope="class")
-def metadata_topic_building_count(
-    topic_key_building_count,
-    topic_building_count,
+def metadata_topic_buildings(
+    topic_key_buildings,
+    topic_buildings,
 ) -> dict[str, Topic]:
-    return {topic_key_building_count: topic_building_count}
+    return {topic_key_buildings: topic_buildings}
 
 
 @pytest.fixture()

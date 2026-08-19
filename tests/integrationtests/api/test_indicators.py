@@ -99,8 +99,8 @@ pytestmark = pytest.mark.parametrize(
 @pytest.mark.parametrize(
     "indicator,topic",
     [
-        ("mapping-saturation", "building-count"),
-        ("currentness", "building-count"),
+        ("mapping-saturation", "buildings"),
+        ("currentness", "buildings"),
     ],
 )
 def test_indicators(
@@ -179,7 +179,7 @@ def test_indicators_attribute_completeness(
     schema,
 ):
     endpoint = ENDPOINT + "attribute-completeness"
-    parameters = {"bpolys": bpolys, "topic": "building-count", "attributes": ["height"]}
+    parameters = {"bpolys": bpolys, "topic": "buildings", "attributes": ["height"]}
     response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
 
@@ -195,7 +195,7 @@ def test_indicators_attribute_completeness_custom_attribute(
     ohsome_filter = "height=*"
     parameters = {
         "bpolys": bpolys,
-        "topic": "building-count",
+        "topic": "buildings",
         "attributeFilter": ohsome_filter,
         "attributeTitle": "height",
     }
@@ -212,7 +212,7 @@ def test_indicators_attribute_completeness_without_attribute(
     endpoint = ENDPOINT + "attribute-completeness"
     parameters = {
         "bpolys": bpolys,
-        "topic": "building-count",
+        "topic": "buildings",
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
@@ -229,8 +229,8 @@ def test_indicators_attribute_completeness_with_invalid_attribute_for_topic(
     endpoint = ENDPOINT + "attribute-completeness"
     parameters = {
         "bpolys": bpolys,
-        "topic": "building-count",
-        # the following attribute is not valid for topic 'building-count'
+        "topic": "buildings",
+        # the following attribute is not valid for topic 'buildings'
         "attributes": ["maxspeed"],
     }
     response = client.post(endpoint, json=parameters, headers=headers)
@@ -293,7 +293,7 @@ def test_mapping_saturation_fc(
     endpoint = ENDPOINT + "mapping-saturation"
     parameters = {
         "bpolys": feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
-        "topic": "building-count",
+        "topic": "buildings",
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert schema.is_valid(response.json())
@@ -302,7 +302,7 @@ def test_mapping_saturation_fc(
 @oqapi_vcr.use_cassette
 def test_mapping_saturation_include_figure_true(client, bpolys, headers, schema):
     endpoint = ENDPOINT + "mapping-saturation"
-    parameters = {"bpolys": bpolys, "topic": "building-count", "includeFigure": True}
+    parameters = {"bpolys": bpolys, "topic": "buildings", "includeFigure": True}
     response = client.post(endpoint, json=parameters, headers=headers)
     content = response.json()
     if schema == RESPONSE_SCHEMA_JSON:
@@ -316,7 +316,7 @@ def test_mapping_saturation_include_figure_true(client, bpolys, headers, schema)
 @oqapi_vcr.use_cassette
 def test_mapping_saturation_include_figure_false(client, bpolys, headers, schema):
     endpoint = ENDPOINT + "mapping-saturation"
-    parameters = {"bpolys": bpolys, "topic": "building-count", "includeFigure": False}
+    parameters = {"bpolys": bpolys, "topic": "buildings", "includeFigure": False}
     response = client.post(endpoint, json=parameters, headers=headers)
     content = response.json()
     if schema == RESPONSE_SCHEMA_JSON:
@@ -329,7 +329,7 @@ def test_mapping_saturation_include_figure_false(client, bpolys, headers, schema
 
 def test_mapping_saturation_additional_parameter_foo(client, bpolys, headers, schema):
     endpoint = ENDPOINT + "mapping-saturation"
-    parameters = {"bpolys": bpolys, "topic": "building-count", "attribute": "foo"}
+    parameters = {"bpolys": bpolys, "topic": "buildings", "attribute": "foo"}
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()
@@ -340,7 +340,7 @@ def test_mapping_saturation_additional_parameter_attribute(
     client, bpolys, headers, schema
 ):
     endpoint = ENDPOINT + "mapping-saturation"
-    parameters = {"bpolys": bpolys, "topic": "building-count", "attribute": "height"}
+    parameters = {"bpolys": bpolys, "topic": "buildings", "attribute": "height"}
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
     content = response.json()
@@ -364,7 +364,7 @@ def test_mapping_saturation_custom_topic_key_with_filter(
     endpoint = ENDPOINT + "mapping-saturation"
     parameters = {
         "bpolys": bpolys,
-        "topic": "building-count",
+        "topic": "buildings",
         "topicFilter": "spring=yes and geometry:point",  # invalid with topic
         "topicTitle": "Spring",  # invalid with topic
     }
@@ -429,6 +429,6 @@ async def test_indicators_roads_thematic_accuracy_invalid_topic(
     schema,
 ):
     endpoint = ENDPOINT + "roads-thematic-accuracy"
-    parameters = {"bpolys": bpolys, "topic": "building-count"}
+    parameters = {"bpolys": bpolys, "topic": "buildings"}
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422

@@ -1,7 +1,7 @@
 def test_metadata(
     client,
     response_template,
-    metadata_topic_building_count,
+    metadata_topic_buildings,
     metadata_indicator_mapping_saturation,
     metadata_quality_dimension,
     metadata_attribute_forests,
@@ -13,10 +13,7 @@ def test_metadata(
     result = content.pop("result")
     assert content == response_template
     # check topics result
-    assert (
-        metadata_topic_building_count["building-count"]
-        == result["topics"]["building-count"]
-    )
+    assert metadata_topic_buildings["buildings"] == result["topics"]["buildings"]
     # check quality dimensions result
     assert (
         metadata_quality_dimension["completeness"]

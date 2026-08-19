@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-13 13:30+0200\n"
+"POT-Creation-Date: 2026-08-19 09:54+0200\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -45,7 +45,6 @@ msgid "Height of Buildings"
 msgstr "Gebäudehöhe"
 
 #: ohsome_quality_api/attributes/attributes.yaml
-#: ohsome_quality_api/projects/projects.yaml
 msgid "TODO"
 msgstr "TODO"
 
@@ -230,10 +229,6 @@ msgid "Tram stop area"
 msgstr "Straßenbahnhaltestellenbereich"
 
 #: ohsome_quality_api/attributes/attributes.yaml
-msgid "Type of Leaves"
-msgstr "Blattart"
-
-#: ohsome_quality_api/attributes/attributes.yaml
 msgid "Road Name"
 msgstr "Straßenname"
 
@@ -374,15 +369,6 @@ msgid ""
 msgstr ""
 "Berechne ob das Kartieren gesättigt ist. Bei hohe Sättigung ist die "
 "Steigung der Kurve minimal."
-
-#: ohsome_quality_api/indicators/indicators.yaml
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Minimal"
-msgstr ""
-
-#: ohsome_quality_api/indicators/indicators.yaml
-msgid "An minimal Indicator for testing purposes."
-msgstr "Ein minimaler Indikator zum Testen."
 
 #: ohsome_quality_api/indicators/currentness/indicator.py:292
 #: ohsome_quality_api/indicators/indicators.yaml
@@ -526,7 +512,6 @@ msgstr "Die Attributvollständigkeit ist hoch (>75%)."
 #: ohsome_quality_api/indicators/attribute_completeness/templates.yaml
 #: ohsome_quality_api/indicators/currentness/templates.yaml
 #: ohsome_quality_api/indicators/land_cover_completeness/templates.yaml
-#: ohsome_quality_api/indicators/minimal/templates.yaml
 msgid "The quality level could not be calculated for this indicator."
 msgstr "Das Qualitätslevel konnte für diesen Indikator nicht berechnet werden."
 
@@ -871,11 +856,11 @@ msgid "CORINE Land Cover (CLC) class"
 msgstr "CORINE Land Cover (CLC)-Klasse"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:223
-#, fuzzy, python-brace-format, python-format
+#, fuzzy, python-format
 msgid "Warning: There is only %s coverage with the comparison data. "
 msgstr "Achtung: Es besteht nur %s Abdeckung mit den Vergleichsdaten."
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:226
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:227
 msgid ""
 "Please take the Land Cover Completeness indicator into account for "
 "interpretation of these results."
@@ -883,63 +868,63 @@ msgstr ""
 "Bitte berücksichtige den Land Cover Completeness-Indikator bei der "
 "Interpretation dieser Ergebnisse."
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:265
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:266
 msgid "Precision [%]:"
 msgstr "Präzision [%]:"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:272
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:273
 msgid "Recall [%]:"
 msgstr "Recall [%]:"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:279
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:347
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:379
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:414
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:280
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:348
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:380
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:415
 msgid "Area [km<sup>2</sup>]:"
 msgstr "Fläche [km<sup>2</sup>]:"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:281
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:355
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:386
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:421
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:282
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:356
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:387
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:422
 msgid "Area [%]:"
 msgstr "Fläche [%]:"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:299
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:300
 msgid "F1-Score [%]"
 msgstr "F1-Score [%]"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:302
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:446
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:303
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:447
 msgid "CORINE data from"
 msgstr "CORINE-Daten von"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:307
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:451
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:308
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:452
 msgid "OSM data from"
 msgstr "OSM-Daten von"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:334
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:335
 msgid "False Negative"
 msgstr "Falsch-Negativ"
-
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:345
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:377
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:412
-msgid "CORINE class:"
-msgstr "CORINE-Klasse:"
 
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:346
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:378
 #: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:413
+msgid "CORINE class:"
+msgstr "CORINE-Klasse:"
+
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:347
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:379
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:414
 msgid "OSM class:"
 msgstr "OSM-Klasse:"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:365
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:366
 msgid "True Positive"
 msgstr "Richtig-Positiv"
 
-#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:401
+#: ohsome_quality_api/indicators/land_cover_thematic_accuracy/indicator.py:402
 msgid "False Positive"
 msgstr "Falsch-Positiv"
 
@@ -1095,22 +1080,6 @@ msgstr "Sättigung konnte nicht berechnet werden."
 #: ohsome_quality_api/indicators/mapping_saturation/templates.yaml
 msgid "The saturation of the last 3 years is $saturation."
 msgstr "Die Sättigung der letzten 3 Jahre ist $saturation."
-
-#: ohsome_quality_api/indicators/minimal/templates.yaml
-msgid "Bad data quality."
-msgstr "Schlechte Datenqualität"
-
-#: ohsome_quality_api/indicators/minimal/templates.yaml
-msgid "Medium data quality."
-msgstr "Mittlere Datenqualität."
-
-#: ohsome_quality_api/indicators/minimal/templates.yaml
-msgid "Good data quality."
-msgstr "Gute Datenqualität."
-
-#: ohsome_quality_api/indicators/minimal/templates.yaml
-msgid "Some description of the result."
-msgstr "Eine Beschreibung der Ergebnisse."
 
 #: ohsome_quality_api/indicators/road_comparison/datasets.yaml
 msgid "Microsoft Roads"
@@ -1340,26 +1309,6 @@ msgstr ""
 "durchschnittlich $median_users Benutzer Objekte zum ausgewählten Thema in"
 " dieser Region hinzugefügt oder bearbeitet."
 
-#: ohsome_quality_api/projects/projects.yaml
-msgid "something that is still a TODO"
-msgstr "etwas ist immernoch ein TODO"
-
-#: ohsome_quality_api/projects/projects.yaml
-msgid "ohmygrid"
-msgstr ""
-
-#: ohsome_quality_api/projects/projects.yaml
-msgid "https://mapyourgrid.org/"
-msgstr ""
-
-#: ohsome_quality_api/projects/projects.yaml
-msgid "Silver Ways"
-msgstr ""
-
-#: ohsome_quality_api/projects/projects.yaml
-msgid "https://heigit.org/silver-ways/"
-msgstr ""
-
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid "completeness"
 msgstr "Vollständigkeit"
@@ -1399,14 +1348,6 @@ msgstr ""
 "\"Wahrheit\"des Referenzdatensatzes übereinstimmen)."
 
 #: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
-msgid "minimal"
-msgstr ""
-
-#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
-msgid "A minimal quality dimension definition for testing purposes."
-msgstr "Eine minimale Qualitätsdimension zum Testen."
-
-#: ohsome_quality_api/quality_dimensions/quality_dimensions.yaml
 msgid "none"
 msgstr "Keine"
 
@@ -1423,16 +1364,12 @@ msgid "A custom topic for user defined filters."
 msgstr "Ein anpassbares Thema für selbst definierte Filter."
 
 #: ohsome_quality_api/topics/presets.yaml
-msgid "Buildings (count)"
-msgstr "Gebäude (Anzahl)"
+msgid "Buildings"
+msgstr "Gebäude"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "All buildings as defined by all objects tagged with 'building=*'."
-msgstr "Alle Gebäude, definiert durch alle Objekte mit dem Tag ‚building=*‘."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Buildings (area)"
-msgstr "Gebäude (Fläche)"
+msgstr "Alle Gebäude, definiert durch alle Objekte mit dem Tag 'building=*'."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Roads (all highways)"
@@ -1475,7 +1412,8 @@ msgid "Railways"
 msgstr "Eisenbahnen"
 
 #: ohsome_quality_api/topics/presets.yaml
-msgid "Railway networks."
+#, fuzzy
+msgid "Length of railway networks."
 msgstr "Eisenbahnnetze."
 
 #: ohsome_quality_api/topics/presets.yaml
@@ -1497,14 +1435,6 @@ msgid "All linear OSM features referring to a bridge including footpaths only."
 msgstr ""
 "Alle linearen OSM-Objekte, die sich auf Brücken beziehen, einschließlich "
 "reiner Fußwege."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Bridges (count)"
-msgstr "Brücken (Anzahl)"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Count of all polygons labelled as bridge."
-msgstr "Anzahl aller als Brücke gekennzeichneten Polygone."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
@@ -1666,20 +1596,14 @@ msgid "Forests"
 msgstr "Wälder"
 
 #: ohsome_quality_api/topics/presets.yaml
-msgid "Count of forests."
+#, fuzzy
+msgid "Area of forests."
 msgstr "Anzahl der Wälder."
 
 #: ohsome_quality_api/topics/presets.yaml
-msgid "Industrial Landuse (count)"
-msgstr "Gewerbegebiets-Nutzung (Anzahl)"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Industrial landsites."
+#, fuzzy
+msgid "Industrial Landuse"
 msgstr "Gewerbegebiete."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Industrial Landuse (area)"
-msgstr "Gewerbegebiets-Nutzung (Fläche)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Industrial areas."
@@ -1710,270 +1634,12 @@ msgid "Count of hospitals."
 msgstr "Anzahl der Krankenhäuser."
 
 #: ohsome_quality_api/topics/presets.yaml
-msgid "UNICEF Roads"
-msgstr "UNICEF-Straßen"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "The road network usable for routing as defined for the UNICEF Project."
-msgstr ""
-"Das für Routing nutzbare Straßennetz, wie für das UNICEF-Projekt "
-"definiert."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Primary Healthcare facilities for UNICEF Project"
-msgstr "Primäre Gesundheitseinrichtungen für das UNICEF-Projekt"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "MapAction Settlements Count"
-msgstr "MapAction Siedlungen (Anzahl)"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Number of settlements (cities)."
-msgstr "Anzahl der Siedlungen (Städte)."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "MapAction Capital City Count"
-msgstr "MapAction Hauptstädte (Anzahl)"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Number of capital cities."
-msgstr "Anzahl der Hauptstädte."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "MapAction Rail Length"
-msgstr "MapAction Eisenbahnnetz (Länge)"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Length of objects identified as rails (large railways)."
-msgstr "Länge der als Eisenbahnstrecken identifizierten Objekte."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "MapAction Major Roads length"
-msgstr "MapAction Hauptstraßen (Länge)"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Length of objects identified as major roads (primary, motorway and trunk)."
-msgstr ""
-"Länge der als Hauptstraßen identifizierten Objekte (primary, motorway und"
-" trunk)."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "MapAction Lakes Count"
-msgstr "MapAction Seen (Anzahl)"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Number of objects identified as lakes, lagoons and reservoirs."
-msgstr "Anzahl der als Seen, Lagunen und Stauseen identifizierten Objekte."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "MapAction Lakes Area"
-msgstr "MapAction Seen (Fläche)"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Area of objects identified as lakes, lagoons and reservoirs."
-msgstr "Fläche der als Seen, Lagunen und Stauseen identifizierten Objekte."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "MapAction Rivers Length"
-msgstr "MapAction Flüsse (Länge)"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Length of objects identified as rivers (or riverbanks)."
-msgstr "Länge der als Flüsse (oder Flussufer) identifizierten Objekte."
-
-#: ohsome_quality_api/topics/presets.yaml
 msgid "Land Use and Land Cover"
 msgstr "Landnutzung und Landbedeckung"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Features related to land use and land cover."
 msgstr "Objekte im Zusammenhang mit Landnutzung und Landbedeckung."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Local food shops"
-msgstr "Lokale Lebensmittelgeschäfte"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Count of local food shops."
-msgstr "Anzahl der lokalen Lebensmittelgeschäfte."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Fast food restaurants"
-msgstr "Fast-Food-Restaurants"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Count of fast food restaurants."
-msgstr "Anzahl der Fast-Food-Restaurants."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Restaurants"
-msgstr "Restaurants"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Count of restaurants."
-msgstr "Anzahl der Restaurants."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Convenience stores"
-msgstr "Convenience Stores"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Count of convenience stores."
-msgstr "Anzahl der Convenience Stores."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Pubs and biergartens"
-msgstr "Pubs und Biergärten"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Count of pubs and biergartens."
-msgstr "Anzahl der Pubs und Biergärten."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Alcohol and beverages"
-msgstr "Alkohol- und Getränkegeschäfte"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Count of shops selling alcohol."
-msgstr "Anzahl der Geschäfte, die Alkohol verkaufen."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Sweets and pastries"
-msgstr "Süßwaren- und Backwarengeschäfte"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Count of shops selling sweets and pastries."
-msgstr "Anzahl der Geschäfte, die Süßwaren und Backwaren verkaufen."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Arable Land CLC"
-msgstr "Ackerland CLC"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid ""
-"Selected features for Corine Land Cover Category \"Arable Land\" (level "
-"2) in Agriculture."
-msgstr ""
-"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Ackerland“ "
-"(Stufe 2) in Landwirtschaft."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Permanent Crops CLC"
-msgstr "Dauerkulturen CLC"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid ""
-"Selected features for Corine Land Cover Category \"Permanent Crops\" "
-"(level 2) in Agriculture."
-msgstr ""
-"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Dauerkulturen“ "
-"(Stufe 2) in Landwirtschaft."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Pastures CLC"
-msgstr "Weideland CLC"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid ""
-"Selected features for Corine Land Cover Category \"Pastures\" (level 2) "
-"in Agriculture."
-msgstr ""
-"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Weideland“ "
-"(Stufe 2) in Landwirtschaft."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Forests CLC"
-msgstr "Wälder CLC"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid ""
-"Selected features for Corine Land Cover Category \"Forests\" (level 2) in"
-" Seminatural Land."
-msgstr ""
-"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Wälder“ (Stufe "
-"2) im Bereich „Halbnatürliche Flächen“."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Leaf Types of Forests CLC"
-msgstr "Blatttypen der Wälder CLC"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid ""
-"Frequency of forests according to Corine Land Cover Category \"Forests\" "
-"(level 2) tagged with Leaf Type."
-msgstr ""
-"Häufigkeit von Wäldern gemäß der Corine-Land-Cover-Kategorie „Wälder“ "
-"(Stufe 2), gekennzeichnet mit Blatttyp."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Shrubs CLC"
-msgstr "Strauchvegetation CLC"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid ""
-"Selected features for Corine Land Cover Category \"Shrubs\" (level 2) in "
-"Seminatural Land."
-msgstr ""
-"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie "
-"„Strauchvegetation“ (Stufe 2) im Bereich „Halbnatürliche Flächen“."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Open Spaces CLC"
-msgstr "Offene Räume CLC"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid ""
-"Selected features for Corine Land Cover Category \"Open Spaces\" (level "
-"2) in Seminatural Land."
-msgstr ""
-"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Offene Räume“ "
-"(Stufe 2) im Bereich „Halbnatürliche Flächen“."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Wetlands CLC"
-msgstr "Feuchtgebiete CLC"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Selected features for Corine Land Cover Category \"Wetlands\" (level 1)."
-msgstr ""
-"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Feuchtgebiete“ "
-"(Stufe 1)."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Water CLC"
-msgstr "Wasserflächen CLC"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid ""
-"Selected features for Corine Land Cover Category \"Water\" (level 1), "
-"excluding waterways."
-msgstr ""
-"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Wasserflächen“ "
-"(Stufe 1), ohne Wasserstraßen."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Waterways CLC"
-msgstr "Wasserstraßen CLC"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid ""
-"Selected features for Corine Land Cover Category \"Waterways\" (level 2) "
-"in Water."
-msgstr ""
-"Ausgewählte Objekte für die Corine-Land-Cover-Kategorie „Wasserstraßen“ "
-"(Stufe 2) im Bereich „Wasser“."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "A minimal topic definition for testing purposes."
-msgstr "Eine minimale Themen-Definition zu Testzwecken."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Infrastructure Lines"
-msgstr "Infrastrukturlinien"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Line objects related to infrastructure."
-msgstr "Linienobjekte im Zusammenhang mit Infrastruktur."
 
 #: ohsome_quality_api/utils/exceptions.py:21
 #, python-brace-format
@@ -2237,7 +1903,7 @@ msgstr "Abfrage ergab keinen Eintrag."
 #~ msgstr "Aktualität"
 
 #~ msgid "minimal"
-#~ msgstr "Minimal"
+#~ msgstr ""
 
 #~ msgid ""
 #~ "Result is undefined and major edge "
@@ -2356,4 +2022,285 @@ msgstr "Abfrage ergab keinen Eintrag."
 
 #~ msgid "Features [#]"
 #~ msgstr "Features [#]"
+
+#~ msgid "Type of Leaves"
+#~ msgstr "Blattart"
+
+#~ msgid "Minimal"
+#~ msgstr ""
+
+#~ msgid "An minimal Indicator for testing purposes."
+#~ msgstr "Ein minimaler Indikator zum Testen."
+
+#~ msgid "Bad data quality."
+#~ msgstr "Schlechte Datenqualität"
+
+#~ msgid "Medium data quality."
+#~ msgstr "Mittlere Datenqualität."
+
+#~ msgid "Good data quality."
+#~ msgstr "Gute Datenqualität."
+
+#~ msgid "Some description of the result."
+#~ msgstr "Eine Beschreibung der Ergebnisse."
+
+#~ msgid "something that is still a TODO"
+#~ msgstr "etwas ist immernoch ein TODO"
+
+#~ msgid "ohmygrid"
+#~ msgstr ""
+
+#~ msgid "https://mapyourgrid.org/"
+#~ msgstr ""
+
+#~ msgid "Silver Ways"
+#~ msgstr ""
+
+#~ msgid "https://heigit.org/silver-ways/"
+#~ msgstr ""
+
+#~ msgid "A minimal quality dimension definition for testing purposes."
+#~ msgstr "Eine minimale Qualitätsdimension zum Testen."
+
+#~ msgid "Buildings (count)"
+#~ msgstr "Gebäude (Anzahl)"
+
+#~ msgid "Bridges (count)"
+#~ msgstr "Brücken (Anzahl)"
+
+#~ msgid "Count of all polygons labelled as bridge."
+#~ msgstr "Anzahl aller als Brücke gekennzeichneten Polygone."
+
+#~ msgid "Industrial Landuse (count)"
+#~ msgstr "Gewerbegebiets-Nutzung (Anzahl)"
+
+#~ msgid "Industrial Landuse (area)"
+#~ msgstr "Gewerbegebiets-Nutzung (Fläche)"
+
+#~ msgid "UNICEF Roads"
+#~ msgstr "UNICEF-Straßen"
+
+#~ msgid "The road network usable for routing as defined for the UNICEF Project."
+#~ msgstr ""
+#~ "Das für Routing nutzbare Straßennetz, "
+#~ "wie für das UNICEF-Projekt definiert."
+
+#~ msgid "Primary Healthcare facilities for UNICEF Project"
+#~ msgstr "Primäre Gesundheitseinrichtungen für das UNICEF-Projekt"
+
+#~ msgid "MapAction Settlements Count"
+#~ msgstr "MapAction Siedlungen (Anzahl)"
+
+#~ msgid "Number of settlements (cities)."
+#~ msgstr "Anzahl der Siedlungen (Städte)."
+
+#~ msgid "MapAction Capital City Count"
+#~ msgstr "MapAction Hauptstädte (Anzahl)"
+
+#~ msgid "Number of capital cities."
+#~ msgstr "Anzahl der Hauptstädte."
+
+#~ msgid "MapAction Rail Length"
+#~ msgstr "MapAction Eisenbahnnetz (Länge)"
+
+#~ msgid "Length of objects identified as rails (large railways)."
+#~ msgstr "Länge der als Eisenbahnstrecken identifizierten Objekte."
+
+#~ msgid "MapAction Major Roads length"
+#~ msgstr "MapAction Hauptstraßen (Länge)"
+
+#~ msgid ""
+#~ "Length of objects identified as major"
+#~ " roads (primary, motorway and trunk)."
+#~ msgstr ""
+#~ "Länge der als Hauptstraßen identifizierten "
+#~ "Objekte (primary, motorway und trunk)."
+
+#~ msgid "MapAction Lakes Count"
+#~ msgstr "MapAction Seen (Anzahl)"
+
+#~ msgid "Number of objects identified as lakes, lagoons and reservoirs."
+#~ msgstr "Anzahl der als Seen, Lagunen und Stauseen identifizierten Objekte."
+
+#~ msgid "MapAction Lakes Area"
+#~ msgstr "MapAction Seen (Fläche)"
+
+#~ msgid "Area of objects identified as lakes, lagoons and reservoirs."
+#~ msgstr "Fläche der als Seen, Lagunen und Stauseen identifizierten Objekte."
+
+#~ msgid "MapAction Rivers Length"
+#~ msgstr "MapAction Flüsse (Länge)"
+
+#~ msgid "Length of objects identified as rivers (or riverbanks)."
+#~ msgstr "Länge der als Flüsse (oder Flussufer) identifizierten Objekte."
+
+#~ msgid "Local food shops"
+#~ msgstr "Lokale Lebensmittelgeschäfte"
+
+#~ msgid "Count of local food shops."
+#~ msgstr "Anzahl der lokalen Lebensmittelgeschäfte."
+
+#~ msgid "Fast food restaurants"
+#~ msgstr "Fast-Food-Restaurants"
+
+#~ msgid "Count of fast food restaurants."
+#~ msgstr "Anzahl der Fast-Food-Restaurants."
+
+#~ msgid "Restaurants"
+#~ msgstr "Restaurants"
+
+#~ msgid "Count of restaurants."
+#~ msgstr "Anzahl der Restaurants."
+
+#~ msgid "Convenience stores"
+#~ msgstr "Convenience Stores"
+
+#~ msgid "Count of convenience stores."
+#~ msgstr "Anzahl der Convenience Stores."
+
+#~ msgid "Pubs and biergartens"
+#~ msgstr "Pubs und Biergärten"
+
+#~ msgid "Count of pubs and biergartens."
+#~ msgstr "Anzahl der Pubs und Biergärten."
+
+#~ msgid "Alcohol and beverages"
+#~ msgstr "Alkohol- und Getränkegeschäfte"
+
+#~ msgid "Count of shops selling alcohol."
+#~ msgstr "Anzahl der Geschäfte, die Alkohol verkaufen."
+
+#~ msgid "Sweets and pastries"
+#~ msgstr "Süßwaren- und Backwarengeschäfte"
+
+#~ msgid "Count of shops selling sweets and pastries."
+#~ msgstr "Anzahl der Geschäfte, die Süßwaren und Backwaren verkaufen."
+
+#~ msgid "Arable Land CLC"
+#~ msgstr "Ackerland CLC"
+
+#~ msgid ""
+#~ "Selected features for Corine Land Cover"
+#~ " Category \"Arable Land\" (level 2) "
+#~ "in Agriculture."
+#~ msgstr ""
+#~ "Ausgewählte Objekte für die Corine-"
+#~ "Land-Cover-Kategorie „Ackerland“ (Stufe 2)"
+#~ " in Landwirtschaft."
+
+#~ msgid "Permanent Crops CLC"
+#~ msgstr "Dauerkulturen CLC"
+
+#~ msgid ""
+#~ "Selected features for Corine Land Cover"
+#~ " Category \"Permanent Crops\" (level 2) "
+#~ "in Agriculture."
+#~ msgstr ""
+#~ "Ausgewählte Objekte für die Corine-"
+#~ "Land-Cover-Kategorie „Dauerkulturen“ (Stufe "
+#~ "2) in Landwirtschaft."
+
+#~ msgid "Pastures CLC"
+#~ msgstr "Weideland CLC"
+
+#~ msgid ""
+#~ "Selected features for Corine Land Cover"
+#~ " Category \"Pastures\" (level 2) in "
+#~ "Agriculture."
+#~ msgstr ""
+#~ "Ausgewählte Objekte für die Corine-"
+#~ "Land-Cover-Kategorie „Weideland“ (Stufe 2)"
+#~ " in Landwirtschaft."
+
+#~ msgid "Forests CLC"
+#~ msgstr "Wälder CLC"
+
+#~ msgid ""
+#~ "Selected features for Corine Land Cover"
+#~ " Category \"Forests\" (level 2) in "
+#~ "Seminatural Land."
+#~ msgstr ""
+#~ "Ausgewählte Objekte für die Corine-"
+#~ "Land-Cover-Kategorie „Wälder“ (Stufe 2) "
+#~ "im Bereich „Halbnatürliche Flächen“."
+
+#~ msgid "Leaf Types of Forests CLC"
+#~ msgstr "Blatttypen der Wälder CLC"
+
+#~ msgid ""
+#~ "Frequency of forests according to Corine"
+#~ " Land Cover Category \"Forests\" (level "
+#~ "2) tagged with Leaf Type."
+#~ msgstr ""
+#~ "Häufigkeit von Wäldern gemäß der "
+#~ "Corine-Land-Cover-Kategorie „Wälder“ (Stufe"
+#~ " 2), gekennzeichnet mit Blatttyp."
+
+#~ msgid "Shrubs CLC"
+#~ msgstr "Strauchvegetation CLC"
+
+#~ msgid ""
+#~ "Selected features for Corine Land Cover"
+#~ " Category \"Shrubs\" (level 2) in "
+#~ "Seminatural Land."
+#~ msgstr ""
+#~ "Ausgewählte Objekte für die Corine-"
+#~ "Land-Cover-Kategorie „Strauchvegetation“ (Stufe"
+#~ " 2) im Bereich „Halbnatürliche Flächen“."
+
+#~ msgid "Open Spaces CLC"
+#~ msgstr "Offene Räume CLC"
+
+#~ msgid ""
+#~ "Selected features for Corine Land Cover"
+#~ " Category \"Open Spaces\" (level 2) "
+#~ "in Seminatural Land."
+#~ msgstr ""
+#~ "Ausgewählte Objekte für die Corine-"
+#~ "Land-Cover-Kategorie „Offene Räume“ (Stufe"
+#~ " 2) im Bereich „Halbnatürliche Flächen“."
+
+#~ msgid "Wetlands CLC"
+#~ msgstr "Feuchtgebiete CLC"
+
+#~ msgid ""
+#~ "Selected features for Corine Land Cover"
+#~ " Category \"Wetlands\" (level 1)."
+#~ msgstr ""
+#~ "Ausgewählte Objekte für die Corine-"
+#~ "Land-Cover-Kategorie „Feuchtgebiete“ (Stufe "
+#~ "1)."
+
+#~ msgid "Water CLC"
+#~ msgstr "Wasserflächen CLC"
+
+#~ msgid ""
+#~ "Selected features for Corine Land Cover"
+#~ " Category \"Water\" (level 1), excluding"
+#~ " waterways."
+#~ msgstr ""
+#~ "Ausgewählte Objekte für die Corine-"
+#~ "Land-Cover-Kategorie „Wasserflächen“ (Stufe "
+#~ "1), ohne Wasserstraßen."
+
+#~ msgid "Waterways CLC"
+#~ msgstr "Wasserstraßen CLC"
+
+#~ msgid ""
+#~ "Selected features for Corine Land Cover"
+#~ " Category \"Waterways\" (level 2) in "
+#~ "Water."
+#~ msgstr ""
+#~ "Ausgewählte Objekte für die Corine-"
+#~ "Land-Cover-Kategorie „Wasserstraßen“ (Stufe "
+#~ "2) im Bereich „Wasser“."
+
+#~ msgid "A minimal topic definition for testing purposes."
+#~ msgstr "Eine minimale Themen-Definition zu Testzwecken."
+
+#~ msgid "Infrastructure Lines"
+#~ msgstr "Infrastrukturlinien"
+
+#~ msgid "Line objects related to infrastructure."
+#~ msgstr "Linienobjekte im Zusammenhang mit Infrastruktur."
 

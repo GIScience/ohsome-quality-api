@@ -9,6 +9,7 @@
 
 ### Other Changes
 
+* topics: remove topics that are explicitly state as count or area ([#1039])
 * topics: remove topics, that were not in the core project ([#1028])
 * feat: get OSM data for User Activity indicator from ohsome-api v2 (69841b3e)
 * feat: include authorization header in requests to ohsome-api (2b2ebeea)
@@ -37,6 +38,7 @@
 [#1018]: https://github.com/GIScience/ohsome-quality-api/pull/1018
 [#1029]: https://github.com/GIScience/ohsome-quality-api/pull/1029
 [#1028]: https://github.com/GIScience/ohsome-quality-api/pull/1028
+[#1039]: https://github.com/GIScience/ohsome-quality-api/pull/1039
 
 ## Release 1.17.1
 

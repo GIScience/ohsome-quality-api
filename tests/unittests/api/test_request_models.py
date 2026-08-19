@@ -55,23 +55,21 @@ def test_bpolys_unsupported_geometry_type(feature_collection_unsupported_geometr
 
 
 @pytest.mark.usefixtures("mock_request_context_mapping_saturation")
-def test_indicator_request_mapping_saturation(bpolys, topic_key_building_count):
-    IndicatorRequest(bpolys=bpolys, topic=topic_key_building_count)
+def test_indicator_request_mapping_saturation(bpolys, topic_key_buildings):
+    IndicatorRequest(bpolys=bpolys, topic=topic_key_buildings)
 
 
 @pytest.mark.usefixtures("mock_request_context_mapping_saturation")
 def test_indicator_request_invalid_indicator_topic_combination(
-    bpolys, topic_key_building_count
+    bpolys, topic_key_buildings
 ):
     with pytest.raises(ValidationError):
         IndicatorRequest(bpolys=bpolys, topic="foo")
 
 
 @pytest.mark.usefixtures("mock_request_context_mapping_saturation")
-def test_indicator_request_include_figure(bpolys, topic_key_building_count):
-    IndicatorRequest(
-        bpolys=bpolys, topic=topic_key_building_count, include_figure=False
-    )
+def test_indicator_request_include_figure(bpolys, topic_key_buildings):
+    IndicatorRequest(bpolys=bpolys, topic=topic_key_buildings, include_figure=False)
 
 
 def test_indicator_request_invalid_topic(bpolys):
@@ -79,16 +77,16 @@ def test_indicator_request_invalid_topic(bpolys):
         IndicatorRequest(bpolys=bpolys, topic="foo")
 
 
-def test_attribute_completeness_missing_attribute(bpolys, topic_key_building_count):
+def test_attribute_completeness_missing_attribute(bpolys, topic_key_buildings):
     with pytest.raises(ValidationError):
-        AttributeCompletenessKeyRequest(bpolys=bpolys, topic=topic_key_building_count)
+        AttributeCompletenessKeyRequest(bpolys=bpolys, topic=topic_key_buildings)
 
 
-def test_attribute_completeness_invalid_attribute(bpolys, topic_key_building_count):
+def test_attribute_completeness_invalid_attribute(bpolys, topic_key_buildings):
     with pytest.raises(ValidationError):
         AttributeCompletenessKeyRequest(
             bpolys=bpolys,
-            topic=topic_key_building_count,
+            topic=topic_key_buildings,
             attributes="roads",
         )
 
@@ -105,48 +103,48 @@ def test_attribute_completeness_indicator_request_invalid_indicator_topic_combin
         )
 
 
-def test_attribute_completeness(bpolys, topic_key_building_count):
+def test_attribute_completeness(bpolys, topic_key_buildings):
     with pytest.raises(ValueError):
         AttributeCompletenessKeyRequest(
             bpolys=bpolys,
-            topic=topic_key_building_count,
+            topic=topic_key_buildings,
             attributes="foo",
         )
 
 
 def test_attribute_completeness_single_attribute(
     bpolys,
-    topic_key_building_count,
+    topic_key_buildings,
     attribute_key_height,
 ):
     AttributeCompletenessKeyRequest(
         bpolys=bpolys,
-        topic=topic_key_building_count,
+        topic=topic_key_buildings,
         attributes=attribute_key_height,
     )
 
 
 def test_attribute_completeness_multiple_attributes(
     bpolys,
-    topic_key_building_count,
+    topic_key_buildings,
     attribute_key_multiple,
 ):
     AttributeCompletenessKeyRequest(
         bpolys=bpolys,
-        topic=topic_key_building_count,
+        topic=topic_key_buildings,
         attributes=attribute_key_multiple,
     )
 
 
 def test_attribute_completeness_attribute_filter(
     bpolys,
-    topic_key_building_count,
+    topic_key_buildings,
     attribute_filter,
     attribute_title,
 ):
     AttributeCompletenessFilterRequest(
         bpolys=bpolys,
-        topic=topic_key_building_count,
+        topic=topic_key_buildings,
         attribute_filter=attribute_filter,
         attribute_title=attribute_title,
     )
@@ -159,7 +157,7 @@ def test_land_cover_thematic_accuracy_request(bpolys):
 
 def test_land_cover_thematic_accuracy_request_invalid_topic(bpolys):
     with pytest.raises(ValidationError):
-        LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="building-count")
+        LandCoverThematicAccuracyRequest(bpolys=bpolys, topic="buildings")
 
 
 def test_land_cover_thematic_accuracy_request_corine_class(bpolys):
@@ -192,6 +190,6 @@ def test_roads_thematic_accuracy_request_invalid_topic(bpolys):
     with pytest.raises(ValueError):
         RoadsThematicAccuracyRequest(
             bpolys=bpolys,
-            topic="building-count",
+            topic="buildings",
             attribute="surface",
         )
