@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-20 13:39+0200\n"
+"POT-Creation-Date: 2026-08-20 15:33+0200\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -340,6 +340,15 @@ msgstr ""
 #: ohsome_quality_api/attributes/attributes.yaml
 msgid "For describing the voltage of substations."
 msgstr "Zur Beschreibung der Spannung von Umspannwerken."
+
+#: ohsome_quality_api/attributes/attributes.yaml
+#, fuzzy
+msgid ""
+"Company, corporation, person or any other entity who is directly in "
+"charge of the current operation of a map object."
+msgstr ""
+"Unternehmen, Organisation, Person oder andere Einheit, die direkt für den"
+" aktuellen Betrieb eines Kartenelements verantwortlich ist."
 
 #: ohsome_quality_api/attributes/attributes.yaml
 msgid "Location"
@@ -1364,16 +1373,12 @@ msgid "A custom topic for user defined filters."
 msgstr "Ein anpassbares Thema für selbst definierte Filter."
 
 #: ohsome_quality_api/topics/presets.yaml
-msgid "Buildings (count)"
-msgstr "Gebäude (Anzahl)"
+msgid "Buildings"
+msgstr "Gebäude"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "All buildings as defined by all objects tagged with 'building=*'."
-msgstr "Alle Gebäude, definiert durch alle Objekte mit dem Tag ‚building=*‘."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Buildings (area)"
-msgstr "Gebäude (Fläche)"
+msgstr "Alle Gebäude, definiert durch alle Objekte mit dem Tag 'building=*'."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Roads (all highways)"
@@ -1416,7 +1421,8 @@ msgid "Railways"
 msgstr "Eisenbahnen"
 
 #: ohsome_quality_api/topics/presets.yaml
-msgid "Railway networks."
+#, fuzzy
+msgid "Length of railway networks."
 msgstr "Eisenbahnnetze."
 
 #: ohsome_quality_api/topics/presets.yaml
@@ -1438,14 +1444,6 @@ msgid "All linear OSM features referring to a bridge including footpaths only."
 msgstr ""
 "Alle linearen OSM-Objekte, die sich auf Brücken beziehen, einschließlich "
 "reiner Fußwege."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Bridges (count)"
-msgstr "Brücken (Anzahl)"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Count of all polygons labelled as bridge."
-msgstr "Anzahl aller als Brücke gekennzeichneten Polygone."
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid ""
@@ -1612,16 +1610,9 @@ msgid "Area of forests."
 msgstr "Anzahl der Wälder."
 
 #: ohsome_quality_api/topics/presets.yaml
-msgid "Industrial Landuse (count)"
-msgstr "Gewerbegebiets-Nutzung (Anzahl)"
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Industrial landsites."
+#, fuzzy
+msgid "Industrial Landuse"
 msgstr "Gewerbegebiete."
-
-#: ohsome_quality_api/topics/presets.yaml
-msgid "Industrial Landuse (area)"
-msgstr "Gewerbegebiets-Nutzung (Fläche)"
 
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Industrial areas."
@@ -2306,4 +2297,19 @@ msgstr "Abfrage ergab keinen Eintrag."
 
 #~ msgid "Line objects related to infrastructure."
 #~ msgstr "Linienobjekte im Zusammenhang mit Infrastruktur."
+
+#~ msgid "Buildings (count)"
+#~ msgstr "Gebäude (Anzahl)"
+
+#~ msgid "Bridges (count)"
+#~ msgstr "Brücken (Anzahl)"
+
+#~ msgid "Count of all polygons labelled as bridge."
+#~ msgstr "Anzahl aller als Brücke gekennzeichneten Polygone."
+
+#~ msgid "Industrial Landuse (count)"
+#~ msgstr "Gewerbegebiets-Nutzung (Anzahl)"
+
+#~ msgid "Industrial Landuse (area)"
+#~ msgstr "Gewerbegebiets-Nutzung (Fläche)"
 
