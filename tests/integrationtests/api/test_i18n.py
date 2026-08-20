@@ -19,7 +19,7 @@ def indicator(client, bpolys, monkeypatch):
     endpoint = "/indicators/mapping-saturation"
     parameters = {
         "bpolys": bpolys,
-        "topic": "building-count",
+        "topic": "buildings",
     }
     response = client.post(
         endpoint,

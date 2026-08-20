@@ -79,7 +79,7 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
     topic: TopicEnum = Field(
         title="Topic Key",
         alias="topic",
-        examples=["building-count", "roads"],
+        examples=["buildings", "roads"],
     )
     topic_title: str | None = None
     topic_filter: OhsomeFilter | None = Field(
@@ -94,7 +94,7 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
                 # NOTE: json.dumps avoids that keys are ordered by pydantic
                 json.dumps(
                     {
-                        "topic": "building-count",
+                        "topic": "buildings",
                         "bpolys": BPOLYS_EXAMPLE,
                     }
                 ),
@@ -157,7 +157,7 @@ class AttributeCompletenessKeyRequest(IndicatorRequest):
                 # NOTE: json.dumps avoids that keys are ordered by pydantic
                 json.dumps(
                     {
-                        "topic": "building-count",
+                        "topic": "buildings",
                         "attributes": ["height"],
                         "bpolys": BPOLYS_EXAMPLE,
                     }
@@ -220,7 +220,7 @@ class AttributeCompletenessFilterRequest(IndicatorRequest):
                 # NOTE: json.dumps avoids that keys are ordered by pydantic
                 json.dumps(
                     {
-                        "topic": "building-count",
+                        "topic": "buildings",
                         "attributeTitle": "Height",
                         "attributeFilter": "height=*",
                         "bpolys": BPOLYS_EXAMPLE,

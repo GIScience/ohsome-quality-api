@@ -20,18 +20,18 @@ class TestPreprocess:
     @oqapi_vcr.use_cassette
     async def test_preprocess_attribute_keys_single(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
         attribute_key,
     ):
         indicator = AttributeCompleteness(
-            topic_building_count,
+            topic_buildings,
             feature_germany_heidelberg,
             attribute_keys=attribute_key,
         )
         await indicator.preprocess()
         assert indicator.absolute_value_1 == 31_338
-        assert indicator.absolute_value_2 == 13006
+        assert indicator.absolute_value_2 == 13_006
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -57,12 +57,12 @@ class TestPreprocess:
     @oqapi_vcr.use_cassette
     async def test_preprocess_attribute_keys_multiple(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
         attribute_key_multiple,
     ):
         indicator = AttributeCompleteness(
-            topic_building_count,
+            topic_buildings,
             feature_germany_heidelberg,
             attribute_keys=attribute_key_multiple,
         )
@@ -76,13 +76,13 @@ class TestPreprocess:
     @oqapi_vcr.use_cassette
     async def test_preprocess_attribute_filter(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
         attribute_filter,
         attribute_title,
     ):
         indicator = AttributeCompleteness(
-            topic_building_count,
+            topic_buildings,
             feature_germany_heidelberg,
             attribute_filter=attribute_filter,
             attribute_title=attribute_title,
@@ -99,18 +99,18 @@ class TestCalculation:
     @oqapi_vcr.use_cassette
     async def test_calculate_with_attribute_keys(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
         attribute_key,
     ):
         indicator = AttributeCompleteness(
-            topic_building_count,
+            topic_buildings,
             feature_germany_heidelberg,
             attribute_keys=attribute_key,
         )
         await indicator.preprocess()
         indicator.calculate()
-        assert indicator.result.value == pytest.approx(0.41, abs=0.01)
+        assert indicator.result.value == pytest.approx(0.42, abs=0.01)
         assert indicator.result.label == "yellow"
         assert verify(indicator.result.description)
 
@@ -136,12 +136,12 @@ class TestCalculation:
     @oqapi_vcr.use_cassette
     async def test_calculate_attribute_keys_multiple(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
         attribute_key_multiple,
     ):
         indicator = AttributeCompleteness(
-            topic_building_count,
+            topic_buildings,
             feature_germany_heidelberg,
             attribute_keys=attribute_key_multiple,
         )
@@ -155,20 +155,20 @@ class TestCalculation:
     @oqapi_vcr.use_cassette
     async def test_calculate_with_attribute_filter(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
         attribute_filter,
         attribute_title,
     ):
         indicator = AttributeCompleteness(
-            topic_building_count,
+            topic_buildings,
             feature_germany_heidelberg,
             attribute_filter=attribute_filter,
             attribute_title=attribute_title,
         )
         await indicator.preprocess()
         indicator.calculate()
-        assert indicator.result.value == pytest.approx(0.41, abs=0.01)
+        assert indicator.result.value == pytest.approx(0.42, abs=0.01)
         assert indicator.result.label == "yellow"
         assert verify(indicator.result.description)
 
@@ -203,11 +203,11 @@ class TestFigure:
     @oqapi_vcr.use_cassette
     async def test_create_figure_with_attribute_keys(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
         indicator = AttributeCompleteness(
-            topic_building_count,
+            topic_buildings,
             feature_germany_heidelberg,
             ["height"],
         )
@@ -221,11 +221,11 @@ class TestFigure:
     @oqapi_vcr.use_cassette
     async def test_create_figure_with_attribute_filter(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
         indicator = AttributeCompleteness(
-            topic_building_count,
+            topic_buildings,
             feature_germany_heidelberg,
             attribute_filter="height=* or building:levels=*",
             attribute_title="Height",
@@ -239,7 +239,7 @@ class TestFigure:
 
 def test_create_description_attribute_keys_single(feature_germany_heidelberg):
     indicator = AttributeCompleteness(
-        get_topic_fixture("building-count"),
+        get_topic_fixture("buildings"),
         feature_germany_heidelberg,
         ["height"],
     )
@@ -252,7 +252,7 @@ def test_create_description_attribute_keys_single(feature_germany_heidelberg):
 
 def test_create_description_attribute_keys_multiple(feature_germany_heidelberg):
     indicator = AttributeCompleteness(
-        get_topic_fixture("building-count"),
+        get_topic_fixture("buildings"),
         feature_germany_heidelberg,
         ["height", "house-number", "address-street"],
     )
@@ -269,7 +269,7 @@ def test_create_description_attribute_filter(
     feature_germany_heidelberg,
 ):
     indicator = AttributeCompleteness(
-        get_topic_fixture("building-count"),
+        get_topic_fixture("buildings"),
         feature_germany_heidelberg,
         attribute_filter=attribute_filter,
         attribute_title=attribute_title,
@@ -285,7 +285,7 @@ def test_create_description_attribute_filter(
     "topic_key, attribute_key, aggregation, "
     "result_value, absolute_value_1, absolute_value_2",
     [
-        ("building-count", "height", "elements", 0.2, 10, 2),
+        ("clinics", "opening-hours", "elements", 0.2, 10, 2),
         ("forests", "leaf-type", "m²", 0.2, 10.012, 2.012),
         ("roads", "name", "m", 0.2, 10.012, 2.012),
     ],
@@ -312,23 +312,21 @@ def test_create_description_multiple_aggregation_types(
 
 
 def test_filters_match(
-    topic_key_building_count,
+    topic_key_buildings,
     feature_germany_heidelberg,
     attribute_key_height,
 ):
     indicator_attribute_keys = AttributeCompleteness(
-        get_topic_fixture(topic_key_building_count),
+        get_topic_fixture(topic_key_buildings),
         feature_germany_heidelberg,
         attribute_keys=attribute_key_height,
     )
 
     attributes = get_attributes()
 
-    attribute_filter = attributes[topic_key_building_count][
-        attribute_key_height[0]
-    ].filter
+    attribute_filter = attributes[topic_key_buildings][attribute_key_height[0]].filter
     indicator_attribute_filter = AttributeCompleteness(
-        get_topic_fixture(topic_key_building_count),
+        get_topic_fixture(topic_key_buildings),
         feature_germany_heidelberg,
         attribute_filter=attribute_filter,
         attribute_title="foo",

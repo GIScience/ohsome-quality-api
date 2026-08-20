@@ -14,8 +14,8 @@ from tests.integrationtests.utils import oqapi_vcr
 class TestIndicatorResponseModels:
     @pytest.fixture(scope="class")
     @oqapi_vcr.use_cassette
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
-        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+    def indicator(self, topic_buildings, feature_germany_heidelberg):
+        indicator = MappingSaturation(topic_buildings, feature_germany_heidelberg)
         asyncio.run(indicator.preprocess())
         indicator.calculate()
         indicator.create_figure()

@@ -5,16 +5,18 @@ A topic describes the request which should be made to the [ohsome API](https://a
 ## Example
 
 ```yaml
-building-count:
-  name: Building Count
+buildings:
+  name: Buildings
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
   aggregation_type: count
-  filter: building=* and geometry:polygon
+  filter: building=* and building!=no and geometry:polygon
   indicators:
     - mapping-saturation
     - currentness
+    - building-comparison
     - attribute-completeness
+    - user-activity
 ```
 
 ## How to Add a New Topic?

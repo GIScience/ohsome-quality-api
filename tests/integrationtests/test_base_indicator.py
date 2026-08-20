@@ -21,7 +21,7 @@ class TestBaseIndicator:
 
     @pytest.fixture
     def topic(self):
-        return get_topic_fixture("building-count")
+        return get_topic_fixture("buildings")
 
     def test_as_dict(self, feature, topic):
         indicator = MappingSaturation(feature=feature, topic=topic)

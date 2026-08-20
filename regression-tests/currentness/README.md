@@ -3,7 +3,7 @@
 ## Usage
 ```
 python generate_hurl_files.py
-hurl --jobs=1 --repeat 1 indicator-building-count-rhineland-palatinate-ohsomedb.hurl
+hurl --jobs=1 --repeat 1 indicator-buildings-rhineland-palatinate-ohsomedb.hurl
 ```
 
 ## Results

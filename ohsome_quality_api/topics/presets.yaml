@@ -17,23 +17,11 @@ custom-topic:
     - attribute-completeness
     - user-activity
 
-building-count:
-  name: Buildings (count)
+buildings:
+  name: Buildings
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
   aggregation_type: count
-  filter: building=* and building!=no and geometry:polygon
-  indicators:
-    - mapping-saturation
-    - currentness
-    - attribute-completeness
-    - user-activity
-
-building-area:
-  name: Buildings (area)
-  description: >-
-    All buildings as defined by all objects tagged with 'building=*'.
-  aggregation_type: area
   filter: building=* and building!=no and geometry:polygon
   indicators:
     - mapping-saturation
@@ -79,16 +67,16 @@ roads:
     - user-activity
     - roads-thematic-accuracy
 
-railway-length:
+railways:
   name: Railways
   description: >-
-    Railway networks.
+    Length of railway networks.
   aggregation_type: length
   filter: >-
     railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and geometry:polygon
   indicators:
     - mapping-saturation
-    - currentness # currentness always requests /contributions/latest/count [count!]
+    - currentness
     - user-activity
     - attribute-completeness
 
@@ -112,19 +100,6 @@ bridges_all_ways:
   aggregation_type: length
   filter: >-
     bridge=* and geometry:line
-  indicators:
-    - mapping-saturation
-    - currentness
-    - user-activity
-    - attribute-completeness
-
-bridges_count:
-  name: Bridges (count)
-  description: >-
-    Count of all polygons labelled as bridge.
-  aggregation_type: count
-  filter: >-
-    man_made=bridge and geometry:polygon
   indicators:
     - mapping-saturation
     - currentness
@@ -452,20 +427,8 @@ forests:
     - attribute-completeness
     - user-activity
 
-industrial-landuse-count:
-  name: Industrial Landuse (count)
-  description: Industrial landsites.
-  aggregation_type: count
-  filter: landuse=industrial and geometry:polygon
-  source: https://wiki.openstreetmap.org/wiki/Tag:landuse%3Dindustrial
-  indicators:
-    - mapping-saturation
-    - currentness
-    - user-activity
-    - attribute-completeness
-
-industrial-landuse-area:
-  name: Industrial Landuse (area)
+industrial-landuse:
+  name: Industrial Landuse
   description: Industrial areas.
   aggregation_type: area
   filter: landuse=industrial and geometry:polygon

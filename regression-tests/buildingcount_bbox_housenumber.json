@@ -1,5 +1,5 @@
 {
-  "topic": "building-count",
+  "topic": "buildings",
   "attributes": ["address-housenumber"],
   "bpolys": {
     "type": "FeatureCollection",

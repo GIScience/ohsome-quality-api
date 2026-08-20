@@ -1,1 +1,1 @@
-36% of all "Buildings (count)" features (all: 31338 elements) in your area of interest have the selected additional attributes height of buildings, house number (matched: 11391 elements). The attribute completeness is medium (25%-75%).
+36% of all "Buildings" features (all: 31338 elements) in your area of interest have the selected additional attributes height of buildings, house number (matched: 11391 elements). The attribute completeness is medium (25%-75%).

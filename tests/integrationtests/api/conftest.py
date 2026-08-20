@@ -35,16 +35,17 @@ def response_template():
 
 
 @pytest.fixture
-def metadata_topic_building_count():
+def metadata_topic_buildings():
     return {
-        "building-count": {
-            "name": "Buildings (count)",
+        "buildings": {
+            "name": "Buildings",
             "description": "All buildings as defined by all objects tagged with 'building=*'.",  # noqa
             "aggregationType": "count",
             "filter": "building=* and building!=no and geometry:polygon",
             "indicators": [
                 "mapping-saturation",
                 "currentness",
+                "building-comparison",
                 "attribute-completeness",
                 "user-activity",
             ],

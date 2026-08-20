@@ -13,9 +13,9 @@ from tests.integrationtests.utils import oqapi_vcr
 
 
 class TestCheckEdgeCases:
-    @pytest.fixture()
-    def indicator(self, topic_building_count, feature_germany_heidelberg):
-        return MappingSaturation(topic_building_count, feature_germany_heidelberg)
+    @pytest.fixture
+    def indicator(self, topic_buildings, feature_germany_heidelberg):
+        return MappingSaturation(topic_buildings, feature_germany_heidelberg)
 
     def test_no_data(self, indicator):
         indicator.values = [0, 0]
@@ -51,8 +51,8 @@ class TestCheckEdgeCases:
 @pytest.mark.asyncio
 class TestPreprocess:
     @oqapi_vcr.use_cassette
-    async def test_preprocess(self, topic_building_count, feature_germany_heidelberg):
-        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+    async def test_preprocess(self, topic_buildings, feature_germany_heidelberg):
+        indicator = MappingSaturation(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         assert len(indicator.values) > 0
         assert indicator.values[-1] is not None
@@ -66,7 +66,7 @@ class TestCalculation:
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types
-        ["topic_building_count", "topic_building_area", "topic_roads"],
+        ["topic_buildings", "topic_forests", "topic_roads"],
     )
     @oqapi_vcr.use_cassette
     async def test_calculate(
@@ -96,8 +96,8 @@ class TestCalculation:
         assert isinstance(indicator.result.timestamp, datetime)
 
     @oqapi_vcr.use_cassette
-    async def test_as_feature(self, topic_building_count, feature_germany_heidelberg):
-        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+    async def test_as_feature(self, topic_buildings, feature_germany_heidelberg):
+        indicator = MappingSaturation(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
 
@@ -111,10 +111,10 @@ class TestCalculation:
     @oqapi_vcr.use_cassette
     async def test_as_feature_data(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        indicator = MappingSaturation(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
 
@@ -129,11 +129,11 @@ class TestCalculation:
     @oqapi_vcr.use_cassette
     async def test_result_value_zero_division_error(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
         monkeypatch: pytest.MonkeyPatch,
     ):
-        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        indicator = MappingSaturation(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         monkeypatch.setattr(
             "ohsome_quality_api.indicators.mapping_saturation.indicator.np.interp",
@@ -145,11 +145,11 @@ class TestCalculation:
     @oqapi_vcr.use_cassette
     async def test_result_value_nan(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
         monkeypatch: pytest.MonkeyPatch,
     ):
-        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        indicator = MappingSaturation(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         monkeypatch.setattr(
             "ohsome_quality_api.indicators.mapping_saturation.indicator.np.interp",
@@ -164,10 +164,10 @@ class TestFigure:
     @oqapi_vcr.use_cassette
     async def test_create_figure(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        indicator = MappingSaturation(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         indicator.create_figure()
@@ -177,10 +177,10 @@ class TestFigure:
     @oqapi_vcr.use_cassette
     async def test_create_figure_no_fitted_model(
         self,
-        topic_building_count,
+        topic_buildings,
         feature_germany_heidelberg,
     ):
-        indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+        indicator = MappingSaturation(topic_buildings, feature_germany_heidelberg)
         await indicator.preprocess()
         indicator.calculate()
         indicator.result.class_ = None
@@ -192,7 +192,7 @@ class TestFigure:
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types
-        ["topic_building_count", "topic_building_area", "topic_roads"],
+        ["topic_buildings", "topic_forests", "topic_roads"],
     )
     @pytest.mark.skipif(
         os.environ.get("CI", None) is not None,
@@ -229,7 +229,7 @@ class TestFigure:
 @pytest.mark.asyncio
 @oqapi_vcr.use_cassette
 async def test_immutable_attribute(
-    topic_building_count,
+    topic_buildings,
     feature_collection_heidelberg_bahnstadt_bergheim_weststadt,
 ):
     """Test changes of attribute values when multiple indicators are created.
@@ -244,7 +244,7 @@ async def test_immutable_attribute(
     for feature in feature_collection_heidelberg_bahnstadt_bergheim_weststadt[
         "features"
     ]:
-        indicator = MappingSaturation(topic_building_count, feature)
+        indicator = MappingSaturation(topic_buildings, feature)
         await indicator.preprocess()
         indicator.calculate()
         for fm in indicator.fitted_models:
@@ -259,8 +259,8 @@ async def test_immutable_attribute(
 
 @pytest.mark.asyncio
 @oqapi_vcr.use_cassette
-async def test_calculate_no_elements(topic_building_count, feature_germany_heidelberg):
-    indicator = MappingSaturation(topic_building_count, feature_germany_heidelberg)
+async def test_calculate_no_elements(topic_buildings, feature_germany_heidelberg):
+    indicator = MappingSaturation(topic_buildings, feature_germany_heidelberg)
 
     await indicator.preprocess()
     indicator.values = [0 for _ in range(len(indicator.values))]

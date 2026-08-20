@@ -71,7 +71,7 @@ def test_single_class(client, bpolys, headers, schema, mock_db_fetch, mock_cov_g
 
 
 def test_invalid_topic(client, bpolys):
-    parameters = {"bpolys": bpolys, "topic": "building-count"}
+    parameters = {"bpolys": bpolys, "topic": "buildings"}
     response = client.post(ENDPOINT, json=parameters)
     assert response.status_code == 422
     assert verify_json(response.json())

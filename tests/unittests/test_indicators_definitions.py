@@ -38,10 +38,11 @@ def test_get_indicator_keys():
 
 
 def test_get_valid_indicators():
-    indicators = definitions.get_valid_indicators("building-count")
+    indicators = definitions.get_valid_indicators("buildings")
     assert indicators == (
         "mapping-saturation",
         "currentness",
+        "building-comparison",
         "attribute-completeness",
         "user-activity",
     )
