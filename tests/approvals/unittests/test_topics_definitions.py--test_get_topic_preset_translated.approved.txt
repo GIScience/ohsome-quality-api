@@ -1,6 +1,6 @@
 {
   "key": "building-count",
-  "name": "Gebäude (Anzahl)",
+  "name": "Buildings (count)",
   "description": "Alle Gebäude, definiert durch alle Objekte mit dem Tag ‚building=*‘.",
   "aggregation_type": "count",
   "filter": "building=* and building!=no and geometry:polygon",
