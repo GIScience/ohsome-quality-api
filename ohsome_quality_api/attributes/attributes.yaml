@@ -400,14 +400,14 @@ power_lines:
     description: Сompany, corporation, person or any other entity who is directly in charge of the current operation of a map object.
     filter: operator=*
 
-power_substation:
+power_substations:
   voltage:
     name: Voltage
     description: For describing the voltage of substations.
     filter: voltage=*
   operator:
     name: Operator
-    description: Сompany, corporation, person or any other entity who is directly in charge of the current operation of a map object.
+    description: Company, corporation, person or any other entity who is directly in charge of the current operation of a map object.
     filter: operator=*
   location:
     name: Location
