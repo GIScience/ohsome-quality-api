@@ -25,6 +25,7 @@ def test_indicator_request_invalid_topic_key(bpolys):
             topic="test-topic",  # invalid
             topic_title="custom-topic",
             topic_filter="building=yes and geometry:point",
+            measure="count",
         )
 
 
@@ -33,6 +34,7 @@ def test_indicator_request_missing_filter_and_title(bpolys):
         IndicatorRequest(
             bpolys=bpolys,
             topic="custom-topic",  # missing filter and title
+            measure="count",
         )
 
 
@@ -42,6 +44,17 @@ def test_indicator_request_invalid_missing_filter(bpolys):
             bpolys=bpolys,
             topic="custom-topic",
             topic_title="Custom Topic",
+            measure="count",
+        )
+
+
+def test_indicator_request_invalid_missing_measure(bpolys):
+    with pytest.raises(ValidationError):
+        IndicatorRequest(
+            bpolys=bpolys,
+            topic="custom-topic",  # valid
+            topic_title="my-custom-topic",
+            topic_filter="building=yes and geometry:point",
         )
 
 
@@ -51,6 +64,7 @@ def test_indicator_request_valid(bpolys):
         topic="custom-topic",  # valid
         topic_title="my-custom-topic",
         topic_filter="building=yes and geometry:point",
+        measure="count",
     )
 
 
@@ -62,4 +76,5 @@ def test_indicator_request_invalid_topic_key_with_filter(bpolys):
             # not valid in combination w/ existing topic key
             topic_title="custom-topic",
             topic_filter="building=yes and geometry:point",
+            measure="count",
         )
