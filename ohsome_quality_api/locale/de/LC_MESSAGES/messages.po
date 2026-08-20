@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-19 09:54+0200\n"
+"POT-Creation-Date: 2026-08-20 14:13+0200\n"
 "PO-Revision-Date: 2025-03-12 14:17+1300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -340,6 +340,15 @@ msgstr ""
 #: ohsome_quality_api/attributes/attributes.yaml
 msgid "For describing the voltage of substations."
 msgstr "Zur Beschreibung der Spannung von Umspannwerken."
+
+#: ohsome_quality_api/attributes/attributes.yaml
+#, fuzzy
+msgid ""
+"Company, corporation, person or any other entity who is directly in "
+"charge of the current operation of a map object."
+msgstr ""
+"Unternehmen, Organisation, Person oder andere Einheit, die direkt für den"
+" aktuellen Betrieb eines Kartenelements verantwortlich ist."
 
 #: ohsome_quality_api/attributes/attributes.yaml
 msgid "Location"
