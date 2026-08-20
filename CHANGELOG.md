@@ -1,6 +1,6 @@
 # Changelog
 
-## Current Main
+## 1.18.0
 
 ### Breaking Changes
 
