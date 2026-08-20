@@ -390,12 +390,14 @@ async def _post_indicator(
     parameters_ = dict(parameters)
     topic_key = parameters_.pop("topic").value
     topic_filter = parameters_.pop("topic_filter")
+    topic_measure = parameters_.pop("measure")
     topic_name = parameters_.pop("topic_title")
     topic = get_topic_preset(topic_key)
 
     if topic.key == "custom-topic":
         try:
             topic.filter = topic_filter
+            topic.aggregation_type = topic_measure
         except ValidationError as error:
             raise RequestValidationError(errors=error.errors()) from error
         topic.name = topic_name

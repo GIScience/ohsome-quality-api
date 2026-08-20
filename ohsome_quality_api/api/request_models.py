@@ -86,6 +86,10 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
         default=None,
         examples=["spring=yes and geometry:point"],
     )
+    measure: Literal["count", "length", "area"] | None = Field(
+        default=None,
+        examples=["count"],
+    )
     include_figure: bool = True
 
     model_config = ConfigDict(
@@ -103,6 +107,7 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
                         "topic": "custom-topic",
                         "topicTitle": "My very own topic",
                         "topicFilter": "spring=yes and geometry:point",
+                        "measure": "count",
                         "bpolys": BPOLYS_EXAMPLE,
                     }
                 ),
@@ -116,18 +121,27 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
         return self.request_context.path_parameters["key"]
 
     @model_validator(mode="after")
-    def validate_custom_topic_has_a_filter_and_title(self) -> Self:
+    def validate_custom_topic_has_a_filter_and_title_and_measure(self) -> Self:
         match self.topic.value:
             case "custom-topic":
-                if self.topic_filter is None or self.topic_title is None:
+                if (
+                    self.topic_filter is None
+                    or self.topic_title is None
+                    or self.measure is None
+                ):
                     raise ValueError(
-                        "Topic filter and title are requeired for custom topic."
+                        "Topic filter, topic_title and measure "
+                        "are required for custom topic."
                     )
                 return self
             case _:
-                if self.topic_filter is not None or self.topic_title is not None:
+                if (
+                    self.topic_filter is not None
+                    or self.topic_title is not None
+                    or self.measure is not None
+                ):
                     raise ValueError(
-                        "Topic filter and title parameter are only allowed for custom topic."  # noqa
+                        "Topic filter, topic title and measure parameter are only allowed for custom topic."  # noqa
                     )
                 return self
 

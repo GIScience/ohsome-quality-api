@@ -138,6 +138,7 @@ def test_indicators_custom_topic(
         "topic": "custom-topic",
         "topicFilter": ohsome_filter,
         "topicTitle": "Custom Topic",
+        "measure": "count",
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     result = response.json()
@@ -165,6 +166,7 @@ def test_indicators_custom_topic_missing_geom_or_osm_type(
         "topic": "custom-topic",
         "topicFilter": ohsome_filter,
         "topicTitle": "Custom Topic",
+        "measure": "count",
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
@@ -253,6 +255,7 @@ def test_indicators_attribute_completeness_with_custom_topic(
         "topic": "custom-topic",
         "topicFilter": "spring=yes and geometry:point",
         "topicTitle": "",
+        "measure": "count",
         "attributes": ["height"],
     }
     response = client.post(endpoint, json=parameters, headers=headers)
@@ -275,6 +278,7 @@ def test_indicators_attribute_completeness_with_custom_topic_and_custom_attribut
         "topic": "custom-topic",
         "topicFilter": "spring=yes and geometry:point",
         "topicTitle": "Spring",
+        "measure": "count",
         "attributeFilter": "man_made=spring_box",
         "attributeTitle": "Spring Box",
     }
@@ -367,6 +371,7 @@ def test_mapping_saturation_custom_topic_key_with_filter(
         "topic": "buildings",
         "topicFilter": "spring=yes and geometry:point",  # invalid with topic
         "topicTitle": "Spring",  # invalid with topic
+        "measure": "count",  # invalid with topic
     }
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
