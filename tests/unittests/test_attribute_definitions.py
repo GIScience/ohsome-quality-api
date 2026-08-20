@@ -5,7 +5,7 @@ from ohsome_quality_api.attributes import definitions
 from ohsome_quality_api.attributes.models import Attribute
 
 
-@pytest.fixture()
+@pytest.fixture
 def attribute_key_string():
     return "height"
 

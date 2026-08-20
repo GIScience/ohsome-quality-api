@@ -13,7 +13,7 @@ from tests.integrationtests.utils import oqapi_vcr
 
 
 class TestCheckEdgeCases:
-    @pytest.fixture()
+    @pytest.fixture
     def indicator(self, topic_buildings, feature_germany_heidelberg):
         return MappingSaturation(topic_buildings, feature_germany_heidelberg)
 

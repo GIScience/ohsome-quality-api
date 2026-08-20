@@ -63,7 +63,7 @@ class TestPreprocess:
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types: count, area and length
-        ["buildings", "buildings", "roads"],
+        ["buildings", "forests", "roads"],
     )
     @oqapi_vcr.use_cassette
     async def test_preprocess_aggregation_types(

@@ -132,7 +132,7 @@ def metadata_topic_buildings(
     return {topic_key_buildings: topic_buildings}
 
 
-@pytest.fixture()
+@pytest.fixture
 def topic_definitions() -> dict[str, Topic]:
     return load_topic_presets()
 
@@ -157,7 +157,7 @@ def metadata_quality_dimension_completeness(
     return {quality_dimension_key_completeness: quality_dimension_completeness}
 
 
-@pytest.fixture()
+@pytest.fixture
 def quality_dimensions() -> dict[str, QualityDimension]:
     return load_quality_dimensions()
 
