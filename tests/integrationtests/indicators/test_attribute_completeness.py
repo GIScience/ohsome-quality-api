@@ -30,8 +30,8 @@ class TestPreprocess:
             attribute_keys=attribute_key,
         )
         await indicator.preprocess()
-        assert indicator.absolute_value_1 == 6.585325
-        assert indicator.absolute_value_2 == 2.992744
+        assert indicator.absolute_value_1 == 31_338
+        assert indicator.absolute_value_2 == 13_006
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -67,8 +67,8 @@ class TestPreprocess:
             attribute_keys=attribute_key_multiple,
         )
         await indicator.preprocess()
-        assert indicator.absolute_value_1 == 6.585325
-        assert indicator.absolute_value_2 == 2.360904
+        assert indicator.absolute_value_1 == 31_338
+        assert indicator.absolute_value_2 == 11_391
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -88,8 +88,8 @@ class TestPreprocess:
             attribute_title=attribute_title,
         )
         await indicator.preprocess()
-        assert indicator.absolute_value_1 == 6.585325
-        assert indicator.absolute_value_2 == 2.992744
+        assert indicator.absolute_value_1 == 31_338
+        assert indicator.absolute_value_2 == 13_006
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -110,7 +110,7 @@ class TestCalculation:
         )
         await indicator.preprocess()
         indicator.calculate()
-        assert indicator.result.value == pytest.approx(0.45, abs=0.01)
+        assert indicator.result.value == pytest.approx(0.42, abs=0.01)
         assert indicator.result.label == "yellow"
         assert verify(indicator.result.description)
 
@@ -168,7 +168,7 @@ class TestCalculation:
         )
         await indicator.preprocess()
         indicator.calculate()
-        assert indicator.result.value == pytest.approx(0.45, abs=0.01)
+        assert indicator.result.value == pytest.approx(0.42, abs=0.01)
         assert indicator.result.label == "yellow"
         assert verify(indicator.result.description)
 

@@ -2,7 +2,7 @@
   "key": "buildings",
   "name": "Gebäude",
   "description": "Alle Gebäude, definiert durch alle Objekte mit dem Tag ‚building=*‘.",
-  "aggregation_type": "area",
+  "aggregation_type": "count",
   "filter": "building=* and building!=no and geometry:polygon",
   "indicators": [
     "mapping-saturation",

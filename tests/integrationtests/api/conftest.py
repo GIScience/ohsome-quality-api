@@ -40,7 +40,7 @@ def metadata_topic_buildings():
         "buildings": {
             "name": "Buildings",
             "description": "All buildings as defined by all objects tagged with 'building=*'.",  # noqa
-            "aggregationType": "area",
+            "aggregationType": "count",
             "filter": "building=* and building!=no and geometry:polygon",
             "indicators": [
                 "mapping-saturation",

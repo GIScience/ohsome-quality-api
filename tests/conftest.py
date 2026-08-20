@@ -82,8 +82,8 @@ def topic_key_buildings() -> str:
 
 
 @pytest.fixture(scope="class")
-def topic_key_clinics() -> str:
-    return "clinics"
+def topic_key_forests() -> str:
+    return "forests"
 
 
 @pytest.fixture(scope="class")
@@ -102,8 +102,8 @@ def topic_buildings() -> Topic:
 
 
 @pytest.fixture(scope="class")
-def topic_clinics() -> Topic:
-    return get_topic_preset("clinics")
+def topic_forests() -> Topic:
+    return get_topic_preset("forests")
 
 
 @pytest.fixture(scope="class")

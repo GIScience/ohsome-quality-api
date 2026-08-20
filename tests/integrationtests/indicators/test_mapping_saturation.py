@@ -66,7 +66,7 @@ class TestCalculation:
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types
-        ["topic_clinics", "topic_buildings", "topic_roads"],
+        ["topic_buildings", "topic_forests", "topic_roads"],
     )
     @oqapi_vcr.use_cassette
     async def test_calculate(
@@ -192,7 +192,7 @@ class TestFigure:
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types
-        ["topic_clinics", "topic_buildings", "topic_roads"],
+        ["topic_buildings", "topic_forests", "topic_roads"],
     )
     @pytest.mark.skipif(
         os.environ.get("CI", None) is not None,

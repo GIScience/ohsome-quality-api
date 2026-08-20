@@ -21,7 +21,7 @@ buildings:
   name: Buildings
   description: >-
     All buildings as defined by all objects tagged with 'building=*'.
-  aggregation_type: area
+  aggregation_type: count
   filter: building=* and building!=no and geometry:polygon
   indicators:
     - mapping-saturation

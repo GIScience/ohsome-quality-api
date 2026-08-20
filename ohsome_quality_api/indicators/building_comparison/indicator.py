@@ -110,7 +110,7 @@ class BuildingComparison(BaseIndicator):
             start = "2008-" + latest_timestamp.strftime("%m-%d")
             result = await ohsome_api_client.features(
                 feature["geometry"],
-                measure=self.topic.aggregation_type,
+                measure="area",
                 ohsome_filter=self.topic.filter,
                 time_series={
                     "start": start,

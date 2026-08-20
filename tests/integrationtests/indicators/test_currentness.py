@@ -135,7 +135,7 @@ class TestCalculation:
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types: count, area and length
-        ["clinics", "buildings", "roads"],
+        ["buildings", "forests", "roads"],
     )
     @oqapi_vcr.use_cassette
     async def test_calculate_aggregation_types_low_contributions(
@@ -146,7 +146,7 @@ class TestCalculation:
         topic = get_topic_preset(topic_key)
         indicator = Currentness(topic, feature_germany_heidelberg)
         await indicator.preprocess()
-        if topic_key == "clinics":
+        if topic_key == "buildings":
             indicator.contrib_sum = 1
         else:
             indicator.contrib_sum = 0.5
@@ -156,7 +156,7 @@ class TestCalculation:
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types: count, area and length
-        ["clinics", "buildings", "roads"],
+        ["buildings", "forests", "roads"],
     )
     @oqapi_vcr.use_cassette
     async def test_calculate_aggregation_types(
