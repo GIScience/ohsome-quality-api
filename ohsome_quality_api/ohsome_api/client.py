@@ -55,7 +55,7 @@ async def features(
     response = await request(
         url,
         method="post",
-        json={"filter": ohsome_filter, "aoi": aoi, "timeSeries": time_series},
+        json={"filter": ohsome_filter, "aoi": aoi, "time": time_series},
     )
     return response["result"]
 
@@ -70,7 +70,7 @@ async def currentness(
     response = await request(
         url,
         method="post",
-        json={"filter": ohsome_filter, "aoi": aoi, "timeBins": time_bins},
+        json={"filter": ohsome_filter, "aoi": aoi, "time": time_bins},
     )
     return response["result"]
 
@@ -80,10 +80,10 @@ async def activity_users(
     ohsome_filter: str,
     time_bins: dict,
 ) -> dict:
-    url = f"{BASE_URL}/stats/contributors/activity.json"
+    url = f"{BASE_URL}/stats/contributors/count.json"
     response = await request(
         url,
         method="post",
-        json={"filter": ohsome_filter, "aoi": aoi, "timeBins": time_bins},
+        json={"filter": ohsome_filter, "aoi": aoi, "time": time_bins},
     )
     return response["result"]
