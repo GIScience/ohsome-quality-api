@@ -52,7 +52,7 @@ interactions:
       user-agent:
       - ohsome-quality-api/1.17.1
     method: POST
-    uri: https://ohsome-api.heigitk8s.de/stats/contributors/activity.json
+    uri: https://ohsome-api.heigitk8s.de/stats/contributors/count.json
   response:
     body:
       string: "{\"apiVersion\":\"2.0.0a5\",\"attribution\":{\"url\":\"https://ohsome.org/copyrights\",\"text\":\"\xA9
