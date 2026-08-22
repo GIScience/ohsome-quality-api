@@ -1,12 +1,12 @@
 ---
 label_description:
   red: >-
-    No saturation identified (Saturation ≤ 30%).
+    No saturation identified (Saturation ≤ 30%). Mapping is starting, but the existing data does not allow a completeness estimation.
   yellow: >-
-    Saturation is in progress (30% < Saturation ≤ 97%).
+    Mapping is in progress (30% < Saturation ≤ 97%). In the past three years, a lot of new features have been added to the map. This can indicate that completeness has not yet been reached.
   green: >-
-    High saturation has been reached (97% < Saturation ≤ 100%).
+    High saturation has been reached (97% < Saturation ≤ 100%). In the past three years, the amount of newly added features was very low. This is a sign that all features have already been mapped and can indicate high completeness.
   undefined: >-
-    Saturation could not be calculated.
+    Saturation could not be calculated. No completeness estimation can be made.
 result_description: >-
   The saturation of the last 3 years is $saturation.
