@@ -1,9 +1,9 @@
 {
   "label_description": {
-    "green": "Hohe Sättigung ereicht (97% < Sättigung ≤ 100%).",
-    "yellow": "Sättigung fortschreitend (30% < Sättigung ≤ 97%).",
-    "red": "Kein Sättigung erkannt (Sättigung ≤ 30%).",
-    "undefined": "Sättigung konnte nicht berechnet werden."
+    "green": "High saturation has been reached (97% < Saturation ≤ 100%). In the past three years, the amount of newly added features was very low. This is a sign that all features have already been mapped and can indicate high completeness.",
+    "yellow": "Mapping is in progress (30% < Saturation ≤ 97%). In the past three years, a lot of new features have been added to the map. This can indicate that completeness has not yet been reached.",
+    "red": "No saturation identified (Saturation ≤ 30%). Mapping is starting, but the existing data does not allow a completeness estimation.",
+    "undefined": "Saturation could not be calculated. No completeness estimation can be made."
   },
   "result_description": "Die Sättigung der letzten 3 Jahre ist $saturation."
 }
