@@ -1,5 +1,15 @@
 # Changelog
 
+## Current Main
+
+### Breaking Changes
+
+* Disable generation of documentation via ReDocs (`/redocs`)
+
+### Other Changes
+
+* api: make root_path and swagger assets paths configurable (480317f8)
+
 ## 1.18.0
 
 ### Breaking Changes
