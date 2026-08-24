@@ -1,7 +1,7 @@
 import json
 import os
 from collections.abc import AsyncIterator
-from typing import Any, Union
+from typing import Any, Union, cast
 
 from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.concurrency import asynccontextmanager
@@ -9,16 +9,14 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import (
-    get_redoc_html,
     get_swagger_ui_html,
-    get_swagger_ui_oauth2_redirect_html,
 )
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi_i18n import i18n
 from geojson import FeatureCollection
 from pydantic import ValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from starlette.staticfiles import StaticFiles
 
 from ohsome_quality_api import (
     __author__,
@@ -47,6 +45,7 @@ from ohsome_quality_api.api.response_models import (
     TopicMetadataResponse,
 )
 from ohsome_quality_api.attributes.definitions import get_attributes, load_attributes
+from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import ATTRIBUTION_URL
 from ohsome_quality_api.geodatabase.client import (
     create_pool_for_lifespan,
@@ -108,6 +107,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 
 app = FastAPI(
+    root_path=cast(str, get_config_value("root_path")),
+    openapi_url="/openapi.json",
     title=__title__,
     description=description,
     version=__version__,
@@ -137,31 +138,13 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
 @app.get("/docs", include_in_schema=False)
-async def custom_swagger_ui_html(request: Request):
-    root_path = request.scope.get("root_path")
+async def custom_swagger_ui_html() -> HTMLResponse:
     return get_swagger_ui_html(
-        openapi_url=root_path + app.openapi_url,
+        openapi_url="openapi.json",
         title=app.title + " - Swagger UI",
-        oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
-        swagger_js_url=root_path + "/static/swagger-ui-bundle.js",
-        swagger_css_url=root_path + "/static/swagger-ui.css",
-        swagger_favicon_url=root_path + "/static/favicon-32x32.png",
-    )
-
-
-@app.get(app.swagger_ui_oauth2_redirect_url, include_in_schema=False)
-async def swagger_ui_redirect():
-    return get_swagger_ui_oauth2_redirect_html()
-
-
-@app.get("/redoc", include_in_schema=False)
-async def redoc_html(request: Request):
-    root_path = request.scope.get("root_path")
-    return get_redoc_html(
-        openapi_url=root_path + app.openapi_url,
-        title=app.title + " - ReDoc",
-        redoc_js_url=root_path + "/static/redoc.standalone.js",
-        redoc_favicon_url=root_path + "/static/favicon-32x32.png",
+        oauth2_redirect_url=None,
+        swagger_js_url=cast(str, get_config_value("swagger_js_url")),
+        swagger_css_url=cast(str, get_config_value("swagger_css_url")),
     )
 
 
