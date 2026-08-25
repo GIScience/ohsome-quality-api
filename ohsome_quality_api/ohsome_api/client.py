@@ -5,8 +5,7 @@ import httpx
 from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.utils.exceptions import OhsomeApiError
 
-# TODO: extract to config
-BASE_URL = "https://ohsome-api.heigitk8s.de"
+BASE_URL = get_config_value("ohsome_api_url")
 
 
 async def request(
