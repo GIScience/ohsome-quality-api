@@ -12,6 +12,7 @@ from fastapi.openapi.docs import (
     get_swagger_ui_html,
 )
 from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.security import APIKeyHeader
 from fastapi.staticfiles import StaticFiles
 from fastapi_i18n import i18n
 from geojson import FeatureCollection
@@ -105,6 +106,18 @@ if "FASTAPI_I18N__LOCALE_DIR" not in os.environ:
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     async with create_pool_for_lifespan(app):
         yield
+
+
+api_key_header_scheme = APIKeyHeader(
+    name="authorization",
+    scheme_name="API Key",
+    description=(
+        "Please enter your "
+        '<a href="https://account.heigit.org/" target="_blank">API key</a>.'
+        "<br><br>"
+    ),
+    auto_error=False,
+)
 
 
 app = FastAPI(
@@ -218,7 +231,11 @@ def empty_api_response() -> dict:
     }
 
 
-@app.post("/indicators/mapping-saturation/data", include_in_schema=False)
+@app.post(
+    "/indicators/mapping-saturation/data",
+    include_in_schema=False,
+    dependencies=[Depends(api_key_header_scheme)],
+)
 async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONResponse:
     """Legacy support for computing the Mapping Saturation indicator for given data."""
     indicators = await main.create_indicator(
@@ -255,6 +272,7 @@ async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONRespo
             },
         },
     },
+    dependencies=[Depends(api_key_header_scheme)],
 )
 async def post_attribute_completeness(
     request: Request,
@@ -280,6 +298,7 @@ async def post_attribute_completeness(
             },
         },
     },
+    dependencies=[Depends(api_key_header_scheme)],
 )
 async def post_land_cover_thematic_accuracy(
     request: Request, parameters: LandCoverThematicAccuracyRequest
@@ -304,6 +323,7 @@ async def post_land_cover_thematic_accuracy(
             },
         },
     },
+    dependencies=[Depends(api_key_header_scheme)],
 )
 async def post_land_cover_completeness(
     request: Request, parameters: LandCoverCompletenessRequest
@@ -328,6 +348,7 @@ async def post_land_cover_completeness(
             },
         },
     },
+    dependencies=[Depends(api_key_header_scheme)],
 )
 async def post_roads_thematic_accuracy(
     request: Request, parameters: RoadsThematicAccuracyRequest
@@ -352,6 +373,7 @@ async def post_roads_thematic_accuracy(
             },
         },
     },
+    dependencies=[Depends(api_key_header_scheme)],
 )
 async def post_indicator(
     request: Request, key: IndicatorEnumRequest, parameters: IndicatorRequest
