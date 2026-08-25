@@ -9,13 +9,6 @@ from ohsome_quality_api import config
 class TestConfig(unittest.TestCase):
     def setUp(self):
         self.keys = {
-            "ohsomedb_host",
-            "ohsomedb_port",
-            "ohsomedb_db",
-            "ohsomedb_user",
-            "ohsomedb_password",
-            "ohsomedb_contributions_table",
-            "ohsomedb_search_path",
             "postgres_host",
             "postgres_port",
             "postgres_db",

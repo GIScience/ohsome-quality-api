@@ -20,14 +20,6 @@ def get_config_path() -> str:
 
 def load_config_default() -> dict:
     return {
-        "ohsomedb_enabled": False,
-        "ohsomedb_host": "localhost",
-        "ohsomedb_port": 5432,
-        "ohsomedb_db": "postgres",
-        "ohsomedb_user": "postgres",
-        "ohsomedb_password": "mylocalpassword",
-        "ohsomedb_contributions_table": "contributions",
-        "ohsomedb_search_path": '"global_2026-04-27",public',
         "ohsome_api_url": "https://ohsome-api.heigitk8s.de",
         "postgres_host": "localhost",
         "postgres_port": 5445,
@@ -65,14 +57,6 @@ def load_config_from_file(path: str) -> dict:
 def load_config_from_env() -> dict:
     """Load configuration from environment variables."""
     cfg = {
-        "ohsomedb_enabled": os.getenv("OQAPI_OHSOMEDB_ENABLED"),
-        "ohsomedb_host": os.getenv("OHSOMEDB_HOST"),
-        "ohsomedb_port": os.getenv("OHSOMEDB_PORT"),
-        "ohsomedb_db": os.getenv("OHSOMEDB_DB"),
-        "ohsomedb_user": os.getenv("OHSOMEDB_USER"),
-        "ohsomedb_password": os.getenv("OHSOMEDB_PASSWORD"),
-        "ohsomedb_contributions_table": os.getenv("OHSOMEDB_CONTRIBUTIONS_TABLE"),
-        "ohsomedb_search_path": os.getenv("OHSOMEDB_SEARCH_PATH"),
         "ohsome_api_url": os.getenv("OHSOME_API_URL"),
         "postgres_host": os.getenv("POSTGRES_HOST"),
         "postgres_port": os.getenv("POSTGRES_PORT"),

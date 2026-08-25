@@ -39,7 +39,6 @@ logger = logging.getLogger("rpy2")
 logger.propagate = False
 
 
-# TODO: remove once ohsomedb has been replaced by ohsome-api
 @pytest.fixture(autouse=True)
 def get_connection(monkeypatch):
     @asynccontextmanager
@@ -53,19 +52,8 @@ def get_connection(monkeypatch):
                     user=get_config_value("postgres_user"),
                     password=get_config_value("postgres_password"),
                 )
-            case "ohsomedb":
-                dsn = "postgres://{user}:{password}@{host}:{port}/{database}".format(
-                    host=get_config_value("ohsomedb_host"),
-                    port=get_config_value("ohsomedb_port"),
-                    database=get_config_value("ohsomedb_db"),
-                    user=get_config_value("ohsomedb_user"),
-                    password=get_config_value("ohsomedb_password"),
-                )
         connection = await asyncpg.connect(dsn)
         try:
-            if database == "ohsomedb":
-                sql = 'set search_path to "global_2026-04-27",public'
-                await connection.execute(sql)
             yield connection
         finally:
             await connection.close()

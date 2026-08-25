@@ -33,7 +33,6 @@ WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 OQAPIDB_POOL: Pool
-OHSOMEDB_POOL: Pool
 
 
 def log_query(record):
@@ -51,48 +50,23 @@ async def create_pool_for_lifespan(app: FastAPI):
         user=get_config_value("postgres_user"),
         password=get_config_value("postgres_password"),
     )
-    ohsomedb_dsn = "postgres://{user}:{password}@{host}:{port}/{database}".format(
-        host=get_config_value("ohsomedb_host"),
-        port=get_config_value("ohsomedb_port"),
-        database=get_config_value("ohsomedb_db"),
-        user=get_config_value("ohsomedb_user"),
-        password=get_config_value("ohsomedb_password"),
-    )
-    server_settings = {
-        "application_name": get_config_value("user_agent"),
-        "search_path": get_config_value("ohsomedb_search_path"),
-    }
-    async with (
-        asyncpg.create_pool(oqapidb_dsn) as oqapidb_pool,
-        asyncpg.create_pool(
-            ohsomedb_dsn,
-            min_size=5,  # TODO put into config value
-            max_size=30,  # TODO put info config value
-            server_settings=server_settings,
-        ) as ohsomedb_pool,
-    ):
+    async with asyncpg.create_pool(oqapidb_dsn) as oqapidb_pool:
         app.state.oqapidb_pool = await oqapidb_pool
-        app.state.ohsomedb_pool = await ohsomedb_pool
         yield
 
 
 def set_pool_for_request(request: Request):
     global OQAPIDB_POOL
-    global OHSOMEDB_POOL
     OQAPIDB_POOL = request.app.state.oqapidb_pool
-    OHSOMEDB_POOL = request.app.state.ohsomedb_pool
     yield
 
 
 @asynccontextmanager
-async def get_connection(database: Literal["oqapidb", "ohsomedb"] = "oqapidb"):
+async def get_connection(database: Literal["oqapidb"] = "oqapidb"):
     global OQAPIDB_POOL
-    global OHSOMEDB_POOL
     match database:
         case "oqapidb":
             pool = OQAPIDB_POOL
-        case "ohsomedb":
-            pool = OHSOMEDB_POOL
     async with pool.acquire() as conn:
         try:
             with conn.query_logger(log_query):
@@ -104,7 +78,7 @@ async def get_connection(database: Literal["oqapidb", "ohsomedb"] = "oqapidb"):
 async def fetch(
     query: str,
     *args,
-    database: Literal["oqapidb", "ohsomedb"] = "oqapidb",
+    database: Literal["oqapidb"] = "oqapidb",
 ) -> list:
     async with get_connection(database) as conn:
         return await conn.fetch(query, *args)

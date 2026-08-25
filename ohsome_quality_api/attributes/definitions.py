@@ -57,7 +57,6 @@ def build_attribute_filter(
     attribute_keys: list[str] | None,
     topic_key: str,
 ) -> str:
-    """Build attribute filter for ohsomeDB query."""
     attributes = get_attributes()
     try:
         if attribute_keys is not None:

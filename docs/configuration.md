@@ -8,13 +8,6 @@ Below is a table listing all possible configuration variables.
 
 | Configuration Variable Name  | Environment Variable Name       | Configuration File Name        | Default Value                  | Description                                                                 |
 | ---------------------------  | ------------------------------- | -------------------------      | ------------------------------ | --------------------------------------------------------------------------- |
-| ohsomeDB Host                | `OHSOMEDB_HOST`                 | `ohsomedb_host`                | `localhost`                    | ohsomeDB database connection parameter                                      |
-| ohsomeDB Port                | `OHSOMEDB_PORT`                 | `ohsomedb_port`                | `5432`                         | "                                                                           |
-| ohsomeDB Database            | `OHSOMEDB_DB`                   | `ohsomedb_db`                  | `postgres`                     | "                                                                           |
-| ohsomeDB User                | `OHSOMEDB_USER`                 | `ohsomedb_user`                | `postgres`                     | "                                                                           |
-| ohsomeDB Password            | `OHSOMEDB_PASSWORD`             | `ohsomedb_password`            | `mylocalpassword`              | "                                                                           |
-| ohsomeDB Contributions Table | `OHSOMEDB_CONTRIBUTIONS_TABLE`  | `ohsomedb_contributions_table` | `contributions`                | "                                                                           |
-| ohsomeDB Search Path         | `OHSOMEDB_SEARCH_PATH`          | `ohsomedb_search_path`         | `"global_2026-04-27",public`   | "                                                                           |
 | Postgres Host                | `POSTGRES_HOST`                 | `postgres_host`                | `localhost`                    | Postgres database connection parameter                                      |
 | Postgres Port                | `POSTGRES_PORT`                 | `postgres_port`                | `5445`                         | "                                                                           |
 | Postgres Database            | `POSTGRES_DB`                   | `postgres_db`                  | `oqapi`                        | "                                                                           |

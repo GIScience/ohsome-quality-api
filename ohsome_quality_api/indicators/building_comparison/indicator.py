@@ -15,21 +15,12 @@ from geojson import Feature
 from numpy import mean
 
 import ohsome_quality_api.ohsome_api.client as ohsome_api_client
-from ohsome_quality_api.config import get_config_value
 from ohsome_quality_api.definitions import Color, get_attribution
 from ohsome_quality_api.geodatabase import client as db_client
 from ohsome_quality_api.indicators.base import BaseIndicator
 from ohsome_quality_api.topics.models import Topic
 
 logger = logging.getLogger(__name__)
-
-
-def is_ohsomedb_enabled() -> bool:
-    ohsomedb_enabled = get_config_value("ohsomedb_enabled")
-    if ohsomedb_enabled or ohsomedb_enabled in ("True", "true"):  # noqa: SIM103
-        return True
-    else:
-        return False
 
 
 class BuildingComparison(BaseIndicator):

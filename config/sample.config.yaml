@@ -1,12 +1,5 @@
 ---
 # Database connection parameters;
-ohsomedb_host: localhost
-ohsomedb_port: 5432
-ohsomedb_db: postgres
-ohsomedb_user: postgres
-ohsomedb_password: mylocalpassword
-ohsomedb_search_path: >
-  "global_2026-04-27",public
 ohsome_api_url: https://ohsome-api.heigitk8s.de
 postgres_host: localhost
 postgres_port: 5445
