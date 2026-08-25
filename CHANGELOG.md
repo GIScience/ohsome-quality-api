@@ -4,7 +4,9 @@
 
 ### Breaking Changes
 
-* Disable generation of documentation via ReDocs (`/redocs`)
+* disable generation of documentation via ReDocs (`/redocs`)
+* require `measure` parameter to be provided for custom topic requests (1f78c878)
+    - `measure` can be on of `count`, `length` or `area`
 
 ### Other Changes
 
