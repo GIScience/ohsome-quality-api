@@ -93,7 +93,7 @@ TAGS_METADATA = [
 description = """
 Data quality estimations for OpenStreetMap.
 
-[Homepage](https://api.quality.ohsome.org) | [Dashboard](https://dashboard.ohsome.org/#backend=oqapi)
+[Homepage](https://api.quality.ohsome.org) | [Dashboard](https://ohsome-dashboard.heigit.org#backend=oqtApi)
 """
 
 if "FASTAPI_I18N__LOCALE_DIR" not in os.environ:

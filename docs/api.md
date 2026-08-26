@@ -1,6 +1,6 @@
 # API
 
-Please take a look at the [interactive Swagger UI](https://api.quality.ohsome.org/v1/docs) to explore the API.
+Please take a look at the [interactive Swagger UI](https://api.heigit.org/docs/?urls.primaryName=ohsome+quality+API) to explore the API.
 
 We also provide a [Jupyter Notebook](https://github.com/GIScience/ohsome-quality-api-examples) with examples on how to use the ohsome quality API with Python.
 

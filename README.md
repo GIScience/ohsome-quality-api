@@ -4,12 +4,12 @@
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=ohsome-quality-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=ohsome-quality-api)
 [![Docker Image Version](https://img.shields.io/docker/v/heigit/ohsome-quality-api)](https://hub.docker.com/r/heigit/ohsome-quality-api)
 [![LICENSE](https://img.shields.io/badge/license-AGPL--v3-orange)](LICENSE.txt)
-[![Dashboard](https://img.shields.io/website?url=https%3A%2F%2Fdashboard.ohsome.org&label=dashboard)](https://dashboard.ohsome.org/#backend=oqtApi)
+[![Dashboard](https://img.shields.io/website?url=https%3A%2F%2Fdashboard.ohsome.org&label=dashboard)](https://ohsome-dashboard.heigit.org/#backend=oqtApi)
 [![status: active](https://github.com/GIScience/badges/raw/master/status/active.svg)](https://github.com/GIScience/badges#active)
 
-The ohsome quality API computes and provides data quality estimations (indicators) for OpenStreetMap.
+The [ohsome quality API](https://api.heigit.org/docs/?urls.primaryName=ohsome+quality+API) computes and provides data quality estimations (indicators) for OpenStreetMap.
 
-Thanks to the [ohsome dashboard](https://dashboard.ohsome.org) generating quality estimations of OpenStreetMap data for an arbitrary region is as easy as pie.
+Thanks to the [ohsome dashboard](https://ohsome-dashboard.heigit.org#backend=oqtApi) generating quality estimations of OpenStreetMap data for an arbitrary region is as easy as pie.
 
 The software is developed by [Heidelberg Institute for Geoinformation Technology (HeiGIT)](https://heigit.org/) and based on the [ohsome platform](https://heigit.org/big-spatial-data-analytics-en/ohsome/).
 
@@ -17,11 +17,11 @@ The software is developed by [Heidelberg Institute for Geoinformation Technology
 
 ### Dashboard
 
-For quick insights, you can start exploring quality estimations through the [ohsome dashboard](https://dashboard.ohsome.org).
+For quick insights, you can start exploring quality estimations through the [ohsome dashboard](https://ohsome-dashboard.heigit.org#backend=oqtApi).
 
 ### API
 
-Check out the interactive [Swagger API documentation](https://api.quality.ohsome.org/v1/docs) and the [Jupyter Notebook examples](https://github.com/GIScience/ohsome-quality-api-examples).
+Check out the interactive [Swagger API documentation](https://api.heigit.org/docs/?urls.primaryName=ohsome+quality+API) and the [Jupyter Notebook examples](https://github.com/GIScience/ohsome-quality-api-examples).
 
 ## About
 
