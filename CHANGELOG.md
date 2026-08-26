@@ -1,6 +1,14 @@
 # Changelog
 
-## Current Main
+## 2.0.0
+
+This release features performance improvements by using ohsome API v2 to get OSM statistics.
+
+Breaking changes include renaming and removing of topics and removing the concept of `projects`, which has been used to filter the available selection of indicators and topics.
+
+From now own the ohsome quality API is available under [api.heigit.org/ohsome-quality-api/v2](https://api.heigit.org/ohsome-quality-api/v2) and the interactive Swagger documentation under [api.heigit.org/docs](https://api.heigit.org/docs/?urls.primaryName=ohsome+quality+API).
+
+Making requests to the API require an API key available for free to registered users under [https://account.heigit.org/](https://account.heigit.org/).
 
 ### Breaking Changes
 

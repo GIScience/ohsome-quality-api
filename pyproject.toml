@@ -35,6 +35,7 @@ dependencies = [
 ]
 [project.urls]
 Homepage = "https://api.quality.ohsome.org"
+Documentation = "https://api.heigit.org/docs/?urls.primaryName=ohsome+quality+API"
 Repository = "https://github.com/GIScience/ohsome-quality-api"
 
 [dependency-groups]
