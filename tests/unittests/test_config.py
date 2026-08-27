@@ -14,12 +14,13 @@ class TestConfig(unittest.TestCase):
             "postgres_db",
             "postgres_user",
             "postgres_password",
-            "data_dir",
-            "geom_size_limit",
-            "log_level",
-            "ohsome_api",
-            "concurrent_computations",
+            "ohsome_api_url",
+            "heigit_api_key",
             "user_agent",
+            "root_path",
+            "docs_url",
+            "log_level",
+            "concurrent_computations",
             "datasets",
         }
 
@@ -74,7 +75,7 @@ class TestConfig(unittest.TestCase):
 
     @mock.patch.dict(
         "os.environ",
-        {"OQAPI_GEOM_SIZE_LIMIT": "200", "POSTGRES_HOST": "foo"},
+        {"POSTGRES_HOST": "foo"},
         clear=True,
     )
     def test_load_config_from_env_set(self):
@@ -82,7 +83,7 @@ class TestConfig(unittest.TestCase):
         self.assertTrue(set(cfg.keys()).issubset(set(self.keys)))
         self.assertDictEqual(
             cfg,
-            {"geom_size_limit": "200", "postgres_host": "foo"},
+            {"postgres_host": "foo"},
         )
 
     @mock.patch.dict("os.environ", {}, clear=True)
@@ -95,7 +96,7 @@ class TestConfig(unittest.TestCase):
     def test_get_config_value(self):
         for key in self.keys:
             val = config.get_config_value(key)
-            assert isinstance(val, (int, str, dict))
+            assert isinstance(val, (int, str, dict)) or val is None
 
     @mock.patch.dict(
         "os.environ",
@@ -106,18 +107,3 @@ class TestConfig(unittest.TestCase):
         cfg = config.get_config()
         self.assertIsInstance(cfg, MappingProxyType)
         self.assertEqual(list(self.keys).sort(), list(cfg.keys()).sort())
-
-    @mock.patch.dict("os.environ", {}, clear=True)
-    def test_get_data_dir_unset_env(self):
-        data_dir = config.get_default_data_dir()
-        expected = os.path.abspath(
-            os.path.join(
-                os.path.dirname(
-                    os.path.abspath(__file__),
-                ),
-                "..",
-                "..",
-                "data",
-            )
-        )
-        self.assertEqual(data_dir, expected)
