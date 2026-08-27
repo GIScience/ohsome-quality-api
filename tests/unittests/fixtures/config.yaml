@@ -1,21 +1,26 @@
 ---
-# Database connection parameters;
+# Database connection parameters (required)
 postgres_host: localhost
 postgres_port: 5445
 postgres_db: oqapi
 postgres_user: oqapi
 postgres_password: oqapi
-# Restrict size of input geometry
-geom_size_limit: 100
+
+# ohsome API configuration
+ohsome_api_url: https://ohsome-api.heigitk8s.de
+heigit_api_key:
+
+user_agent: ohsome-quality-api
+
+# FastAPI configuration
+root_path: /ohsome-quality-api/v2
+docs_url: /docs
+
 # Python logging level
 log_level: INFO
-# ohsome API URL
-ohsome_api: https://api.ohsome.org/v1
+
 # Limit number of concurrent Indicator computations
 concurrent_computations: 4
-# User-Agent header for request to the ohsome API
-# Default: 'ohsome-quality-api/{version}'
-user_agent: ohsome-quality-api
 # Datasets and Feature IDs available in the database
 datasets:
   regions:  # Name of relation with GEOM
