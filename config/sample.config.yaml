@@ -20,3 +20,4 @@ concurrent_computations: 4
 # User-Agent header for request to the ohsome API
 # Default: 'ohsome-quality-api/{version}'
 user_agent: ohsome-quality-api
+docs_url: /docs
