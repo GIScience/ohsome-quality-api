@@ -27,8 +27,6 @@ def load_config_default() -> dict:
         "postgres_user": "oqapi",
         "postgres_password": "oqapi",
         "root_path": "",
-        "swagger_css_url": "/static/swagger-ui.css",
-        "swagger_js_url": "/static/swagger-ui-bundle.js",
         "data_dir": get_default_data_dir(),
         "geom_size_limit": 1000,
         "log_level": "INFO",

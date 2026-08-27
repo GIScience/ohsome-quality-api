@@ -49,12 +49,18 @@ async def features(
     measure: str,
     ohsome_filter: str,
     time_series: dict,
+    clip: bool = False,
 ):
     url = f"{BASE_URL}/stats/features/{measure}.json"
     response = await request(
         url,
         method="post",
-        json={"filter": ohsome_filter, "aoi": aoi, "time": time_series},
+        json={
+            "filter": ohsome_filter,
+            "aoi": aoi,
+            "time": time_series,
+            "clip": clip,
+        },
     )
     return response["result"]
 
