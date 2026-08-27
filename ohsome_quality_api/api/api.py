@@ -68,7 +68,6 @@ from ohsome_quality_api.topics.definitions import (
 )
 from ohsome_quality_api.utils.exceptions import (
     OhsomeApiError,
-    SizeRestrictionError,
     TopicDataSchemaError,
 )
 from ohsome_quality_api.utils.helper import (
@@ -171,9 +170,8 @@ async def validation_exception_handler(
 
 @app.exception_handler(TopicDataSchemaError)
 @app.exception_handler(OhsomeApiError)
-@app.exception_handler(SizeRestrictionError)
 async def custom_exception_handler(
-    _: Request, exception: TopicDataSchemaError | OhsomeApiError | SizeRestrictionError
+    _: Request, exception: TopicDataSchemaError | OhsomeApiError
 ):
     """Exception handler for custom exceptions."""
     return JSONResponse(
