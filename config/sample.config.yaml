@@ -9,9 +9,8 @@ postgres_password: oqapi
 # ohsome API configuration
 ohsome_api_url: https://ohsome-api.heigitk8s.de
 heigit_api_key:
-
 # Defaults to 'ohsome-quality-api/{version}'
-user_agent:
+# user_agent:
 
 # FastAPI configuration
 root_path: /ohsome-quality-api/v2
