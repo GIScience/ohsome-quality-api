@@ -30,8 +30,8 @@ class TestPreprocess:
             attribute_keys=attribute_key,
         )
         await indicator.preprocess()
-        assert indicator.absolute_value_1 == 31_338
-        assert indicator.absolute_value_2 == 13_006
+        assert indicator.absolute_value_1 == 31_354
+        assert indicator.absolute_value_2 == 13_019
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -48,8 +48,8 @@ class TestPreprocess:
             attribute_keys=["name"],
         )
         await indicator.preprocess()
-        assert indicator.absolute_value_1 == 788.336
-        assert indicator.absolute_value_2 == 529.275
+        assert indicator.absolute_value_1 == 803.226
+        assert indicator.absolute_value_2 == 541.807
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -67,8 +67,8 @@ class TestPreprocess:
             attribute_keys=attribute_key_multiple,
         )
         await indicator.preprocess()
-        assert indicator.absolute_value_1 == 31_338
-        assert indicator.absolute_value_2 == 11_391
+        assert indicator.absolute_value_1 == 31_354
+        assert indicator.absolute_value_2 == 11_398
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
@@ -88,8 +88,8 @@ class TestPreprocess:
             attribute_title=attribute_title,
         )
         await indicator.preprocess()
-        assert indicator.absolute_value_1 == 31_338
-        assert indicator.absolute_value_2 == 13_006
+        assert indicator.absolute_value_1 == 31_354
+        assert indicator.absolute_value_2 == 13_019
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 

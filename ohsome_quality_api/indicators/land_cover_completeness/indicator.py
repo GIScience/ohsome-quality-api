@@ -42,6 +42,7 @@ class LandCoverCompleteness(BaseIndicator):
             measure=self.topic.aggregation_type,
             ohsome_filter=self.topic.filter,
             time_series={"start": start, "end": end},
+            clip=True,
         )
 
         if result["value"][-1]:

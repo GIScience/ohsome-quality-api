@@ -21,7 +21,7 @@ async def test_create_land_cover_completeness_preprocess(
     )
     await indicator.preprocess()
     assert indicator.area_feature == pytest.approx(108, abs=1)
-    assert indicator.area_osm == pytest.approx(200, abs=1)
+    assert indicator.area_osm == pytest.approx(104, abs=1)
     assert indicator.result.timestamp_osm.strftime("%Y-%m-%d")
 
 

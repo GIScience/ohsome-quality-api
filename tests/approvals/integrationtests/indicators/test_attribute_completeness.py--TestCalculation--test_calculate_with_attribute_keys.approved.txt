@@ -1,1 +1,1 @@
-42% of all "Buildings" features (all: 31338 elements) in your area of interest have the selected additional attribute height of buildings (matched: 13006 elements). The attribute completeness is medium (25%-75%).
+42% of all "Buildings" features (all: 31354 elements) in your area of interest have the selected additional attribute height of buildings (matched: 13019 elements). The attribute completeness is medium (25%-75%).

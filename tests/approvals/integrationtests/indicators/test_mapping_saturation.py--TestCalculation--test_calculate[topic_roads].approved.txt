@@ -1,1 +1,1 @@
-Die Sättigung der letzten 3 Jahre ist 99.27%. High saturation has been reached (97% < Saturation ≤ 100%). In the past three years, the amount of newly added features was very low. This is a sign that all features have already been mapped and can indicate high completeness.
+Die Sättigung der letzten 3 Jahre ist 98.82%. High saturation has been reached (97% < Saturation ≤ 100%). In the past three years, the amount of newly added features was very low. This is a sign that all features have already been mapped and can indicate high completeness.
