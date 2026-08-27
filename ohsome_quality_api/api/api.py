@@ -8,12 +8,8 @@ from fastapi.concurrency import asynccontextmanager
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.openapi.docs import (
-    get_swagger_ui_html,
-)
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import JSONResponse
 from fastapi.security import APIKeyHeader
-from fastapi.staticfiles import StaticFiles
 from fastapi_i18n import i18n
 from geojson import FeatureCollection
 from pydantic import ValidationError
@@ -131,8 +127,6 @@ app = FastAPI(
         "email": __email__,
     },
     openapi_tags=TAGS_METADATA,
-    docs_url=None,
-    redoc_url=None,
     lifespan=lifespan,
     dependencies=[
         Depends(set_pool_for_request),
@@ -148,18 +142,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
-
-
-@app.get("/docs", include_in_schema=False)
-async def custom_swagger_ui_html() -> HTMLResponse:
-    return get_swagger_ui_html(
-        openapi_url="openapi.json",
-        title=app.title + " - Swagger UI",
-        oauth2_redirect_url=None,
-        swagger_js_url=cast(str, get_config_value("swagger_js_url")),
-        swagger_css_url=cast(str, get_config_value("swagger_css_url")),
-    )
 
 
 class CustomJSONResponse(JSONResponse):
