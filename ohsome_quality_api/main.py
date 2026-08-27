@@ -9,7 +9,6 @@ from ohsome_quality_api.indicators.base import BaseIndicator as Indicator
 from ohsome_quality_api.topics.models import Topic, TopicData
 from ohsome_quality_api.utils.helper import get_class_from_key
 from ohsome_quality_api.utils.helper_asyncio import gather_with_semaphore
-from ohsome_quality_api.utils.validators import validate_area
 
 logger = logging.getLogger(__name__)
 
@@ -30,20 +29,6 @@ async def create_indicator(
     for i, feature in enumerate(bpolys.features):
         if "id" not in feature:
             feature["id"] = i
-        # Disable size limit for the Mapping Saturation indicator
-        # TODO: Remove size restriction
-        if isinstance(topic, Topic) and key not in [
-            "mapping-saturation",
-            "currentness",
-            "building-comparison",
-            "road-comparison",
-            "attribute-completeness",
-            "land-cover-thematic-accuracy",
-            "land-cover-completeness",
-            "user-activity",
-            "roads-thematic-accuracy",
-        ]:
-            validate_area(feature)
         tasks.append(
             _create_indicator(
                 key,
