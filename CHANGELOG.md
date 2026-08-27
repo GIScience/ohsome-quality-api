@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0
+
+## Bug Fixes
+
+* land-cover-completeness: get OSM statistics clipped to AOI (cf07a642)
+
 ## 2.0.0
 
 This release features performance improvements by using ohsome API v2 to get OSM statistics.
