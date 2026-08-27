@@ -93,6 +93,7 @@ pipeline {
                 script {
                     docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
                         if (env.BRANCH_NAME ==~ SNAPSHOT_BRANCH_REGEX) {
+                            sh 'uv version "$VERSION+$LATEST_COMMIT_ID"'
                             dockerImage = docker.build(DOCKER_REPOSITORY + ':' + env.BRANCH_NAME)
                             dockerImage.push()
                         }
