@@ -63,8 +63,6 @@ def load_config_from_env() -> dict:
         "postgres_user": os.getenv("POSTGRES_USER"),
         "postgres_password": os.getenv("POSTGRES_PASSWORD"),
         "root_path": os.getenv("ROOT_PATH"),
-        "swagger_css_url": os.getenv("SWAGGER_CSS_URL"),
-        "swagger_js_url": os.getenv("SWAGGER_JS_URL"),
         "data_dir": os.getenv("OQAPI_DATA_DIR"),
         "geom_size_limit": os.getenv("OQAPI_GEOM_SIZE_LIMIT"),
         "ohsome_api": os.getenv("OQAPI_OHSOME_API"),

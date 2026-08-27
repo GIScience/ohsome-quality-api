@@ -7,8 +7,6 @@ postgres_db: oqapi
 postgres_user: oqapi
 postgres_password: oqapi
 root_path: /ohsome-quality-api/v2
-swagger_css_url: /static/swagger-ui.css
-swagger_js_url: /static/swagger-ui-bundle.js
 # Restrict size of input geometry
 geom_size_limit: 1000
 # Python logging level
