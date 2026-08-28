@@ -1,5 +1,11 @@
 # Changelog
 
+## Current Main
+
+* topic: fix filter for railways by changing geometry:polygon to geometry:line (45c8cb8a)
+* api: do not server /docs per default but make it optionally configurable (8547d09b)
+* api: remove custom setup for serving swagger (d37147d0)
+
 ## 2.1.0
 
 ## Bug Fixes
