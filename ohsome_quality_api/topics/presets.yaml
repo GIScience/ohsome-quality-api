@@ -73,7 +73,7 @@ railways:
     Length of railway networks.
   aggregation_type: length
   filter: >-
-    railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and geometry:polygon
+    railway in (rail, subway, tram, light_rail, monorail, funicular, narrow_gauge) and geometry:line
   indicators:
     - mapping-saturation
     - currentness
