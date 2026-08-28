@@ -3,7 +3,7 @@ import os
 
 import rpy2.rinterface_lib.callbacks
 
-__version__ = "2.1.0"
+__version__ = "2.1.1"
 __title__ = "ohsome quality API"
 __description__ = "Data quality estimations for OpenStreetMap"
 __author__ = "ohsome team"
