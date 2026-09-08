@@ -1,5 +1,9 @@
 # Changelog
 
+## Current Main
+
+- dependencies: upgrade `ohsome-filter-to-sql`/allow filter with new lines
+
 ## 2.1.1
 
 ## Bug Fixes
