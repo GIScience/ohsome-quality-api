@@ -41,14 +41,6 @@ class Topic(BaseTopic, validate_assignment=True):
     source: str | None = None
     ratio_filter: str | None = None
 
-    @field_validator("filter", mode="before")
-    @classmethod
-    def ensure_filter_geometry_or_type(cls, value: str) -> str:
-        if "geometry" not in value and "type" not in value:
-            raise ValueError("Filter must contain geometry or type specification.")
-        else:
-            return value
-
 
 class TopicData(BaseTopic):
     """Includes the data associated with the topic."""
