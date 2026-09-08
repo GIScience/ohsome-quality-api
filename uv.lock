@@ -685,15 +685,34 @@ wheels = [
 
 [[package]]
 name = "ohsome-filter-to-sql"
-version = "0.10.2"
+version = "0.13.0"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.13'",
+]
 dependencies = [
     { name = "antlr4-python3-runtime" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0e/02/7cb6780625881911b7a6526e0ea67385aa0acba0b73b36d78f6e481da5d4/ohsome_filter_to_sql-0.10.2.tar.gz", hash = "sha256:fa80ac8790419a13075ed35859a33ee854b22f27fad7320c952f87f12bf1c30a", size = 37866, upload-time = "2026-06-15T12:22:19.225Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fc/37/de40bb36c551b2182b01df2645cb3abc5b86d8913794dac9bdb4b579aeed/ohsome_filter_to_sql-0.13.0.tar.gz", hash = "sha256:f8d2249c540bb3b1a82a418b42a09053162f5c60ceddd8ed5e43be8a9464b918", size = 36562, upload-time = "2026-07-25T06:36:27.153Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/79/48/e5ccd04e2410aede7adbf8478c66ef27e5e895f4fc6343a3a3abd53172ab/ohsome_filter_to_sql-0.10.2-py3-none-any.whl", hash = "sha256:3223acc7bb4eb5cbb69826df4f76ce7006b8a864f027b4dc12dc1ce945aab8eb", size = 39457, upload-time = "2026-06-15T12:22:20.233Z" },
+    { url = "https://files.pythonhosted.org/packages/a8/1b/907380eb58cc4642a2daf4e9be41b9b3c1caefc6a39c383fa6b71fb6e24f/ohsome_filter_to_sql-0.13.0-py3-none-any.whl", hash = "sha256:96144add7b605a627172fee0fd2fdf720fedccd08a6e995e6f75035e3f6c4374", size = 38078, upload-time = "2026-07-25T06:36:25.858Z" },
+]
+
+[[package]]
+name = "ohsome-filter-to-sql"
+version = "0.15.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.13'",
+]
+dependencies = [
+    { name = "antlr4-python3-runtime" },
+    { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/91/ba/9f406ddbe78457bd3ba61a7954bf753d4630454cc99bd710b5bb191254c0/ohsome_filter_to_sql-0.15.0.tar.gz", hash = "sha256:6f6912afeb421c6cdee5c17831d47555e427452a8a8c1e509d6f10853c2677f3", size = 36731, upload-time = "2026-09-07T14:07:53.409Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8f/e4/c1ca9180715bd548b3b32402ee60642e0d1ccb689c81ae61caf2da64d9d0/ohsome_filter_to_sql-0.15.0-py3-none-any.whl", hash = "sha256:155cc03e1284b178583f289a622a48dc85339100d63ca18fb20bb6abf564f1dd", size = 38259, upload-time = "2026-09-07T14:07:52.364Z" },
 ]
 
 [[package]]
@@ -710,7 +729,8 @@ dependencies = [
     { name = "geojson-pydantic" },
     { name = "httpx" },
     { name = "numpy" },
-    { name = "ohsome-filter-to-sql" },
+    { name = "ohsome-filter-to-sql", version = "0.13.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13'" },
+    { name = "ohsome-filter-to-sql", version = "0.15.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13'" },
     { name = "plotly" },
     { name = "pydantic" },
     { name = "pyproj" },
