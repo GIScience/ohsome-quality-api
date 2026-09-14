@@ -34,9 +34,18 @@ async def request(
     try:
         resp.raise_for_status()
     except httpx.HTTPStatusError as error:
-        raise OhsomeApiError("Querying the ohsome API failed!") from error
+        msg = parse_error(resp)
+        raise OhsomeApiError("Querying the ohsome API failed!" + msg) from error
 
     return resp.json()
+
+
+def parse_error(resp) -> str:
+    try:
+        result = resp.json()
+    except Exception:
+        return ""
+    return " {}: {}".format(result["type"], result["msg"])
 
 
 async def metadata() -> dict:
