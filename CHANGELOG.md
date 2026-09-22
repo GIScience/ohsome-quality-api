@@ -7,6 +7,7 @@
 * feat: add predefined attributes to cycleway topic (8dcf1867)
 * dependencies: new ohsome filter syntax to allow multiple geometry/osm types (60f4bca8)
 * dependencies: upgrade `ohsome-filter-to-sql`/allow filter with new lines (e093cd18)
+* mapping-saturation: include extra data about best fit in response (6464af84)
 
 ### Other Changes
 
