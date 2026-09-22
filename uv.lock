@@ -809,24 +809,24 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "async-lru", specifier = ">=2.0.5" },
+    { name = "async-lru", specifier = ">=2.0.5,<3.0.0" },
     { name = "asyncpg", specifier = ">=0.30.0" },
-    { name = "babel", specifier = ">=2.17.0" },
+    { name = "babel", specifier = ">=2.17.0,<3.0.0" },
     { name = "fastapi", specifier = ">=0.115.12" },
     { name = "fastapi-i18n", specifier = ">=0.5.1" },
-    { name = "geojson", specifier = ">=3.2.0" },
-    { name = "geojson-pydantic", specifier = ">=2.0.0" },
+    { name = "geojson", specifier = ">=3.2.0,<4.0.0" },
+    { name = "geojson-pydantic", specifier = ">=2.0.0,<3.0.0" },
     { name = "httpx", specifier = ">=0.28.1" },
-    { name = "numpy", specifier = ">=2.4.3" },
+    { name = "numpy", specifier = ">=2.4.3,<3.0.0" },
     { name = "ohsome-filter-to-sql", specifier = ">=0.1.0" },
-    { name = "plotly", specifier = ">=6.0.1" },
-    { name = "pydantic", specifier = ">=2.11.4" },
-    { name = "pyproj", specifier = ">=3.7.1" },
-    { name = "python-dateutil", specifier = ">=2.9.0.post0" },
-    { name = "pyyaml", specifier = ">=6.0.2" },
+    { name = "plotly", specifier = ">=6.0.1,<7.0.0" },
+    { name = "pydantic", specifier = ">=2.11.4,<3.0.0" },
+    { name = "pyproj", specifier = ">=3.7.1,<4.0.0" },
+    { name = "python-dateutil", specifier = ">=2.9.0.post0,<3.0.0" },
+    { name = "pyyaml", specifier = ">=6.0.2,<7.0.0" },
     { name = "rpy2", specifier = ">=3.5.17,<3.6" },
     { name = "schema", specifier = ">=0.7.7" },
-    { name = "scikit-learn", specifier = ">=1.6.1" },
+    { name = "scikit-learn", specifier = ">=1.6.1,<2.0.2" },
     { name = "uvicorn", specifier = ">=0.34.2" },
 ]
 
@@ -903,15 +903,15 @@ wheels = [
 
 [[package]]
 name = "plotly"
-version = "7.1.0"
+version = "6.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "narwhals" },
     { name = "packaging" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/49/c3/72b369f5ed7701b04ab0ea3dcf83e9bbce71c0b3bc6f07f87568550d09ea/plotly-7.1.0.tar.gz", hash = "sha256:f860166a4a3d78c69cb1f4a15f28a5c8283eade98a282a698f3bb853a449ace5", size = 6689315, upload-time = "2026-09-15T19:21:21.75Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/96/07/795c79dbce40c39bece88e69d049babbd23ffa95b5d117f248db8ea03abb/plotly-6.9.0.tar.gz", hash = "sha256:967ad33e8c704fed051800d11d985eb206a9c795c14206b30a6f463ed9c67d0d", size = 6919903, upload-time = "2026-07-09T14:55:59.982Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e5/7d/905a3a3d51087515719058c94cfbda2ff0fc14417c20d557ae3e82d8b250/plotly-7.1.0-py3-none-any.whl", hash = "sha256:dbb7fa18afce40d0a8e80d1bf162eceb3faa0ce5a77fe741ad09a74cf78f53f3", size = 9692368, upload-time = "2026-09-15T19:21:18.331Z" },
+    { url = "https://files.pythonhosted.org/packages/24/18/d8544811ab076f876c4892b3714f5b0dad335e1dc33aef826df431b8325d/plotly-6.9.0-py3-none-any.whl", hash = "sha256:36bebe2f1bb13884774fe61689c329071446f6ce4a8927fb1f0d6fb24f581236", size = 9909646, upload-time = "2026-07-09T14:55:55.421Z" },
 ]
 
 [[package]]
@@ -1451,15 +1451,15 @@ wheels = [
 
 [[package]]
 name = "sentry-sdk"
-version = "2.69.2"
+version = "2.70.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "certifi" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cc/08/1211e4652384195ef754f8ed570566088dc848f8eda7d005abf13f05f17f/sentry_sdk-2.69.2.tar.gz", hash = "sha256:b4d8915a526e626b0b14a2925907554b722d3b8e3e3781570fc35791712af323", size = 1043564, upload-time = "2026-09-15T15:25:09.018Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/52/0a/e37553f3106d0f7f0d4b8ad2c7b92410d131929786ffd116833d3b8164df/sentry_sdk-2.70.0.tar.gz", hash = "sha256:27e4b512f47be93136645dbe8f02d430473ee73a389ce430b2b7104baa66cf75", size = 1047234, upload-time = "2026-09-22T09:40:11.721Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ee/78/5d8b79fd60330234317aa827a1f5e445980a6f4e0ea6ed4e1187acb70a0f/sentry_sdk-2.69.2-py3-none-any.whl", hash = "sha256:25bc0a6c55bba0b83398212a7247f4f9f3190f189a1909b68e4807ef4b785895", size = 528765, upload-time = "2026-09-15T15:25:07.362Z" },
+    { url = "https://files.pythonhosted.org/packages/eb/ff/b1e56f009bfb9b8023910b533d5ebf4ec5650da49891f2b8c7f3d4815401/sentry_sdk-2.70.0-py3-none-any.whl", hash = "sha256:89600e8bb5fc5239cad5c4434217f453204f2207ad29399ea58947460b37a62e", size = 531752, upload-time = "2026-09-22T09:40:10.063Z" },
 ]
 
 [[package]]
