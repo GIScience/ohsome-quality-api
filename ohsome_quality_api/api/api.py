@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 from collections.abc import AsyncIterator
@@ -14,6 +15,8 @@ from fastapi_i18n import i18n
 from geojson import FeatureCollection
 from pydantic import ValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
+from starlette.status import HTTP_504_GATEWAY_TIMEOUT
 
 from ohsome_quality_api import (
     __author__,
@@ -143,6 +146,28 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class TimeoutMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint):
+        timeout = float(get_config_value("timeout"))
+        try:
+            response = await asyncio.wait_for(call_next(request), timeout=timeout)
+        except asyncio.TimeoutError:
+            return JSONResponse(
+                {
+                    "error": (
+                        f"Request timeout limit of {timeout}s has been exceeded. "
+                        f"Try simplifying the GeoJSON geometry or make it smaller, "
+                        f"and try again."
+                    )
+                },
+                status_code=HTTP_504_GATEWAY_TIMEOUT,
+            )
+        return response
+
+
+app.add_middleware(TimeoutMiddleware)
 
 
 class CustomJSONResponse(JSONResponse):

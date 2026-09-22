@@ -21,3 +21,4 @@ log_level: INFO
 
 # Limit number of concurrent Indicator computations
 concurrent_computations: 4
+timeout: 220

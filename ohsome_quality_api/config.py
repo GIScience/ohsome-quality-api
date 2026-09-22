@@ -32,6 +32,7 @@ def load_config_default() -> dict:
         "docs_url": None,
         "log_level": "INFO",
         "concurrent_computations": 4,
+        "timeout": 220,  # seconds
         "datasets": {
             "regions": {
                 "default": "ogc_fid",
@@ -64,6 +65,7 @@ def load_config_from_env() -> dict:
         "root_path": os.getenv("ROOT_PATH"),
         "docs_url": os.getenv("OQAPI_DOCS_URL"),
         "concurrent_computations": os.getenv("OQAPI_CONCURRENT_COMPUTATIONS"),
+        "timeout": os.getenv("OQAPI_TIMEOUT"),
     }
     return {k: v for k, v in cfg.items() if v is not None}
 
