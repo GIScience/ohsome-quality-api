@@ -223,7 +223,7 @@ class MappingSaturation(BaseIndicator):
                 ),
             )
             # plot asymptote
-            asymptote = np.round(self.data["best_fit"]["asymptote"], 2)
+            asymptote = np.round(self.best_fit.asymptote, 2)
             if asymptote < max(self.values) * 5:
                 hovertext = _("Estimated total data: {asymptote}").format(
                     asymptote=asymptote

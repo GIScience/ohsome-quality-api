@@ -40,9 +40,10 @@ class BaseIndicator(metaclass=ABCMeta):
         self.result: Result = Result(
             description=self.templates.label_description.undefined
         )
+        self.data: dict | None = None
         self._get_default_figure()
 
-    def as_dict(self, include_data: bool = False, exclude_label: bool = False) -> dict:
+    def as_dict(self, exclude_label: bool = False) -> dict:
         if exclude_label:
             result = self.result.model_dump(by_alias=True, exclude={"label"})
         else:
@@ -56,22 +57,21 @@ class BaseIndicator(metaclass=ABCMeta):
             "result": result,
             **self.feature.properties,
         }
-        if include_data:
-            raw_dict["data"] = self.data
+        if self.data is not None:
+            raw_dict["data"] = json.loads(
+                json.dumps(self.data, default=json_serialize).encode()
+            )
         if "id" in self.feature:
             raw_dict["id"] = self.feature.id
         return raw_dict
 
-    def as_feature(self, include_data: bool = False, exclude_label=False) -> Feature:
+    def as_feature(self, exclude_label=False) -> Feature:
         """Return a GeoJSON Feature object.
 
         The properties of the Feature contains the attributes of the indicator.
         The geometry (and properties) of the input GeoJSON object is preserved.
-
-        Args:
-            include_data (bool): If true include additional data in the properties.
         """
-        properties = self.as_dict(include_data, exclude_label)
+        properties = self.as_dict(exclude_label)
         if "id" in self.feature:
             return Feature(
                 id=self.feature.id,
@@ -83,24 +83,6 @@ class BaseIndicator(metaclass=ABCMeta):
                 geometry=self.feature.geometry,
                 properties=properties,
             )
-
-    @property
-    def data(self) -> dict:
-        """All Indicator object attributes except feature, result, metadata and topic.
-
-        Note:
-            Attributes will be dumped and immediately loaded again by the `json`
-            library. In this process a custom function for serializing data types which
-            are not supported by the `json` library (E.g. numpy datatypes or objects of
-            the `BaseModelStats` class) will be executed.
-        """
-        data = vars(self).copy()
-        data.pop("result")
-        data.pop("metadata")
-        data.pop("templates")
-        data.pop("topic")
-        data.pop("feature")
-        return json.loads(json.dumps(data, default=json_serialize).encode())
 
     @classmethod
     def attribution(cls) -> str:
