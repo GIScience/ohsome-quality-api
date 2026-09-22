@@ -40,8 +40,11 @@ class BaseIndicator(metaclass=ABCMeta):
         self.result: Result = Result(
             description=self.templates.label_description.undefined
         )
-        self.data: dict | None = None
         self._get_default_figure()
+
+    @property
+    def data(self) -> dict | None:
+        return None
 
     def as_dict(self, exclude_label: bool = False) -> dict:
         if exclude_label:

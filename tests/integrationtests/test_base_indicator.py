@@ -26,17 +26,15 @@ class TestBaseIndicator:
     def test_as_dict(self, feature, topic):
         indicator = MappingSaturation(feature=feature, topic=topic)
         d = indicator.as_dict()
-        assert set(("result", "metadata", "topic")) <= set(d.keys())  # subset
-        # assert "data" not in d
+        assert set(("result", "metadata", "topic", "data")) <= set(d.keys())  # subset
 
     def test_as_feature(self, feature, topic):
         indicator = MappingSaturation(feature=feature, topic=topic)
         feature_indicator = indicator.as_feature()
         assert feature_indicator.is_valid
         assert feature_indicator.geometry == feature.geometry
-        for prop in ("result", "metadata", "topic"):
+        for prop in ("result", "metadata", "topic", "data"):
             assert prop in feature_indicator["properties"]
-        # assert "data" not in feature_indicator["properties"]
 
     def test_attribution_class_property(self):
         assert isinstance(MappingSaturation.attribution(), str)

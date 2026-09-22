@@ -76,6 +76,14 @@ class MappingSaturation(BaseIndicator):
         self.best_fit: models.BaseStatModel | None = None
         self.fitted_models: list[models.BaseStatModel] = []
 
+    @property
+    def data(self):
+        return {
+            "best_fit": self.best_fit,
+            "values": self.values,
+            "timestamps": self.timestamps,
+        }
+
     async def preprocess(self):
         if isinstance(self.topic, TopicData):
             for item in self.topic.data["result"]:
