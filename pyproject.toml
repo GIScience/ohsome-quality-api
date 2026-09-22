@@ -44,11 +44,11 @@ dev = [
     "fastapi[standard]>=0.115.12",
     "kaleido>=1.2.0",
     "pygments>=2.19.1",
-    "ruff==0.15.5", # fixed because of pre-commit
+    "ruff==0.16.8", # fixed because of pre-commit
     "vcrpy>=7.0.0",
     "babel>=2.17.0",
     "prek>=0.3.5",
-    "ty>=0.0.24",
+    "ty>=0.0.83",
     "pytest>=9.0.2",
     "pytest-asyncio>=1.3.0",
     "pytest-cov>=7.0.0",

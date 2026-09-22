@@ -166,10 +166,13 @@ To achieve similar results in `asyncpg`, one would write an SQL query which take
 as input:
 
 ```python
-await conn.fetch('''
+await conn.fetch(
+    """
     INSERT INTO people (name) (SELECT unnest ($1))
     RETURNING id
-''', ['anne', 'ben', 'charlie'])
+""",
+    ["anne", "ben", "charlie"],
+)
 ```
 
 
