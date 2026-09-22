@@ -2,7 +2,16 @@
 
 ## Current Main
 
-- dependencies: upgrade `ohsome-filter-to-sql`/allow filter with new lines
+### New Features
+
+* feat: add predefined attributes to cycleway topic (8dcf1867)
+* dependencies: new ohsome filter syntax to allow multiple geometry/osm types (60f4bca8)
+* dependencies: upgrade `ohsome-filter-to-sql`/allow filter with new lines (e093cd18)
+
+### Other Changes
+
+* api: do not enforce that geometry or osm type must be present in filter (6bf5bdd0)
+* ohsome-api: parse error from ohsome-api and hand down to response (d9f702b0)
 
 ## 2.1.1
 
