@@ -12,7 +12,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.security import APIKeyHeader
 from fastapi_i18n import i18n
-from geojson import FeatureCollection
 from pydantic import ValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
@@ -29,7 +28,6 @@ from ohsome_quality_api.api.request_context import set_request_context
 from ohsome_quality_api.api.request_models import (
     AttributeCompletenessFilterRequest,
     AttributeCompletenessKeyRequest,
-    IndicatorDataRequest,
     IndicatorRequest,
     LandCoverCompletenessRequest,
     LandCoverThematicAccuracyRequest,
@@ -74,7 +72,6 @@ from ohsome_quality_api.utils.exceptions import (
     TopicDataSchemaError,
 )
 from ohsome_quality_api.utils.helper import (
-    get_class_from_key,
     get_project_root,
     json_serialize,
 )
@@ -236,31 +233,6 @@ def empty_api_response() -> dict:
             "url": ATTRIBUTION_URL,
         },
     }
-
-
-@app.post(
-    "/indicators/mapping-saturation/data",
-    include_in_schema=False,
-    dependencies=[Depends(api_key_header_scheme)],
-)
-async def post_indicator_ms(parameters: IndicatorDataRequest) -> CustomJSONResponse:
-    """Legacy support for computing the Mapping Saturation indicator for given data."""
-    indicators = await main.create_indicator(
-        key="mapping-saturation",
-        bpolys=parameters.bpolys,
-        topic=parameters.topic,
-        include_figure=parameters.include_figure,
-    )
-    geojson_object = FeatureCollection(
-        features=[i.as_feature(parameters.include_data) for i in indicators]
-    )
-    response = empty_api_response()
-    response["attribution"]["text"] = get_class_from_key(
-        class_type="indicator",
-        key="mapping-saturation",
-    ).attribution()
-    response["result"] = [feature.properties for feature in geojson_object.features]
-    return CustomJSONResponse(content=response, media_type=MEDIA_TYPE_JSON)
 
 
 @app.post(
