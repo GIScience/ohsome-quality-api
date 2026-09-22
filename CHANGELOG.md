@@ -10,6 +10,7 @@
 
 ### Other Changes
 
+* api: add a timeout for all endpoints; default to 220s
 * api: do not enforce that geometry or osm type must be present in filter (6bf5bdd0)
 * ohsome-api: parse error from ohsome-api and hand down to response (d9f702b0)
 
