@@ -40,12 +40,20 @@ async def request(
     return resp.json()
 
 
-def parse_error(resp) -> str:
+def parse_error(resp: httpx.Response) -> str:
     try:
         result = resp.json()
     except Exception:
         return ""
-    return " {}: {}".format(result["type"], result["msg"])
+    match resp.status_code, result:
+        case 422, {"detail": {"type": type, "msg": msg}}:
+            return f" {type}: {msg}"
+        case _, {"type": type, "error": error}:
+            return f" {type}: {error}"
+        case _, {"error": error}:
+            return f"{error}"
+        case _:
+            return ""
 
 
 async def metadata() -> dict:
