@@ -1,6 +1,9 @@
 from starlette.status import HTTP_504_GATEWAY_TIMEOUT
 
+from tests.integrationtests.utils import oqapi_vcr
 
+
+@oqapi_vcr.use_cassette
 def test_timeout(monkeypatch, client, bpolys):
     monkeypatch.setattr("ohsome_quality_api.api.api.get_config_value", lambda _: 0.1)
     endpoint = "/indicators/mapping-saturation"
