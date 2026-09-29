@@ -25,7 +25,7 @@ First create an ohsome API query to retrieve desired information from the ohsome
 - The Swagger UI of the ohsome API:
   https://api.heigit.org/docs/?urls.primaryName=ohsome+quality+API
 - ohsome API documentation on the `filter` parameter:
-  https://docs.ohsome.org/ohsome-api/v2-rc/reference/filter.html
+  https://docs.ohsome.org/ohsome-api/stable/reference/filter.html
 
 Second translate the query parameters into a topic preset and extent this file:
 `ohsome_quality_api/topics/presets.yaml`.
