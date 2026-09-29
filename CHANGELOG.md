@@ -1,6 +1,6 @@
 # Changelog
 
-## Current Main
+## 2.2.0
 
 ### New Features
 
