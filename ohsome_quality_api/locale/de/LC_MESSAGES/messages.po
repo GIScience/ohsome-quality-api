@@ -583,7 +583,7 @@ msgstr "{} deckt das Untersuchungsgebiet nicht ab."
 #: ohsome_quality_api/indicators/building_comparison/indicator.py:298
 #, python-brace-format
 msgid "Only {} of your area-of-interest is covered by {}"
-msgstr "Nur {:.2f}% des Untersuchungsgebiets sind von  {} bedeckt"
+msgstr "Nur {} des Untersuchungsgebiets sind von {} bedeckt"
 
 #: ohsome_quality_api/indicators/building_comparison/indicator.py:304
 #, python-brace-format
