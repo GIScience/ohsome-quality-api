@@ -8,6 +8,7 @@ from ohsome_quality_api.api.request_models import (
     AttributeCompletenessFilterRequest,
     AttributeCompletenessKeyRequest,
     BaseBpolys,
+    BridgesThematicAccuracyRequest,
     IndicatorRequest,
     LandCoverCompletenessRequest,
     LandCoverThematicAccuracyRequest,
@@ -202,4 +203,31 @@ def test_roads_thematic_accuracy_request_invalid_topic(bpolys):
             bpolys=bpolys,
             topic="buildings",
             attribute="surface",
+        )
+
+
+def test_bridges_thematic_accuracy_request_all_attributes(bpolys):
+    # attribute parameter is optional (default all attributes)
+    BridgesThematicAccuracyRequest(bpolys=bpolys, topic="bridges_all_ways")
+
+
+def test_bridges_thematic_accuracy_request_specific_attribute(bpolys):
+    BridgesThematicAccuracyRequest(
+        bpolys=bpolys, topic="bridges_all_ways", attribute="width"
+    )
+
+
+def test_bridges_thematic_accuracy_request_specific_attribute_invalid(bpolys):
+    with pytest.raises(ValueError):
+        BridgesThematicAccuracyRequest(
+            bpolys=bpolys, topic="bridges_all_ways", attribute="foo"
+        )
+
+
+def test_bridges_thematic_accuracy_request_invalid_topic(bpolys):
+    with pytest.raises(ValueError):
+        BridgesThematicAccuracyRequest(
+            bpolys=bpolys,
+            topic="buildings",
+            attribute="width",
         )

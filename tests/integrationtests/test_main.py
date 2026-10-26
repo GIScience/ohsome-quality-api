@@ -41,6 +41,12 @@ PARAMETERS = [
         "topic_roads",
         {"attribute": "surface"},
     ),
+    ("bridges-thematic-accuracy", "topic_bridges", {}),
+    (
+        "bridges-thematic-accuracy",
+        "topic_bridges",
+        {"attribute": "width"},
+    ),
 ]
 
 
