@@ -19,6 +19,7 @@ class TestModels(unittest.TestCase):
             "name",
             "function_formula",
             "asymptote",
+            "asym_conf_int",
             "mae",
             "xdata",
             "ydata",
