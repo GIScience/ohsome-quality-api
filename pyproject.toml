@@ -74,6 +74,9 @@ module-root = ""
 [tool.uv.sources]
 pytest-nodeid-to-filepath = { git = "https://github.com/GIScience/pytest-nodeid-to-filepath" }
 
+[tool.fastapi]
+entrypoint = "ohsome_quality_api.api.api:app"
+
 [tool.ruff]
 extend-exclude = ["scripts"]
 

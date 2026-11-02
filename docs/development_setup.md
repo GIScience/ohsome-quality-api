@@ -57,7 +57,7 @@ For local development no custom configuration is required, except for the work o
 ## Usage
 
 ```bash
-uv run fastapi dev ohsome_quality_api/api/api.py
+uv run fastapi dev
 ```
 
 
