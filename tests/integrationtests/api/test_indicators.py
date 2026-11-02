@@ -413,3 +413,63 @@ async def test_indicators_roads_thematic_accuracy_invalid_topic(
     parameters = {"bpolys": bpolys, "topic": "buildings"}
     response = client.post(endpoint, json=parameters, headers=headers)
     assert response.status_code == 422
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
+async def test_indicators_bridges_thematic_accuracy_specific_attribute(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "bridges-thematic-accuracy"
+    parameters = {
+        "bpolys": bpolys,
+        "topic": "bridges_all_ways",
+        "attribute": "width",
+    }
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert schema.is_valid(response.json())
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
+async def test_indicators_bridges_thematic_accuracy_all_attributes(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "bridges-thematic-accuracy"
+    parameters = {"bpolys": bpolys, "topic": "bridges_all_ways"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert schema.is_valid(response.json())
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
+async def test_indicators_bridges_thematic_accuracy_invalid_attribute(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "bridges-thematic-accuracy"
+    parameters = {"bpolys": bpolys, "topic": "bridges_all_ways", "attribute": "foo"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422
+
+
+@asyncpg_recorder.use_cassette
+@pytest.mark.asyncio
+async def test_indicators_bridges_thematic_accuracy_invalid_topic(
+    client,
+    bpolys,
+    headers,
+    schema,
+):
+    endpoint = ENDPOINT + "bridges-thematic-accuracy"
+    parameters = {"bpolys": bpolys, "topic": "buildings"}
+    response = client.post(endpoint, json=parameters, headers=headers)
+    assert response.status_code == 422

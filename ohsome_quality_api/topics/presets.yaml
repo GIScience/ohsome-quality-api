@@ -105,6 +105,7 @@ bridges_all_ways:
     - currentness
     - user-activity
     - attribute-completeness
+    - bridges-thematic-accuracy
 
 cycleway:
   name: Cycleway
