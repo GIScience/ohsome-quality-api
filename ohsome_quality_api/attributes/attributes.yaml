@@ -427,3 +427,17 @@ cycleway:
     name: Smoothness
     description: TODO
     filter: smoothness=*
+
+bridges_all_ways:
+  name:
+    name: Name
+    description: Name of the bridge or of the way crossing it.
+    filter: name=*
+  height:
+    name: Height
+    description: Height of the bridge.
+    filter: height=*
+  width:
+    name: Width
+    description: Width of the bridge.
+    filter: width=*
