@@ -1416,6 +1416,26 @@ msgstr ""
 "href=\"https://wiki.openstreetmap.org/wiki/Highways#Roads_and_tracks"
 "\">OSM-Wiki</a> definiert."
 
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Name of the bridge or of the way crossing it."
+msgstr "Name der Brücke oder des über sie führenden Weges."
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Height"
+msgstr "Höhe"
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Height of the bridge."
+msgstr "Höhe der Brücke."
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Width"
+msgstr "Breite"
+
+#: ohsome_quality_api/attributes/attributes.yaml
+msgid "Width of the bridge."
+msgstr "Breite der Brücke."
+
 #: ohsome_quality_api/topics/presets.yaml
 msgid "Railways"
 msgstr "Eisenbahnen"
