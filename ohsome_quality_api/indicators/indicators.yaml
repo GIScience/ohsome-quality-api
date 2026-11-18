@@ -56,3 +56,11 @@ roads-thematic-accuracy:
     target="_blank"
     href="https://mis.bkg.bund.de/trefferanzeige?docuuid=66656563-c818-4587-bde1-f4bed2787851">Digitales
     Landschaftsmodell (DLM) </a> dataset.
+bridges-thematic-accuracy:
+  name: Bridge Accuracy
+  quality_dimension: none
+  description: >-
+    Comparison of OSM bridge attributes with the attributes from the <a
+    target="_blank"
+    href="https://mis.bkg.bund.de/trefferanzeige?docuuid=66656563-c818-4587-bde1-f4bed2787851">Digitales
+    Landschaftsmodell (DLM) </a> dataset.

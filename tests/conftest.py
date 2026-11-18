@@ -85,6 +85,11 @@ def topic_roads_all_highways() -> Topic:
 
 
 @pytest.fixture(scope="class")
+def topic_bridges() -> Topic:
+    return get_topic_preset("bridges_all_ways")
+
+
+@pytest.fixture(scope="class")
 def topic_buildings() -> Topic:
     return get_topic_preset("buildings")
 

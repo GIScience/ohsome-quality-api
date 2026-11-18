@@ -368,3 +368,37 @@ class RoadsThematicAccuracyRequest(IndicatorRequest):
         if value == "":
             return None
         return value
+
+
+class BridgesThematicAccuracyRequest(IndicatorRequest):
+    attribute: Literal["name", "width", "height"] | None = Field(
+        default=None,
+        title="Attribute",
+        description=_("Attribute to compare between DLM and OSM."),
+    )
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                # NOTE: json.dumps avoids that keys are ordered by pydantic
+                json.dumps(
+                    {
+                        "topic": "bridges_all_ways",
+                        "bpolys": BPOLYS_EXAMPLE,
+                    }
+                ),
+            ]
+        }
+    )
+
+    @computed_field
+    @property
+    def indicator(self) -> str:
+        return "bridges-thematic-accuracy"
+
+    @field_validator("attribute", mode="before")
+    @classmethod
+    def empty_string_to_none(cls, value):
+        if value == "":
+            return None
+        return value

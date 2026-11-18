@@ -28,6 +28,7 @@ from ohsome_quality_api.api.request_context import set_request_context
 from ohsome_quality_api.api.request_models import (
     AttributeCompletenessFilterRequest,
     AttributeCompletenessKeyRequest,
+    BridgesThematicAccuracyRequest,
     IndicatorRequest,
     LandCoverCompletenessRequest,
     LandCoverThematicAccuracyRequest,
@@ -334,6 +335,31 @@ async def post_roads_thematic_accuracy(
 ) -> Any:
     """Request the Roads Thematic Accuracy indicator for your area of interest."""
     return await _post_indicator(request, "roads-thematic-accuracy", parameters)
+
+
+@app.post(
+    "/indicators/bridges-thematic-accuracy",
+    tags=["indicator"],
+    response_model=Union[IndicatorJSONResponse, IndicatorGeoJSONResponse],
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorJSONResponse"}
+                },
+                "application/geo+json": {
+                    "schema": {"$ref": "#/components/schemas/IndicatorGeoJSONResponse"}
+                },
+            },
+        },
+    },
+    dependencies=[Depends(api_key_header_scheme)],
+)
+async def post_bridges_thematic_accuracy(
+    request: Request, parameters: BridgesThematicAccuracyRequest
+) -> Any:
+    """Request the Bridges Thematic Accuracy indicator for your area of interest."""
+    return await _post_indicator(request, "bridges-thematic-accuracy", parameters)
 
 
 @app.post(
