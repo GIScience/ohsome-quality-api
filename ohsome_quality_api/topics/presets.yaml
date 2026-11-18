@@ -84,7 +84,7 @@ bridges_cars:
   name: Bridges (cars)
   description: >-
     All linear OSM features referring to a bridge usable by vehicles.
-  aggregation_type: length
+  aggregation_type: count
   filter: >-
     highway in (motorway, trunk, primary, secondary, tertiary, residential, service, living_street, trunk_link, motorway_link, primary_link, secondary_link, tertiary_link, unclassified) and bridge=* and geometry:line
   indicators:
@@ -97,7 +97,7 @@ bridges_all_ways:
   name: Bridges (all ways)
   description: >-
     All linear OSM features referring to a bridge including footpaths only.
-  aggregation_type: length
+  aggregation_type: count
   filter: >-
     bridge=* and geometry:line
   indicators:
