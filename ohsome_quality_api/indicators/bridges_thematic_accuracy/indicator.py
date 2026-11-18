@@ -1,5 +1,5 @@
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from datetime import datetime, timezone
 from pathlib import Path
 from string import Template
@@ -27,14 +27,16 @@ QUERIES_DIR = Path(__file__).parent / "queries"
 
 @dataclass
 class MatchedData:
-    total_dlm: float
-    present_in_both: float
-    only_dlm: float
-    only_osm: float
-    missing_both: float
-    present_in_both_agree: float
-    present_in_both_not_agree: float
-    not_matched: float
+    """Number of DLM bridges per category."""
+
+    total_dlm: int
+    present_in_both: int
+    only_dlm: int
+    only_osm: int
+    missing_both: int
+    present_in_both_agree: int
+    present_in_both_not_agree: int
+    not_matched: int
 
 
 class BridgesThematicAccuracy(BaseIndicator):
@@ -67,18 +69,7 @@ class BridgesThematicAccuracy(BaseIndicator):
             query = Path(QUERIES_DIR / "all_attributes.sql").read_text()
         response = await client.fetch(query, str(self.feature["geometry"]))
         self.matched_data = MatchedData(
-            total_dlm=(response[0].get("total_dlm") or 0) / 1000,
-            present_in_both=(response[0].get("present_in_both") or 0) / 1000,
-            only_dlm=(response[0].get("only_dlm") or 0) / 1000,
-            only_osm=(response[0].get("only_osm") or 0) / 1000,
-            missing_both=(response[0].get("missing_both") or 0) / 1000,
-            present_in_both_agree=(response[0].get("present_in_both_agree") or 0)
-            / 1000,
-            present_in_both_not_agree=(
-                response[0].get("present_in_both_not_agree") or 0
-            )
-            / 1000,
-            not_matched=(response[0].get("not_matched") or 0) / 1000,
+            **{f.name: response[0].get(f.name) or 0 for f in fields(MatchedData)}
         )
         # TODO: take real timestamps from data
         self.timestamp_dlm = datetime(2021, 1, 1, tzinfo=timezone.utc)
@@ -112,7 +103,7 @@ class BridgesThematicAccuracy(BaseIndicator):
             else:
                 description += _(
                     " There are no matched bridges where the "
-                    "selected attribute(s) are present in both datasets"
+                    "selected attribute(s) are present in both datasets."
                 )
         else:
             percentage = format_percent(0, locale=get_locale())
@@ -130,6 +121,11 @@ class BridgesThematicAccuracy(BaseIndicator):
             }
         )
         self.result.description = result_description + description
+
+        if self.attribute in ("height", None):
+            self.result.description += _(
+                " Height is only compared for bridges going over a road."
+            )
 
         self.result.description += (
             _(" The DLM data is from ")
@@ -165,7 +161,7 @@ class BridgesThematicAccuracy(BaseIndicator):
                 col=2,
             )
 
-        fig.update_yaxes(rangemode="nonnegative", title_text=_("Length (in km)"))
+        fig.update_yaxes(rangemode="nonnegative", title_text=_("Number of bridges"))
         fig.update_xaxes(rangemode="nonnegative")
 
         fig.update_layout(
@@ -206,9 +202,7 @@ def plot_presence(result: MatchedData) -> pgo.Bar:
             format="##0.#%",
             locale=get_locale(),
         )
-        display_value = f"{value:.2f}" if value >= 0.01 else "< 0.01"
-
-        text.append(f"{display_value} ({value_formatted})")
+        text.append(f"{value} ({value_formatted})")
 
     bar = pgo.Bar(
         x=labels,
@@ -245,9 +239,7 @@ def plot_value_comparison(result: MatchedData, attribute: str | None) -> pgo.Bar
                 format="##0.#%",
                 locale=get_locale(),
             )
-            display_value = f"{value:.2f}" if value >= 0.01 else "< 0.01"
-
-            text.append(f"{display_value} ({value_formatted})")
+            text.append(f"{value} ({value_formatted})")
     bar = pgo.Bar(
         x=labels,
         y=values,

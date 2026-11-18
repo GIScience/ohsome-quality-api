@@ -2,51 +2,45 @@ WITH bpoly AS (
     SELECT
         -- split multipolygon into individual polygons
     (ST_Dump (ST_SetSRID (ST_GeomFromGeoJSON ($1), 4326))).geom AS geometry
+),
+bridges AS (
+    SELECT
+        -- a DLM bridge counts as matched if at least half of it lies in the OSM buffer
+        COALESCE(bta.coverage, 0) >= 0.5 AS matched,
+        bta.dhu,
+        bta.maxheight
+    FROM bridge_thematic_accuracy bta, bpoly b
+    WHERE
+        ST_Intersects(bta.geom, b.geometry)
+        -- height is only compared for bridges carrying a road
+        AND bta.highway_bridge IS TRUE
 )
 
 SELECT
-    SUM(length) AS total_dlm,
-    SUM(
-        CASE
-            WHEN dhu IS NOT NULL AND dhu_osm IS NOT NULL THEN length_in_osmbuffer
-            ELSE 0
-        END
+    COUNT(*) AS total_dlm,
+    COUNT(*) FILTER (
+        WHERE matched AND dhu IS NOT NULL AND maxheight IS NOT NULL
     ) AS present_in_both,
-    SUM(
-        CASE
-            WHEN dhu IS NULL AND dhu_osm IS NOT NULL THEN length_in_osmbuffer
-            ELSE 0
-        END
+    COUNT(*) FILTER (
+        WHERE matched AND dhu IS NULL AND maxheight IS NOT NULL
     ) AS only_osm,
-    SUM(
-        CASE
-            WHEN dhu IS NOT NULL AND dhu_osm IS NULL THEN length_in_osmbuffer
-            ELSE 0
-        END
+    COUNT(*) FILTER (
+        WHERE matched AND dhu IS NOT NULL AND maxheight IS NULL
     ) AS only_dlm,
-    SUM(
-        CASE
-            WHEN dhu IS NULL AND dhu_osm IS NULL THEN length_in_osmbuffer
-            ELSE 0
-        END
+    COUNT(*) FILTER (
+        WHERE matched AND dhu IS NULL AND maxheight IS NULL
     ) AS missing_both,
-    SUM(
-        CASE
-            WHEN dhu IS NOT NULL
-                 AND dhu_osm IS NOT NULL
-                 AND abs(dhu - dhu_osm) <= 0.5 THEN length_in_osmbuffer
-            ELSE 0
-        END
+    COUNT(*) FILTER (
+        WHERE matched
+              AND dhu IS NOT NULL
+              AND maxheight IS NOT NULL
+              AND abs(dhu - maxheight) <= 0.5
     ) AS present_in_both_agree,
-    SUM(
-        CASE
-            WHEN dhu IS NOT NULL
-                 AND dhu_osm IS NOT NULL
-                 AND abs(dhu - dhu_osm) > 0.5 THEN length_in_osmbuffer
-            ELSE 0
-        END
+    COUNT(*) FILTER (
+        WHERE matched
+              AND dhu IS NOT NULL
+              AND maxheight IS NOT NULL
+              AND abs(dhu - maxheight) > 0.5
     ) AS present_in_both_not_agree,
-    SUM(length - length_in_osmbuffer) AS not_matched
-FROM bridge_thematic_accuracy bta, bpoly b
-WHERE
-    ST_Intersects(bta.geom, b.geometry);
+    COUNT(*) FILTER (WHERE NOT matched) AS not_matched
+FROM bridges;

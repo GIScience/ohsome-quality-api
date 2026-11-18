@@ -2313,3 +2313,10 @@ msgstr "Abfrage ergab keinen Eintrag."
 #~ msgid "Industrial Landuse (area)"
 #~ msgstr "Gewerbegebiets-Nutzung (Fläche)"
 
+#: ohsome_quality_api/indicators/bridges_thematic_accuracy/indicator.py
+msgid " Height is only compared for bridges going over a road."
+msgstr " Die Höhe wird nur für Brücken verglichen, die über eine Straße führen."
+
+#: ohsome_quality_api/indicators/bridges_thematic_accuracy/indicator.py
+msgid "Number of bridges"
+msgstr "Anzahl der Brücken"

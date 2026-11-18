@@ -2,51 +2,44 @@ WITH bpoly AS (
     SELECT
         -- split multipolygon into individual polygons
     (ST_Dump (ST_SetSRID (ST_GeomFromGeoJSON ($1), 4326))).geom AS geometry
+),
+bridges AS (
+    SELECT
+        -- a DLM bridge counts as matched if at least half of it lies in the OSM buffer
+        COALESCE(bta.coverage, 0) >= 0.5 AS matched,
+        bta.nam,
+        bta.nam_osm,
+        bta.lev_ratio
+    FROM bridge_thematic_accuracy bta, bpoly b
+    WHERE
+        ST_Intersects(bta.geom, b.geometry)
 )
 
 SELECT
-    SUM(length) AS total_dlm,
-    SUM(
-        CASE
-            WHEN nam IS NOT NULL AND nam_osm IS NOT NULL THEN length_in_osmbuffer
-            ELSE 0
-        END
+    COUNT(*) AS total_dlm,
+    COUNT(*) FILTER (
+        WHERE matched AND nam IS NOT NULL AND nam_osm IS NOT NULL
     ) AS present_in_both,
-    SUM(
-        CASE
-            WHEN nam IS NULL AND nam_osm IS NOT NULL THEN length_in_osmbuffer
-            ELSE 0
-        END
+    COUNT(*) FILTER (
+        WHERE matched AND nam IS NULL AND nam_osm IS NOT NULL
     ) AS only_osm,
-    SUM(
-        CASE
-            WHEN nam IS NOT NULL AND nam_osm IS NULL THEN length_in_osmbuffer
-            ELSE 0
-        END
+    COUNT(*) FILTER (
+        WHERE matched AND nam IS NOT NULL AND nam_osm IS NULL
     ) AS only_dlm,
-    SUM(
-        CASE
-            WHEN nam IS NULL AND nam_osm IS NULL THEN length_in_osmbuffer
-            ELSE 0
-        END
+    COUNT(*) FILTER (
+        WHERE matched AND nam IS NULL AND nam_osm IS NULL
     ) AS missing_both,
-    SUM(
-        CASE
-            WHEN nam IS NOT NULL
-                 AND nam_osm IS NOT NULL
-                 AND lev_ratio >= 0.8 THEN length_in_osmbuffer
-            ELSE 0
-        END
+    COUNT(*) FILTER (
+        WHERE matched
+              AND nam IS NOT NULL
+              AND nam_osm IS NOT NULL
+              AND lev_ratio >= 0.8
     ) AS present_in_both_agree,
-    SUM(
-        CASE
-            WHEN nam IS NOT NULL
-                 AND nam_osm IS NOT NULL
-                 AND lev_ratio < 0.8 THEN length_in_osmbuffer
-            ELSE 0
-        END
+    COUNT(*) FILTER (
+        WHERE matched
+              AND nam IS NOT NULL
+              AND nam_osm IS NOT NULL
+              AND lev_ratio < 0.8
     ) AS present_in_both_not_agree,
-    SUM(length - length_in_osmbuffer) AS not_matched
-FROM bridge_thematic_accuracy bta, bpoly b
-WHERE
-    ST_Intersects(bta.geom, b.geometry);
+    COUNT(*) FILTER (WHERE NOT matched) AS not_matched
+FROM bridges;
