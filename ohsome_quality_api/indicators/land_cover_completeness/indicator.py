@@ -23,6 +23,7 @@ class LandCoverCompleteness(BaseIndicator):
         feature: Feature,
         clipped: bool = False,
     ) -> None:
+        # Always clip
         super().__init__(topic=topic, feature=feature, clipped=True)
 
         self.th_high = 0.85  # Above or equal to this value label should be green
