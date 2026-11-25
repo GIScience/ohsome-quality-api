@@ -43,6 +43,23 @@ async def test_currentness(feature, measure):
     assert len(result["value"]) == 4
 
 
+@pytest.mark.parametrize("clip", [True, False])
+@oqapi_vcr.use_cassette()
+async def test_currentness_clip(feature, clip):
+    result = await client.currentness(
+        aoi=feature["geometry"],
+        measure="count",
+        ohsome_filter="type:node and natural=tree",
+        time_bins={
+            "start": "2026-01-01T00:00:00Z",
+            "end": "2026-04-17T00:00:00Z",
+            "binSize": "P1M",
+        },
+        clip=clip,
+    )
+    assert len(result["value"]) == 4
+
+
 @oqapi_vcr.use_cassette()
 async def test_activity_user(feature):
     result = await client.activity_users(

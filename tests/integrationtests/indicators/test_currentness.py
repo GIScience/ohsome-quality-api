@@ -60,6 +60,22 @@ class TestPreprocess:
         assert isinstance(indicator.result.timestamp, datetime)
         assert isinstance(indicator.result.timestamp_osm, datetime)
 
+    @oqapi_vcr.use_cassette
+    async def test_preprocess_clipped(
+        self,
+        topic_buildings,
+        feature_germany_heidelberg,
+    ):
+        indicator = Currentness(
+            topic_buildings, feature_germany_heidelberg, clipped=True
+        )
+        await indicator.preprocess()
+        assert indicator.clipped is True
+        assert len(indicator.bin_total.contrib_abs) > 0
+        assert indicator.contrib_sum > 0
+        assert isinstance(indicator.result.timestamp, datetime)
+        assert isinstance(indicator.result.timestamp_osm, datetime)
+
     @pytest.mark.parametrize(
         "topic_key",
         # three different aggregation types: count, area and length

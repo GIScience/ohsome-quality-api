@@ -14,6 +14,7 @@ class IndicatorMetadata(BaseModel):
     name: str
     description: str
     quality_dimension: QualityDimensionEnum
+    supports_clipping: bool
     model_config = ConfigDict(
         alias_generator=snake_to_lower_camel,
         title="Metadata",

@@ -89,6 +89,7 @@ def test_indicator_metadata():
         name="foo",
         description="foo",
         quality_dimension="completeness",
+        supports_clipping=True,
     )
 
 
@@ -99,6 +100,7 @@ def test_indicator_metadata_response():
                 name="foo",
                 description="foo",
                 quality_dimension="completeness",
+                supports_clipping=True,
             )
         }
     )

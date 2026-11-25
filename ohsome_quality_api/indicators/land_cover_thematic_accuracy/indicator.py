@@ -84,8 +84,9 @@ class LandCoverThematicAccuracy(BaseIndicator):
         topic: Topic,
         feature: Feature,
         corine_land_cover_class: CorineLandCoverClass | None = None,
+        clipped: bool = False,
     ) -> None:
-        super().__init__(topic=topic, feature=feature)
+        super().__init__(topic=topic, feature=feature, clipped=False)
         self.clc_class = corine_land_cover_class
         self.timestamp_corine = datetime(2021, 1, 1, tzinfo=timezone.utc)
 

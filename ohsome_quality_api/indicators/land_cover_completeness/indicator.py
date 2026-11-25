@@ -21,8 +21,10 @@ class LandCoverCompleteness(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
+        clipped: bool = False,
     ) -> None:
-        super().__init__(topic=topic, feature=feature)
+        # Always clip
+        super().__init__(topic=topic, feature=feature, clipped=True)
 
         self.th_high = 0.85  # Above or equal to this value label should be green
         self.th_low = 0.50  # Above or equal to this value label should be yellow
@@ -42,7 +44,7 @@ class LandCoverCompleteness(BaseIndicator):
             measure=self.topic.aggregation_type,
             ohsome_filter=self.topic.filter,
             time_series={"start": start, "end": end},
-            clip=True,
+            clip=self.clipped,
         )
 
         if result["value"][-1]:

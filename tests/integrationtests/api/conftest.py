@@ -64,6 +64,7 @@ def metadata_indicator_mapping_saturation():
                 + "if the growth of the fitted curve is minimal."
             ),
             "qualityDimension": "completeness",
+            "supportsClipping": True,
         }
     }
 

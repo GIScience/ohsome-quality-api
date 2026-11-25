@@ -1,5 +1,6 @@
 {
   "name": "Kartierungssättigung",
   "description": "Berechne ob das Kartieren gesättigt ist. Bei hohe Sättigung ist die Steigung der Kurve minimal.",
-  "quality_dimension": "completeness"
+  "quality_dimension": "completeness",
+  "supports_clipping": true
 }

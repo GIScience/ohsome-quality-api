@@ -39,6 +39,14 @@ class TestBaseIndicator:
     def test_attribution_class_property(self):
         assert isinstance(MappingSaturation.attribution(), str)
 
+    def test_clipped_default(self, feature, topic):
+        indicator = MappingSaturation(feature=feature, topic=topic)
+        assert indicator.clipped is False
+
+    def test_clipped_true(self, feature, topic):
+        indicator = MappingSaturation(feature=feature, topic=topic, clipped=True)
+        assert indicator.clipped is True
+
     def test_coverage(self):
         coverage = asyncio.run(MappingSaturation.coverage(inverse=False))
         for feature in coverage:

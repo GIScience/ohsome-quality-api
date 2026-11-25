@@ -33,8 +33,9 @@ class UserActivity(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
+        clipped: bool = False,
     ) -> None:
-        super().__init__(topic=topic, feature=feature)
+        super().__init__(topic=topic, feature=feature, clipped=clipped)
         self.bin_total = None
 
     async def preprocess(self) -> None:

@@ -57,8 +57,9 @@ class Currentness(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
+        clipped: bool = False,
     ) -> None:
-        super().__init__(topic=topic, feature=feature)
+        super().__init__(topic=topic, feature=feature, clipped=clipped)
         # thresholds for binning in months
         self.up_to_date, self.out_of_date, self.th_source = load_thresholds(
             self.topic.key
@@ -89,6 +90,7 @@ class Currentness(BaseIndicator):
                 "end": end,
                 "binSize": "P1M",
             },
+            clip=self.clipped,
         )
         contrib_abs = []
         contrib_sum = 0

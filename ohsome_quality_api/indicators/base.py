@@ -30,6 +30,7 @@ class BaseIndicator(metaclass=ABCMeta):
         self,
         topic: Topic,
         feature: Feature,
+        clipped: bool = False,
     ) -> None:
         self.metadata: IndicatorMetadata = get_indicator(
             camel_to_hyphen(type(self).__name__)
@@ -37,6 +38,7 @@ class BaseIndicator(metaclass=ABCMeta):
         self.templates: IndicatorTemplates = self.get_template()
         self.topic: Topic = topic
         self.feature: Feature = feature
+        self.clipped: bool = clipped
         self.result: Result = Result(
             description=self.templates.label_description.undefined
         )
