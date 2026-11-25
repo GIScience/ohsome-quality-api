@@ -28,10 +28,12 @@ class BuildingComparison(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
+        clipped: bool = False,
     ) -> None:
         super().__init__(
             topic=topic,
             feature=feature,
+            clipped=False,
         )
         # The result is the ratio of area within coverage (between 0-1) or an empty list
         #
@@ -108,6 +110,7 @@ class BuildingComparison(BaseIndicator):
                     "end": end,
                     "interval": "P1M",
                 },
+                clip=self.clipped,
             )
             self.area_osm[key] = result["value"][-1] / (1000 * 1000) or 0
             timestamp = result["timestamp"][-1]

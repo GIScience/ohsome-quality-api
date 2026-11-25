@@ -56,8 +56,9 @@ class MappingSaturation(BaseIndicator):
         topic: Topic | TopicData,
         feature: Feature,
         time_range: str = "2008-01-01//P1M",
+        clipped: bool = False,
     ) -> None:
-        super().__init__(topic=topic, feature=feature)
+        super().__init__(topic=topic, feature=feature, clipped=clipped)
 
         self.time_range: str = time_range
 
@@ -104,6 +105,7 @@ class MappingSaturation(BaseIndicator):
                 "end": end,
                 "interval": "P1M",
             },
+            clip=self.clipped,
         )
         self.values = result["value"]
         self.timestamps = [isoparse(t) for t in result["timestamp"]]

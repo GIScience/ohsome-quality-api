@@ -82,6 +82,7 @@ class IndicatorMetadata(BaseConfig):
     name: str
     description: str
     quality_dimension: QualityDimensionEnum
+    supports_clipping: bool
     model_config = ConfigDict(title="Indicator Metadata")
 
 

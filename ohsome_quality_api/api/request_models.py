@@ -90,6 +90,7 @@ class IndicatorRequest(BaseBpolys, BaseRequestContext):
         examples=["count"],
     )
     include_figure: bool = True
+    clipped: bool = False
 
     model_config = ConfigDict(
         json_schema_extra={

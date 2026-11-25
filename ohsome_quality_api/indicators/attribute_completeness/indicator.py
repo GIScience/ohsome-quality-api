@@ -51,8 +51,9 @@ class AttributeCompleteness(BaseIndicator):
         attribute_keys: list[str] | None = None,
         attribute_filter: str | None = None,
         attribute_title: str | None = None,
+        clipped: bool = False,
     ) -> None:
-        super().__init__(topic=topic, feature=feature)
+        super().__init__(topic=topic, feature=feature, clipped=clipped)
         self.threshold_yellow: float = 0.75
         self.threshold_red: float = 0.25
         self.absolute_value_1: float = 0
@@ -77,12 +78,14 @@ class AttributeCompleteness(BaseIndicator):
             measure=self.topic.aggregation_type,
             ohsome_filter=self.topic.filter,
             time_series={"start": start, "end": end},
+            clip=self.clipped,
         )
         result_2 = await ohsome_api_client.features(
             aoi=self.feature.geometry,
             measure=self.topic.aggregation_type,
             ohsome_filter=f"({self.topic.filter}) and ({self.attribute_filter})",
             time_series={"start": start, "end": end},
+            clip=self.clipped,
         )
 
         absolute_value_1 = result_1["value"][-1]

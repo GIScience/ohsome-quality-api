@@ -87,12 +87,13 @@ async def currentness(
     measure: str,
     ohsome_filter: str,
     time_bins: dict,
+    clip: bool = False,
 ) -> dict:
     url = f"{BASE_URL}/stats/currentness/{measure}.json"
     response = await request(
         url,
         method="post",
-        json={"filter": ohsome_filter, "aoi": aoi, "time": time_bins},
+        json={"filter": ohsome_filter, "aoi": aoi, "time": time_bins, "clip": clip},
     )
     return response["result"]
 

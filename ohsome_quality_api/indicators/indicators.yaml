@@ -2,12 +2,14 @@
 mapping-saturation:
   name: Mapping Saturation
   quality_dimension: completeness
+  supports_clipping: true
   description: >-
     Calculate if mapping has saturated. High saturation has been reached if the
     growth of the fitted curve is minimal.
 currentness:
   name: Currentness
   quality_dimension: currentness
+  supports_clipping: true
   description: >-
     Estimate currentness of features by classifying contributions based on topic
     specific temporal thresholds into three groups: up-to-date, in-between and
@@ -15,16 +17,19 @@ currentness:
 road-comparison:
   name: Road Comparison
   quality_dimension: completeness
+  supports_clipping: false
   description: >-
     Compare the road length of OSM roads with the road length of reference data.
 building-comparison:
   name: Building Comparison
   quality_dimension: completeness
+  supports_clipping: true
   description: >-
     Comparison of OSM buildings with the buildings of reference datasets.
 attribute-completeness:
   name: Attribute Completeness
   quality_dimension: completeness
+  supports_clipping: true
   description: >-
     Derive the ratio of OSM features compared to features which match additional
     expected tags (e.g. amenity=hospital vs amenity=hospital and
@@ -32,6 +37,7 @@ attribute-completeness:
 land-cover-thematic-accuracy:
   name: Land Cover Thematic Accuracy
   quality_dimension: thematic-accuracy
+  supports_clipping: false
   description: >-
     Thematic accuracy OpenStreetMap land cover data in comparison to the <a
     href="https://land.copernicus.eu/en/products/corine-land-cover">CORINE Land
@@ -39,18 +45,21 @@ land-cover-thematic-accuracy:
 land-cover-completeness:
   name: Land Cover Completeness
   quality_dimension: completeness
+  supports_clipping: false
   description: >-
     Percentage of the area of interest that is covered by OpenStreetMap land
     cover data.
 user-activity:
   name: User Activity
   quality_dimension: none
+  supports_clipping: false
   description: >-
     Shows the count of unique mappers per month for the selected topic.
     None-quality indicator.
 roads-thematic-accuracy:
   name: Road Accuracy
   quality_dimension: none
+  supports_clipping: false
   description: >-
     Comparison of OSM road attributes with the attributes from the <a
     target="_blank"

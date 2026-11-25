@@ -73,6 +73,12 @@ def test_indicator_request_include_figure(bpolys, topic_key_buildings):
     IndicatorRequest(bpolys=bpolys, topic=topic_key_buildings, include_figure=False)
 
 
+@pytest.mark.usefixtures("mock_request_context_mapping_saturation")
+def test_indicator_request_clipped(bpolys, topic_key_buildings):
+    request = IndicatorRequest(bpolys=bpolys, topic=topic_key_buildings, clipped=True)
+    assert request.clipped is True
+
+
 def test_indicator_request_invalid_topic(bpolys):
     with pytest.raises(ValidationError):
         IndicatorRequest(bpolys=bpolys, topic="foo")

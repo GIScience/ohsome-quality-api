@@ -120,3 +120,18 @@ def test_create_indicator_private_include_figure(bpolys, topic_buildings):
         )
     )
     assert indicator.result.figure is None
+
+
+@oqapi_vcr.use_cassette
+def test_create_indicator_private_clipped(bpolys, topic_buildings):
+    feature = bpolys["features"][0]
+    indicator = asyncio.run(
+        main._create_indicator(
+            "mapping-saturation",
+            feature,
+            topic_buildings,
+            clipped=True,
+        )
+    )
+    assert indicator.clipped is True
+    assert indicator.result.value is not None

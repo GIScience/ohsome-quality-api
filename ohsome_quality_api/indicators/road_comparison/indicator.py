@@ -33,10 +33,12 @@ class RoadComparison(BaseIndicator):
         self,
         topic: Topic,
         feature: Feature,
+        clipped: bool = False,
     ) -> None:
         super().__init__(
             topic=topic,
             feature=feature,
+            clipped=clipped,
         )
         # TODO: Evaluate thresholds
         self.th_high = 0.85  # Above or equal to this value label should be green
