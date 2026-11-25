@@ -33,7 +33,7 @@ class BuildingComparison(BaseIndicator):
         super().__init__(
             topic=topic,
             feature=feature,
-            clipped=False,
+            clipped=False,  # Has no effect since its based on centroids.
         )
         # The result is the ratio of area within coverage (between 0-1) or an empty list
         #
